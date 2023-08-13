@@ -1,0 +1,50 @@
+
+
+=> Must Disable user Registration on demo site using a middleware onlyReadOperation
+   onlyReadOperation will return false if the http method of the incoming request is not a GET method.
+   That means it disable POST, PUT, UPDATE, PATCH & DELETE method
+
+
+
+=> Run CreateApp seeder or its generated sql for the first time of installation of application.
+   That means only for version 1.0.0 . 
+   CreateApp seeder will seed admin role and all permissions. 
+   Don't run it in version upgrades.
+
+   Run DevDemo seeder for creating demosite for showcase the site and for testing in development mood.
+
+   Differnce between DevDemo and CreateApp is CreateApp only seed superadmin and roles,permissions where
+   DevDemo also create superadmin and role, permissions with necessary demo data for other modules.
+
+   If you want that your users will get some demo data for example currencies you can add that seeders
+   in your CreateApp seeder. 
+
+   Don't include truncate function in individual seeder classes. Suppose you need to truncate
+   all currencies in version 2.3.4 upgrade file. Then truncate the currencies in that file first 
+   and run the currencies seeder file.
+
+   If any new permission need to add in new version released after 1.0.0 
+   then seed the permissions from the dedicated version upgrade file. 
+   Don't run CreateApp seeder in version upgrades.
+
+
+
+=> Never Try to jump a new version from an older version directly. Suppose current version
+   is 2.0.1 and your desired version is 5.0.0. You shuld upgrade to all version one by one 
+   between this two versions. This will persist the consistancy of the application
+
+
+=> When a person fill Registration form he will be assigned to subscriber role. If Admin assign him to any role 
+   which has manage_dashboard permission, only after then the user can access the dashboard or view dashboard area.
+   Any user without manage_dashboard permission will be redirected to home page.   
+
+
+
+=> Products have unit, sell unit, purchase unit. Without choosing unit value user can not 
+   choose purchase and sell unit. Only units which has no base  unit that means only base units
+   will be shown in the unit choose list. Then in sell unit and perchase unit , units will be 
+   shown which base unit id is equal to the our choosen unit id
+
+=> Place ConvertEmptyStringsToNull middleware after PreventXSS middleware.
+   Otherwise It will fail to convert empty string to NULL   
+      

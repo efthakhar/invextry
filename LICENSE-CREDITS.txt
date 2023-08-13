@@ -1,0 +1,4 @@
+Admin Template:
+This project uses Voler Admin Template 
+Link Of the Admin Template Repo: https://github.com/zuramai/voler
+License Link Of this Admin Template: https://github.com/zuramai/voler/blob/main/LICENSE

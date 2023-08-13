@@ -1,0 +1,18 @@
+Modules:
+=======================
+1. Currency
+2. Unit
+3. Tax
+4. Warehouse
+5. Brand
+6. Product Category
+7. Product
+8. Adjustment
+9. People -> Customers/Suppliers/Users -- users_meta_table 
+10. Purchases
+11. Sales
+12. Payment methods
+13. Payment
+14. POS SYSTEM
+15. Account 
+16. Deposit

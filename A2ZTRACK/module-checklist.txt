@@ -1,0 +1,18 @@
+steps:
+=================
+
+> Create migration file
+
+> Create Model file
+
+> Create Seeder file and define permissions
+
+> Create Requests file
+
+> Create Resouce and Collections file 
+
+> Create necessary routes and controllers methods 
+
+> Create pinia store file
+
+> Create vuejs others files
