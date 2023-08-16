@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('email')->unique()->nullable();
 
             $table->string('company_name')->nullable();
-            $table->string('tax_number')->nullable();
+            $table->string('tax_number')->unique()->nullable();
 
             $table->string('country', 50)->nullable();
             $table->string('city', 50)->nullable();
