@@ -10,7 +10,7 @@ export const useCustomerStore = defineStore("customer", {
         per_page: 10,
 
         q_name: "",
-        q_status: '',
+        q_status: "",
 
         customers: [],
 
@@ -33,7 +33,7 @@ export const useCustomerStore = defineStore("customer", {
             address: null,
             billing_address: null,
             shipping_address: null,
-            status: '',
+            status: "",
         },
     }),
 
@@ -55,6 +55,20 @@ export const useCustomerStore = defineStore("customer", {
                             this.q_name = q_name;
                         }
                         resolve(this.customers);
+                    })
+                    .catch((errors) => {
+                        reject(errors);
+                    });
+            });
+        },
+
+        async fetchCustomer(id) {
+            return new Promise((resolve, reject) => {
+                axios
+                    .get(`/api/customers/${id}`)
+                    .then((response) => {
+                        this.current_customer_item = response.data.data;
+                        resolve(response.data.data);
                     })
                     .catch((errors) => {
                         reject(errors);
@@ -139,7 +153,7 @@ export const useCustomerStore = defineStore("customer", {
                 address: null,
                 billing_address: null,
                 shipping_address: null,
-                status: '',
+                status: "",
             };
             this.add_customer_errors = [];
             this.edit_customer_errors = [];
