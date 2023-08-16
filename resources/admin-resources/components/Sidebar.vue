@@ -104,7 +104,7 @@ const navlinks = [
                     <img
                         src="../assets/img/invextry-logo.png"
                         class="cursor-pointer img-fluid"
-                        @click="this.$router.push({ name: 'dashboard' })"
+                        @click="$router.push({ name: 'dashboard' })"
                     />
                 </div>
                 <div class="small-screen-menu-icon ms-3">
