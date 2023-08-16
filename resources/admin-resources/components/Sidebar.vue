@@ -45,18 +45,40 @@ const navlinks = [
 
     {
         label: "Sales",
-        link: "/admin/sale",
+        link: " ",
         icon_name: "cart-svg-icon",
-        permission: "view_sale",
+        sub_links: [
+            {
+                label: "Sale List",
+                link: "/admin/sale",
+                permission: "view_sale",
+            },
+            {
+                label: "New Sale",
+                link: "/admin/new-sale",
+                permission: "create_sale",
+            },
+        ],
     },
 
     {
         label: "Purchases",
         link: "/admin/purchase",
         icon_name: "beg-svg-icon",
-        permission: "view_purchase",
+        sub_links: [
+            {
+                label: "Purchase List",
+                link: "/admin/purchase",
+                permission: "view_purchase",
+            },
+            {
+                label: "New Purchase",
+                link: "/admin/new-purchase",
+                permission: "create_purchase",
+            },
+        ],
     },
-    
+
     {
         label: "Customers",
         link: "/admin/customer",

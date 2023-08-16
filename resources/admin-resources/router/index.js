@@ -87,13 +87,23 @@ const router = createRouter({
                 {
                     name: "sale",
                     path: "sale",
-                    component: () => import("../modules/customer/Customers.vue"),
+                    component: () => import("../modules/sale/Sales.vue"),
+                },
+                {
+                    name: "new_sale",
+                    path: "new-sale",
+                    component: () => import("../modules/sale/AddSale.vue"),
                 },
 
                 // Purchase Route
                 {
                     name: "purchase",
                     path: "purchase",
+                    component: () => import("../modules/customer/Customers.vue"),
+                },
+                {
+                    name: "new_purchase",
+                    path: "new-purchase",
                     component: () => import("../modules/customer/Customers.vue"),
                 },
             ],
