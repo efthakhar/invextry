@@ -35,6 +35,20 @@ class SupplierController extends Controller
         return new SupplierListCollection($suppliers);
     }
 
+    public function search($search)
+    {
+        $this->authorize('view_customer');
+        $supplier = Party::query()->where('isSupplier', 1)->where('status', 'active');
+
+        $supplier->when($search, function ($query, $search) {
+            $query->where('name', 'LIKE', '%'.$search.'%');
+        });
+
+        $supplier = $supplier->orderBy('id', 'desc')->limit(20)->get();
+
+        return new SupplierListCollection($supplier);
+    }
+
     public function show($supplier_id)
     {
         $this->authorize('view_supplier');

@@ -34,6 +34,19 @@ class CustomerController extends Controller
 
         return new CustomerListCollection($customers);
     }
+    public function search($search)
+    {
+        $this->authorize('view_customer');
+        $customers = Party::query()->where('isCustomer', 1)->where('status', 'active');
+
+        $customers->when($search, function ($query, $search) {
+            $query->where('name', 'LIKE', '%'.$search.'%');
+        });
+
+        $customers = $customers->orderBy('id', 'desc')->limit(20)->get();
+
+        return new CustomerListCollection($customers);
+    }
 
     public function show($customer_id)
     {
