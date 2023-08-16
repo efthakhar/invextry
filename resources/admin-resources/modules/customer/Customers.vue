@@ -11,9 +11,11 @@ import ViewSvgIcon from "../../assets/icons/view-svg-icon.vue";
 import AddNewButton from "../../components/buttons/AddNewButton.vue";
 import FilterButton from "../../components/buttons/FilterButton.vue";
 import BulkDeleteButton from "../../components/buttons/BulkDeleteButton.vue";
+import AddCustomer from "./AddCustomer.vue";
 
 const loading = ref(false);
 const filterTab = ref(true);
+const showAddCustomer = ref(false);
 
 const customerStore = useCustomerStore();
 const confirmStore = useConfirmStore();
@@ -97,7 +99,7 @@ onMounted(() => {
                 />
                 <AddNewButton
                     v-if="authStore.userCan('create_customer')"
-                    @click="showAddBrand = true"
+                    @click="showAddCustomer = true"
                 />
                 <FilterButton @click="filterTab = !filterTab" />
             </div>
@@ -189,7 +191,11 @@ onMounted(() => {
             @perPageChange="(perpage) => fetchData(1, perpage)"
         />
         <div class="modals-container">
-           
+            <AddCustomer
+                v-if="showAddCustomer"
+                @close="showAddCustomer = false"
+                @refreshData="fetchData(1)"
+            />
         </div>
     </div>
 </template>

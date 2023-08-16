@@ -10,7 +10,7 @@ export const useCustomerStore = defineStore("customer", {
         per_page: 10,
 
         q_name: "",
-        q_status: "active",
+        q_status: '',
 
         customers: [],
 
@@ -33,7 +33,7 @@ export const useCustomerStore = defineStore("customer", {
             address: null,
             billing_address: null,
             shipping_address: null,
-            status: null,
+            status: '',
         },
     }),
 
@@ -58,6 +58,39 @@ export const useCustomerStore = defineStore("customer", {
                     })
                     .catch((errors) => {
                         reject(errors);
+                    });
+            });
+        },
+
+        async addCustomer(data) {
+            return new Promise((resolve, reject) => {
+                axios
+                    .post(`/api/customers`, data)
+                    .then((response) => {
+                        this.resetCurrentCustomerData();
+                        const notifcationStore = useNotificationStore();
+                        notifcationStore.pushNotification({
+                            message: "Customer Added Successfully",
+                            type: "success",
+                            time: 2000,
+                        });
+
+                        resolve();
+                    })
+                    .catch((error) => {
+                        const notifcationStore = useNotificationStore();
+                        notifcationStore.pushNotification({
+                            message: "Error Occurred",
+                            type: "error",
+                            time: 2000,
+                        });
+
+                        if (error.response.status == 422) {
+                            this.add_customer_errors = formatValidationErrors(
+                                error.response.data.errors
+                            );
+                        }
+                        reject(error);
                     });
             });
         },
@@ -106,7 +139,7 @@ export const useCustomerStore = defineStore("customer", {
                 address: null,
                 billing_address: null,
                 shipping_address: null,
-                status: null,
+                status: '',
             };
             this.add_customer_errors = [];
             this.edit_customer_errors = [];
