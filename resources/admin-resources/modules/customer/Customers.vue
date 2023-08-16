@@ -12,10 +12,12 @@ import AddNewButton from "../../components/buttons/AddNewButton.vue";
 import FilterButton from "../../components/buttons/FilterButton.vue";
 import BulkDeleteButton from "../../components/buttons/BulkDeleteButton.vue";
 import AddCustomer from "./AddCustomer.vue";
+import EditCustomer from "./EditCustomer.vue";
 
 const loading = ref(false);
 const filterTab = ref(true);
 const showAddCustomer = ref(false);
+const showEditCustomer = ref(false);
 
 const customerStore = useCustomerStore();
 const confirmStore = useConfirmStore();
@@ -50,9 +52,11 @@ async function fetchData(
     selected_customers.value = [];
 
     try {
-        customerStore.fetchCustomers(page, per_page, q_name, q_status).then((response) => {
-            loading.value = false;
-        });
+        customerStore
+            .fetchCustomers(page, per_page, q_name, q_status)
+            .then((response) => {
+                loading.value = false;
+            });
     } catch (error) {
         loading.value = false;
     }
@@ -68,7 +72,7 @@ async function deleteData(id) {
                         customerStore.current_page,
                         customerStore.per_page,
                         customerStore.q_name,
-                        customerStore.q_status,
+                        customerStore.q_status
                     );
 
                     if (Array.isArray(id)) {
@@ -78,6 +82,11 @@ async function deleteData(id) {
                 });
             }
         });
+}
+
+function openEditCustomerModal(id) {
+    customerStore.edit_customer_id = id;
+    showEditCustomer.value = true;
 }
 
 onMounted(() => {
@@ -162,13 +171,11 @@ onMounted(() => {
                         <td>{{ customer.sale_due }}</td>
                         <td>{{ customer.sale_return_due }}</td>
                         <td class="table-action-btns">
-                            <ViewSvgIcon
-                                color="#00CFDD"
-                                
-                            />
+                            <ViewSvgIcon color="#00CFDD" />
                             <EditSvgIcon
                                 v-if="authStore.userCan('update_customer')"
                                 color="#739EF1"
+                                @click="openEditCustomerModal(customer.id)"
                             />
                             <BinSvgIcon
                                 v-if="authStore.userCan('delete_customer')"
@@ -195,6 +202,12 @@ onMounted(() => {
                 v-if="showAddCustomer"
                 @close="showAddCustomer = false"
                 @refreshData="fetchData(1)"
+            />
+            <EditCustomer
+                v-if="showEditCustomer"
+                :customer_id="customerStore.edit_customer_id"
+                @close="showEditCustomer = false"
+                @refreshData="fetchData(customerStore.current_page)"
             />
         </div>
     </div>

@@ -169,7 +169,11 @@ onMounted(() => {
                         <td>
                             <div style="width: 50px; height: 50px">
                                 <img
-                                    :src="brand.logo[0]?brand.logo[0]['url']:$demoIMG"
+                                    :src="
+                                        brand.logo[0]
+                                            ? brand.logo[0]['url']
+                                            : $demoIMG
+                                    "
                                     :alt="brand.name"
                                     class="img-fluid"
                                 />
