@@ -12,15 +12,17 @@ const customerStore = useCustomerStore();
 const customer_data = computed(() => customerStore.current_customer_item);
 
 async function submitData() {
-    customerStore;
-    // .editCustomer(JSON.parse(JSON.stringify(customerStore.current_customer_item)))
-    // .then(() => {
-    //     emit("refreshData");
-    //     emit("close");
-    // })
-    // .catch((error) => {
-    //     console.log("error occurred");
-    // });
+    customerStore
+        .editCustomer(
+            JSON.parse(JSON.stringify(customerStore.current_customer_item))
+        )
+        .then(() => {
+            emit("refreshData");
+            emit("close");
+        })
+        .catch((error) => {
+            console.log("error occurred");
+        });
 }
 
 async function fetchData(id) {

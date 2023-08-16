@@ -109,6 +109,36 @@ export const useCustomerStore = defineStore("customer", {
             });
         },
 
+        async editCustomer(data) {
+            return new Promise((resolve, reject) => {
+                axios
+                    .put(`/api/customers/${this.edit_customer_id}`, data)
+                    .then((response) => {
+                        this.resetCurrentCustomerData();
+                        const notifcationStore = useNotificationStore();
+                        notifcationStore.pushNotification({
+                            message: "customer updated successfully",
+                            type: "success",
+                        });
+                        resolve(response);
+                    })
+                    .catch((errors) => {
+                        const notifcationStore = useNotificationStore();
+                        notifcationStore.pushNotification({
+                            message: "Error Occurred",
+                            type: "error",
+                        });
+
+                        if (errors.response.status == 422) {
+                            this.edit_customer_errors = formatValidationErrors(
+                                errors.response.data.errors
+                            );
+                        }
+                        reject(errors);
+                    });
+            });
+        },
+
         deleteCustomer(id) {
             return new Promise((resolve, reject) => {
                 axios
