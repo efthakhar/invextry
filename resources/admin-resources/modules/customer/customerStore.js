@@ -33,7 +33,7 @@ export const useCustomerStore = defineStore("customer", {
             address: null,
             billing_address: null,
             shipping_address: null,
-            status: "active",
+            status: null,
         },
     }),
 
@@ -41,7 +41,7 @@ export const useCustomerStore = defineStore("customer", {
 
     actions: {
 
-        fetchCustomers(page, per_page, q_name) {
+        fetchCustomers(page, per_page, q_name, q_status) {
             return new Promise((resolve, reject) => {
                 axios
                     .get(
