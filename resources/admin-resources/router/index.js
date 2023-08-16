@@ -80,7 +80,7 @@ const router = createRouter({
                 {
                     name: "supplier",
                     path: "supplier",
-                    component: () => import("../modules/customer/Customers.vue"),
+                    component: () => import("../modules/supplier/Suppliers.vue"),
                 },
 
                 // Sale Route
