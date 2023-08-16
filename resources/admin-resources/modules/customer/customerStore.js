@@ -76,7 +76,7 @@ export const useCustomerStore = defineStore("customer", {
                 address: null,
                 billing_address: null,
                 shipping_address: null,
-                status: "active",
+                status: null,
             };
             this.add_customer_errors = [];
             this.edit_customer_errors = [];
