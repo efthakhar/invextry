@@ -62,7 +62,7 @@ class CustomerController extends Controller
             $customer->shipping_address = $request->validated('shipping_address');
             $customer->status = $request->validated('status');
             $customer->isCustomer = 1;
-            $request->validated('isSupplier') == 1 ? $customer->isSupplier = 1 : 0;
+            $request->validated('isSupplier') == 1 ? $customer->isSupplier = 1 : $customer->isSupplier = 0;
 
             $customer->save();
 
@@ -97,7 +97,7 @@ class CustomerController extends Controller
             $customer->billing_address = $request->validated('billing_address');
             $customer->shipping_address = $request->validated('shipping_address');
             $customer->status = $request->validated('status');
-            $request->validated('isSupplier') == 1 ? $customer->isSupplier = 1 : 0;
+            //$customer->isSupplier = $request->validated('isSupplier');
 
             $customer->save();
 

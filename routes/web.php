@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Party\CustomerController;
+use App\Http\Controllers\Api\Party\SupplierController;
 use App\Http\Controllers\Api\Product\BrandController;
 use App\Http\Controllers\Api\Product\ProductCategoryController;
 use App\Http\Controllers\Api\Product\ProductController;
@@ -112,5 +113,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/api/customers', [CustomerController::class, 'store']);
     Route::put('/api/customers/{id}', [CustomerController::class, 'update']);
     Route::delete('/api/customers/{id}', [CustomerController::class, 'delete']);
+
+    // suppliers
+    Route::get('/api/suppliers', [SupplierController::class, 'index']);
+    Route::get('/api/suppliers/{id}', [SupplierController::class, 'show']);
+    Route::post('/api/suppliers', [SupplierController::class, 'store']);
+    Route::put('/api/suppliers/{id}', [SupplierController::class, 'update']);
+    Route::delete('/api/suppliers/{id}', [SupplierController::class, 'delete']);
 
 });
