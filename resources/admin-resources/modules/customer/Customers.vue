@@ -13,11 +13,13 @@ import FilterButton from "../../components/buttons/FilterButton.vue";
 import BulkDeleteButton from "../../components/buttons/BulkDeleteButton.vue";
 import AddCustomer from "./AddCustomer.vue";
 import EditCustomer from "./EditCustomer.vue";
+import ViewCustomer from "./ViewCustomer.vue";
 
 const loading = ref(false);
 const filterTab = ref(true);
 const showAddCustomer = ref(false);
 const showEditCustomer = ref(false);
+const showViewCustomer = ref(false);
 
 const customerStore = useCustomerStore();
 const confirmStore = useConfirmStore();
@@ -87,6 +89,11 @@ async function deleteData(id) {
 function openEditCustomerModal(id) {
     customerStore.edit_customer_id = id;
     showEditCustomer.value = true;
+}
+
+function openViewCustomerModal(id) {
+    customerStore.view_customer_id = id;
+    showViewCustomer.value = true;
 }
 
 onMounted(() => {
@@ -171,7 +178,7 @@ onMounted(() => {
                         <td>{{ customer.sale_due }}</td>
                         <td>{{ customer.sale_return_due }}</td>
                         <td class="table-action-btns">
-                            <ViewSvgIcon color="#00CFDD" />
+                            <ViewSvgIcon color="#00CFDD" @click="openViewCustomerModal(customer.id)" />
                             <EditSvgIcon
                                 v-if="authStore.userCan('update_customer')"
                                 color="#739EF1"
@@ -208,6 +215,11 @@ onMounted(() => {
                 :customer_id="customerStore.edit_customer_id"
                 @close="showEditCustomer = false"
                 @refreshData="fetchData(customerStore.current_page)"
+            />
+            <ViewCustomer
+                v-if="showViewCustomer"
+                :customer_id="customerStore.view_customer_id"
+                @close="showViewCustomer = false"
             />
         </div>
     </div>
