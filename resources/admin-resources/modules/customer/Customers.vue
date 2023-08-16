@@ -56,6 +56,28 @@ async function fetchData(
     }
 }
 
+async function deleteData(id) {
+    confirmStore
+        .show_box({ message: "Do you want to delete selected Customer?" })
+        .then(async () => {
+            if (confirmStore.do_action == true) {
+                customerStore.deleteCustomer(id).then(() => {
+                    customerStore.fetchCustomers(
+                        customerStore.current_page,
+                        customerStore.per_page,
+                        customerStore.q_name,
+                        customerStore.q_status,
+                    );
+
+                    if (Array.isArray(id)) {
+                        all_selectd.value = false;
+                        selected_customers.value = [];
+                    }
+                });
+            }
+        });
+}
+
 onMounted(() => {
     fetchData(1);
 });
@@ -149,6 +171,7 @@ onMounted(() => {
                             <BinSvgIcon
                                 v-if="authStore.userCan('delete_customer')"
                                 color="#FF7474"
+                                @click="deleteData(customer.id)"
                             />
                         </td>
                     </tr>

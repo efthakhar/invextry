@@ -40,7 +40,6 @@ export const useCustomerStore = defineStore("customer", {
     getters: {},
 
     actions: {
-
         fetchCustomers(page, per_page, q_name, q_status) {
             return new Promise((resolve, reject) => {
                 axios
@@ -59,6 +58,37 @@ export const useCustomerStore = defineStore("customer", {
                     })
                     .catch((errors) => {
                         reject(errors);
+                    });
+            });
+        },
+
+        deleteCustomer(id) {
+            return new Promise((resolve, reject) => {
+                axios
+                    .delete(`/api/customers/${id}`)
+                    .then((response) => {
+                        if (
+                            this.customers.length == 1 ||
+                            (Array.isArray(id) &&
+                                id.length == this.customers.length)
+                        ) {
+                            this.current_page == 1
+                                ? (this.current_page = 1)
+                                : (this.current_page -= 1);
+                        }
+
+                        this.resetCurrentCustomerData();
+                        const notifcationStore = useNotificationStore();
+                        notifcationStore.pushNotification({
+                            message: "customers deleted successfully",
+                            type: "success",
+                            time: 2000,
+                        });
+
+                        resolve(response);
+                    })
+                    .catch((error) => {
+                        reject(error);
                     });
             });
         },
