@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('invoice_ref')->unique();
             $table->string('related_invoice_ref')->nullable();
-            $table->string('type', 50); 
+            $table->string('type', 50);
             // purchase/purchase_return/sales/sales_return
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('party_id');
@@ -30,7 +30,7 @@ return new class extends Migration
             $table->unsignedDouble('total_amount', 20, 4);
             $table->unsignedDouble('paid_amount', 20, 4);
             $table->unsignedDouble('returned_amount', 20, 4);
-            $table->unsignedDouble('due_amount', 20, 4); 
+            $table->unsignedDouble('due_amount', 20, 4);
             // due_amount = total_amount - paid_amount - returned_amount
 
             $table->string('invoice_status'); // received/pending/ordered
