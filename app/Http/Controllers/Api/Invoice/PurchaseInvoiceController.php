@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Invoice;
 
 use App\Http\Controllers\Controller;
 use App\Models\Invoice\Invoice;
+use App\Models\Invoice\InvoiceItem;
 use Illuminate\Http\Request;
 
 class PurchaseInvoiceController extends Controller
@@ -32,5 +33,20 @@ class PurchaseInvoiceController extends Controller
         $purchase->returned_amount = 0;
 
         $purchase->save();
+
+        $products       = $request->products;
+        foreach ($products as $product) {
+           $invoiceItem    = new InvoiceItem();
+           $invoiceItem->invoice_id = $purchase->id;
+           $invoiceItem->product_id = $product['id'];
+           $invoiceItem->unit_id = $product['unit_id'];
+           $invoiceItem->tax_id = $product['tax_id'];
+           $invoiceItem->tax_type = 'exclusive';
+           $invoiceItem->discount_type = 'flat';
+           $invoiceItem->discount = 0;
+           $invoiceItem->unit_price = $product['purchase_price'];
+           $invoiceItem->product_quantity = $product['quantity'];
+           $invoiceItem->save();
+        }
     }
 }
