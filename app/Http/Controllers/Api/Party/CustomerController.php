@@ -34,6 +34,7 @@ class CustomerController extends Controller
 
         return new CustomerListCollection($customers);
     }
+
     public function search($search)
     {
         $this->authorize('view_customer');

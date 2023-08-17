@@ -102,6 +102,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Product
     Route::get('/api/products', [ProductController::class, 'index']);
+    Route::get('/api/warehouse-products/{warehouse_id}/{name}', [ProductController::class, 'getProductsByNameAndWareHouse']);
     Route::get('/api/products/{id}', [ProductController::class, 'show']);
     Route::post('/api/products', [ProductController::class, 'store']);
     Route::put('/api/products/{id}', [ProductController::class, 'update']);

@@ -10,6 +10,7 @@ use App\Http\Resources\Product\SingleProductResource;
 use App\Models\Product\Product;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -40,6 +41,31 @@ class ProductController extends Controller
             ->paginate($per_page);
 
         return new ProductListCollection($products);
+    }
+
+    public function getProductsByNameAndWareHouse($warehouse_id,$name)
+    {
+        $this->authorize('view_product');
+
+        $products = DB::table('products')
+            ->leftJoin('product_stocks', 'products.id', '=', 'product_stocks.product_id')
+            ->leftJoin('taxes', 'products.tax_id', '=', 'taxes.id')
+            ->join('units', 'products.unit_id', '=', 'units.id')
+            ->select([
+                'products.id', 
+                'products.name', 
+                'products.sale_price', 
+                'product_stocks.stock_quantity',
+                'taxes.rate',
+                'products.tax_id',
+                'products.unit_id',
+            ])
+            ->where('products.name', 'LIKE', '%'.$name.'%')
+            //->where('product_stocks.warehouse_id', $warehouse_id)
+            //->where('product_stocks.stock_quantity', '>', 0)
+            ->get();
+
+        return $products;
     }
 
     public function show($product_id)
