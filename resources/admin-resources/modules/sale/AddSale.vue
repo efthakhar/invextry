@@ -294,14 +294,10 @@ onMounted(async () => {
                 ></textarea>
             </div>
         </div>
-        <div class="mt-2 mb-5">
+        <div class="mt-3 mb-5">
             <button class="btn btn-sm btn-primary d-inline">
-                Submit
+                Save Sale
             </button>
-        </div>
-
-        <div class="submit my-1">
-            
         </div>
 
         <div class="modals-container"></div>
@@ -328,7 +324,7 @@ onMounted(async () => {
     font-weight: normal;
 }
 .add-sale-page .dataTable-table thead th,
-.table thead th {
+.add-sale-page .table thead th {
     border: 1px solid #ffffff;
     background-color: #5a8eeee7;
     color: white;
