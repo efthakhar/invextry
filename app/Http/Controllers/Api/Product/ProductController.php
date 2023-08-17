@@ -50,7 +50,7 @@ class ProductController extends Controller
         $products = DB::table('products')
             ->leftJoin('product_stocks', 'products.id', '=', 'product_stocks.product_id')
             ->leftJoin('taxes', 'products.tax_id', '=', 'taxes.id')
-            ->join('units', 'products.unit_id', '=', 'units.id')
+            ->join('units', 'products.sale_unit_id', '=', 'units.id')
             ->select([
                 'products.id',
                 'products.name',
@@ -58,7 +58,9 @@ class ProductController extends Controller
                 'product_stocks.stock_quantity',
                 'taxes.rate',
                 'products.tax_id',
-                'products.unit_id',
+                'products.tax_type',
+                'products.sale_unit_id',
+                'units.short_name',
             ])
             ->where('products.name', 'LIKE', '%'.$name.'%')
             //->where('product_stocks.warehouse_id', $warehouse_id)
@@ -75,14 +77,16 @@ class ProductController extends Controller
 
         $products = DB::table('products')
             ->leftJoin('taxes', 'products.tax_id', '=', 'taxes.id')
-            ->join('units', 'products.unit_id', '=', 'units.id')
+            ->join('units', 'products.purchase_unit_id', '=', 'units.id')
             ->select([
                 'products.id',
                 'products.name',
                 'products.purchase_price',
                 'taxes.rate',
                 'products.tax_id',
-                'products.unit_id',
+                'products.tax_type',
+                'products.purchase_unit_id',
+                'units.short_name',
             ])
             ->where('products.name', 'LIKE', '%'.$name.'%')
             ->limit(20)

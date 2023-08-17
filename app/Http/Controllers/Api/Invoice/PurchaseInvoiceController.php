@@ -41,7 +41,7 @@ class PurchaseInvoiceController extends Controller
            $invoiceItem->product_id = $product['id'];
            $invoiceItem->unit_id = $product['unit_id'];
            $invoiceItem->tax_id = $product['tax_id'];
-           $invoiceItem->tax_type = 'exclusive';
+           $invoiceItem->tax_type = $product['exclusive'];
            $invoiceItem->discount_type = 'flat';
            $invoiceItem->discount = 0;
            $invoiceItem->unit_price = $product['purchase_price'];
