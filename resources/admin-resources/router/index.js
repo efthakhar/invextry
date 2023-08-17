@@ -104,7 +104,7 @@ const router = createRouter({
                 {
                     name: "new_purchase",
                     path: "new-purchase",
-                    component: () => import("../modules/customer/Customers.vue"),
+                    component: () => import("../modules/purchase/AddPurchase.vue"),
                 },
             ],
         },

@@ -63,6 +63,29 @@ class ProductController extends Controller
             ->where('products.name', 'LIKE', '%'.$name.'%')
             //->where('product_stocks.warehouse_id', $warehouse_id)
             //->where('product_stocks.stock_quantity', '>', 0)
+            ->limit(20)
+            ->get();
+
+        return $products;
+    }
+
+    public function getProductsByName($name)
+    {
+        $this->authorize('view_product');
+
+        $products = DB::table('products')
+            ->leftJoin('taxes', 'products.tax_id', '=', 'taxes.id')
+            ->join('units', 'products.unit_id', '=', 'units.id')
+            ->select([
+                'products.id',
+                'products.name',
+                'products.purchase_price',
+                'taxes.rate',
+                'products.tax_id',
+                'products.unit_id',
+            ])
+            ->where('products.name', 'LIKE', '%'.$name.'%')
+            ->limit(20)
             ->get();
 
         return $products;
