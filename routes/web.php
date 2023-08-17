@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Invoice\PurchaseInvoiceController;
 use App\Http\Controllers\Api\Party\CustomerController;
 use App\Http\Controllers\Api\Party\SupplierController;
 use App\Http\Controllers\Api\Product\BrandController;
@@ -124,5 +125,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/api/suppliers', [SupplierController::class, 'store']);
     Route::put('/api/suppliers/{id}', [SupplierController::class, 'update']);
     Route::delete('/api/suppliers/{id}', [SupplierController::class, 'delete']);
+
+    // purchase
+    Route::post('/api/purchases', [PurchaseInvoiceController::class, 'createPurchase']);
 
 });

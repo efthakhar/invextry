@@ -143,6 +143,9 @@ function savePurchase() {
         invoice_date: purchase_date.value,
         invoice_status: purchase_status.value,
         payment_status: payment_status.value,
+        invoice_tax_rate: purchase_tax.value,
+        invoice_note: note.value,
+        total_amount: total_amount.value,
     };
     axios
         .post(`/api/purchases`, purchase)
@@ -361,9 +364,12 @@ onMounted(async () => {
         </div>
         <div class="mt-3 mb-5">
             <div class="invoice_summary mb-3 max250">
-                <li class="list-group-item">
+                <li class="list-group-item active">
+                    Order Summery
+                </li>
+                <li class="list-group-item ">
                     <span class="text-primary">Order Tax:</span>
-                    {{ purchase_tax }}
+                    {{ total_purchase_tax }}
                 </li>
                 <li class="list-group-item">
                     <span class="text-primary">Discount:</span>

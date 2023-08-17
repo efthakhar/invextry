@@ -25,7 +25,8 @@ return new class extends Migration
             $table->string('discount_type')->nullable(); // flat/percentage
             $table->unsignedDouble('discount', 20, 4)->nullable();
             $table->unsignedDouble('shipping', 20, 4)->nullable();
-            $table->unsignedBigInteger('tax_id')->nullable();
+            $table->unsignedDouble('invoice_tax_rate', 10, 4)->nullable();
+            //$table->unsignedBigInteger('tax_id')->nullable();
 
             $table->unsignedDouble('total_amount', 20, 4);
             $table->unsignedDouble('paid_amount', 20, 4);
@@ -37,7 +38,7 @@ return new class extends Migration
             $table->string('payment_status'); // partial/paid/unpaid
             $table->string('shipping_status')->nullable(); // delivered
 
-            $table->text('note');
+            $table->text('note')->nullable();
             $table->date('invoice_date');
             $table->date('payment_deadline')->nullable();
 
@@ -49,8 +50,8 @@ return new class extends Migration
                 ->cascadeOnUpdate()->restrictOnDelete();
             $table->foreign('warehouse_id')->references('id')->on('warehouses')
                 ->cascadeOnUpdate()->restrictOnDelete();
-            $table->foreign('tax_id')->references('id')->on('taxes')
-                ->cascadeOnUpdate()->restrictOnDelete();
+            // $table->foreign('tax_id')->references('id')->on('taxes')
+            //     ->cascadeOnUpdate()->restrictOnDelete();
         });
     }
 
