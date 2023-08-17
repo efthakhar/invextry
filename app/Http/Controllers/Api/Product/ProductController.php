@@ -43,7 +43,7 @@ class ProductController extends Controller
         return new ProductListCollection($products);
     }
 
-    public function getProductsByNameAndWareHouse($warehouse_id,$name)
+    public function getProductsByNameAndWareHouse($warehouse_id, $name)
     {
         $this->authorize('view_product');
 
@@ -52,9 +52,9 @@ class ProductController extends Controller
             ->leftJoin('taxes', 'products.tax_id', '=', 'taxes.id')
             ->join('units', 'products.unit_id', '=', 'units.id')
             ->select([
-                'products.id', 
-                'products.name', 
-                'products.sale_price', 
+                'products.id',
+                'products.name',
+                'products.sale_price',
                 'product_stocks.stock_quantity',
                 'taxes.rate',
                 'products.tax_id',
