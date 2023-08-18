@@ -16,7 +16,7 @@ const purchase_discount = ref(0);
 const purchase_tax = ref(0);
 const total_purchase_tax = ref(0);
 const shipping_amount = ref(0);
-const total_amount = ref(0);
+const purchase_grand_total = ref(0);
 const paid_amount = ref(0);
 const purchase_status = ref("ordered");
 const payment_status = ref("unpaid");
@@ -112,25 +112,34 @@ function removeSelected(id) {
 }
 
 function calculateGrandTotal() {
-    let productsCostWithTax = 0;
-    let productsCostWithoutTax = 0;
+    let totalProductsCostWithTax = 0;
+    let totalProductsCostWithoutTax = 0;
     total_purchase_tax.value = 0;
-    total_amount.value = 0;
+    purchase_grand_total.value = 0;
 
     selected_products.value.forEach((p) => {
-        let item_subtotal =
-            p.quantity * (p.purchase_price * (p.rate / 100) + p.purchase_price);
-        let item_total_without_tax = p.quantity * p.purchase_price;
-        productsCostWithTax += item_subtotal;
-        productsCostWithoutTax += item_total_without_tax;
+        if (p.tax_type == "exclusive") {
+            let item_total_with_tax =
+                p.quantity *
+                (p.purchase_price * (p.rate / 100) + p.purchase_price);
+            let item_total_without_tax = p.quantity * p.purchase_price;
+            totalProductsCostWithTax += item_total_with_tax;
+            totalProductsCostWithoutTax += item_total_without_tax;
+        } else {
+            let item_total_with_tax = p.quantity * p.purchase_price;
+            let item_total_without_tax =
+                p.quantity * ((1 / (100 - p.rate)) * p.purchase_price);
+            totalProductsCostWithTax += item_total_with_tax;
+            totalProductsCostWithoutTax += item_total_without_tax;
+        }
     });
 
     total_purchase_tax.value =
-        productsCostWithoutTax * (purchase_tax.value / 100);
+        totalProductsCostWithoutTax * (purchase_tax.value / 100);
 
-    total_amount.value =
+    purchase_grand_total.value =
         shipping_amount.value +
-        productsCostWithTax -
+        totalProductsCostWithTax -
         purchase_discount.value +
         total_purchase_tax.value;
 }
@@ -145,7 +154,7 @@ function savePurchase() {
         payment_status: payment_status.value,
         invoice_tax_rate: purchase_tax.value,
         invoice_note: note.value,
-        total_amount: total_amount.value,
+        total_amount: purchase_grand_total.value,
     };
     axios
         .post(`/api/purchases`, purchase)
@@ -238,7 +247,7 @@ onMounted(async () => {
             </div>
         </div>
         <!-- purchase items -->
-        <table class="table bg-white table-bordered my-5 p-1 table-responsive">
+        <table class="table bg-white table-bordered my-3 p-1 table-responsive">
             <thead>
                 <tr>
                     <th class="min150">Product</th>
@@ -266,18 +275,27 @@ onMounted(async () => {
                     </td>
                     <td>
                         {{
-                            (
-                                p.quantity *
-                                (p.purchase_price * (p.rate / 100))
-                            ).toFixed(4)
+                            p.tax_type == "exclusive"
+                                ? (
+                                      p.quantity *
+                                      (p.purchase_price * (p.rate / 100))
+                                  ).toFixed(2)
+                                : (
+                                      p.quantity *
+                                      ((((100 - p.rate) * p.purchase_price) /
+                                          100) *
+                                          (p.rate / 100))
+                                  ).toFixed(2)
                         }}
                         $
                     </td>
                     <td>
                         {{
-                            p.quantity *
-                            (p.purchase_price * (p.rate / 100) +
-                                p.purchase_price)
+                            p.tax_type == "exclusive"
+                                ? p.quantity *
+                                  (p.purchase_price * (p.rate / 100) +
+                                      p.purchase_price)
+                                : p.purchase_price
                         }}
                     </td>
                     <td>
@@ -289,6 +307,28 @@ onMounted(async () => {
                 </tr>
             </tbody>
         </table>
+        <!-- Order Summary -->
+        <div class="mt-1 4-3">
+            <div class="invoice_summary mb-3 max250 ms-auto">
+                <li class="list-group-item active">Order Summery</li>
+                <li class="list-group-item">
+                    <span class="text-primary">Order Tax:</span>
+                    {{ total_purchase_tax.toFixed(2) }}
+                </li>
+                <li class="list-group-item">
+                    <span class="text-primary">Discount:</span>
+                    {{ purchase_discount.toFixed(2) }}
+                </li>
+                <li class="list-group-item">
+                    <span class="text-primary">Shipping:</span>
+                    {{ shipping_amount.toFixed(2) }}
+                </li>
+                <li class="list-group-item">
+                    <span class="bold h6">Grand Total:</span>
+                    {{ purchase_grand_total.toFixed(2) }}
+                </li>
+            </div>
+        </div>
 
         <!-- purchase tax, discount, shipping-->
         <div class="row">
@@ -328,7 +368,7 @@ onMounted(async () => {
         </div>
 
         <!-- Purchase status and Payment Status -->
-        <div class="row my-4">
+        <div class="row my-3">
             <div class="p-2 max200">
                 <label class="my-1">Purchase Status</label>
                 <select
@@ -352,6 +392,7 @@ onMounted(async () => {
                 </select>
             </div>
         </div>
+        <!-- Purchase Note -->
         <div class="row my-1">
             <div>
                 <label class="my-2">Purchase Note</label>
@@ -362,28 +403,7 @@ onMounted(async () => {
                 ></textarea>
             </div>
         </div>
-        <div class="mt-3 mb-5">
-            <div class="invoice_summary mb-3 max250">
-                <li class="list-group-item active">
-                    Order Summery
-                </li>
-                <li class="list-group-item ">
-                    <span class="text-primary">Order Tax:</span>
-                    {{ total_purchase_tax }}
-                </li>
-                <li class="list-group-item">
-                    <span class="text-primary">Discount:</span>
-                    {{ purchase_discount }}
-                </li>
-                <li class="list-group-item">
-                    <span class="text-primary">Shipping:</span>
-                    {{ shipping_amount }}
-                </li>
-                <li class="list-group-item">
-                    <span class="bold h6">Grand Total:</span>
-                    {{ total_amount }}
-                </li>
-            </div>
+        <div class="puchase_save my-4">
             <button
                 class="btn btn-sm btn-primary d-inline"
                 @click="savePurchase()"
@@ -391,7 +411,6 @@ onMounted(async () => {
                 Save Purchase
             </button>
         </div>
-
         <div class="modals-container"></div>
     </div>
 </template>
