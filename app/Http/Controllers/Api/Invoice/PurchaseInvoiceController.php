@@ -39,7 +39,7 @@ class PurchaseInvoiceController extends Controller
            $invoiceItem    = new InvoiceItem();
            $invoiceItem->invoice_id = $purchase->id;
            $invoiceItem->product_id = $product['id'];
-           $invoiceItem->unit_id = $product['unit_id'];
+           $invoiceItem->unit_id = $product['purchase_unit_id'];
            $invoiceItem->tax_id = $product['tax_id'];
            $invoiceItem->tax_type = $product['tax_type'];
            $invoiceItem->discount_type = 'flat';
@@ -47,6 +47,7 @@ class PurchaseInvoiceController extends Controller
            $invoiceItem->unit_price = $product['purchase_price'];
            $invoiceItem->product_quantity = $product['quantity'];
            $invoiceItem->save();
+           
         }
     }
 }
