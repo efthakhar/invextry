@@ -295,7 +295,7 @@ onMounted(async () => {
                                 ? p.quantity *
                                   (p.purchase_price * (p.rate / 100) +
                                       p.purchase_price)
-                                : p.purchase_price
+                                :  p.quantity *p.purchase_price
                         }}
                     </td>
                     <td>
