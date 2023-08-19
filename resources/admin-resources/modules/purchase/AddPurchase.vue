@@ -119,14 +119,14 @@ function calculateGrandTotal() {
         if (p.tax_type == "exclusive") {
             let item_total_with_tax =
                 p.quantity *
-                (p.invoice_price * (p.rate / 100) + p.invoice_price);
-            let item_total_without_tax = p.quantity * p.invoice_price;
+                (p.purchase_price * (p.rate / 100) + p.purchase_price);
+            let item_total_without_tax = p.quantity * p.purchase_price;
             totalProductsCostWithTax += item_total_with_tax;
             totalProductsCostWithoutTax += item_total_without_tax;
         } else {
-            let item_total_with_tax = p.quantity * p.invoice_price;
+            let item_total_with_tax = p.quantity * p.purchase_price;
             let item_total_without_tax =
-                p.quantity * ((1 / (100 - p.rate)) * p.invoice_price);
+                p.quantity * ((1 / (100 - p.rate)) * p.purchase_price);
             totalProductsCostWithTax += item_total_with_tax;
             totalProductsCostWithoutTax += item_total_without_tax;
         }
@@ -175,242 +175,252 @@ onMounted(async () => {
         <div class="page-top-box d-flex flex-wrap align-items-center">
             <h3 class="h5">Add New Purchase</h3>
         </div>
-        <!-- Product, warehouse, supplier selection -->
-        <div class="d-flex flex-wrap">
-            <div class="p-1 min150">
-                <label class="my-1">date</label>
-                <input
-                    type="date"
-                    class="form-control form-control-sm"
-                    v-model="invoice_date"
-                />
-            </div>
-            <div class="p-1 dropdown-search-select-box min100 max200">
-                <label class="my-1">supplier</label>
-                <input
-                    type="text"
-                    class="form-control form-control-sm sqaure"
-                    placeholder="search supplier.."
-                    v-model="supplier_q"
-                    @keyup="fetchSuppliers(supplier_q)"
-                />
-                <ul
-                    class="list-group dropdown-search-list"
-                    v-if="suppliers.length > 0"
-                >
-                    <li
-                        @click="onSelectSupplier(c)"
-                        :key="c.id"
-                        class="list-group-item cursor-pointer"
-                        v-for="c in suppliers"
+        <div class="add-invoice-contents bg-white p-3 my-3 rounded-3 shadow">
+            <!-- Product, warehouse, supplier selection -->
+            <div class="d-flex flex-wrap">
+                <div class="p-1 min150">
+                    <label class="my-1">date</label>
+                    <input
+                        type="date"
+                        class="form-control form-control-sm"
+                        v-model="invoice_date"
+                    />
+                </div>
+                <div class="p-1 dropdown-search-select-box min100 max200">
+                    <label class="my-1">supplier</label>
+                    <input
+                        type="text"
+                        class="form-control form-control-sm sqaure"
+                        placeholder="search supplier.."
+                        v-model="supplier_q"
+                        @keyup="fetchSuppliers(supplier_q)"
+                    />
+                    <ul
+                        class="list-group dropdown-search-list"
+                        v-if="suppliers.length > 0"
                     >
-                        {{ c.name }}
-                    </li>
-                </ul>
-            </div>
-            <div class="p-1 min150">
-                <label class="my-1">warehouse</label>
-                <select
-                    class="form-select form-select-sm"
-                    v-model="selected_warehouse"
-                    @input="onSelectWarehouse()"
-                >
-                    <option value="">none</option>
-                    <option :value="w.id" v-for="w in warehouses">
-                        {{ w.name }}
-                    </option>
-                </select>
-            </div>
-            <div class="p-1 dropdown-search-select-box">
-                <label class="my-1">search product</label>
-                <input
-                    :disabled="!selected_warehouse"
-                    type="text"
-                    class="form-control form-control-sm"
-                    placeholder="search items.."
-                    v-model="product_q"
-                    @keyup="fetchProducts(product_q)"
-                />
-                <ul
-                    class="list-group dropdown-search-list"
-                    v-if="items.length > 0"
-                >
-                    <li
-                        @click="onSelectProduct(p)"
-                        :key="p.id"
-                        class="list-group-item cursor-pointer"
-                        v-for="p in items"
+                        <li
+                            @click="onSelectSupplier(c)"
+                            :key="c.id"
+                            class="list-group-item cursor-pointer"
+                            v-for="c in suppliers"
+                        >
+                            {{ c.name }}
+                        </li>
+                    </ul>
+                </div>
+                <div class="p-1 min150">
+                    <label class="my-1">warehouse</label>
+                    <select
+                        class="form-select form-select-sm"
+                        v-model="selected_warehouse"
+                        @input="onSelectWarehouse()"
                     >
-                        {{ p.name }}
-                    </li>
-                </ul>
+                        <option value="">none</option>
+                        <option :value="w.id" v-for="w in warehouses">
+                            {{ w.name }}
+                        </option>
+                    </select>
+                </div>
+                <div class="p-1 dropdown-search-select-box">
+                    <label class="my-1">search product</label>
+                    <input
+                        :disabled="!selected_warehouse"
+                        type="text"
+                        class="form-control form-control-sm"
+                        placeholder="search items.."
+                        v-model="product_q"
+                        @keyup="fetchProducts(product_q)"
+                    />
+                    <ul
+                        class="list-group dropdown-search-list"
+                        v-if="items.length > 0"
+                    >
+                        <li
+                            @click="onSelectProduct(p)"
+                            :key="p.id"
+                            class="list-group-item cursor-pointer"
+                            v-for="p in items"
+                        >
+                            {{ p.name }}
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </div>
-        <!-- invoice items -->
-        <table class="table bg-white table-bordered my-3 p-1 table-responsive">
-            <thead>
-                <tr class="bg-primary text-white">
-                    <th class="min150">Product</th>
-                    <th class="min100">Unit Price</th>
-                    <th class="min100">Stock</th>
-                    <!-- <th class="min100">Quantity</th> -->
-                    <th class="min100">Tax</th>
-                    <th class="min100">Subtotal</th>
-                    <th class="min100">action</th>
-                </tr>
-            </thead>
-            <tbody v-if="selected_items.length > 0">
-                <tr v-for="p in selected_items">
-                    <td>{{ p.name }}</td>
-                    <td>{{ p.invoice_price }}</td>
-                    <!-- <td>{{ p.stock_quanity ?? 0 }}</td> -->
-                    <td>
-                        <input
-                            type="number"
-                            class="max100 form-control"
-                            min="1"
-                            v-model="p.quantity"
-                            @input="calculateGrandTotal()"
-                        />
-                    </td>
-                    <td>
-                        {{
-                            p.tax_type == "exclusive"
-                                ? (
-                                      p.quantity *
-                                      (p.invoice_price * (p.rate / 100))
-                                  ).toFixed(2)
-                                : (
-                                      p.quantity *
-                                      ((((100 - p.rate) * p.invoice_price) /
-                                          100) *
-                                          (p.rate / 100))
-                                  ).toFixed(2)
-                        }}
-                        $
-                    </td>
-                    <td>
-                        {{
-                            p.tax_type == "exclusive"
-                                ? p.quantity *
-                                  (p.invoice_price * (p.rate / 100) +
-                                      p.invoice_price)
-                                : p.quantity * p.invoice_price
-                        }}
-                    </td>
-                    <td>
-                        <CrossSvgIcon
-                            @click="removeSelected(p.id)"
-                            color="red"
-                        />
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <!-- Order Summary -->
-        <div class="mt-1 4-3">
-            <div class="invoice_summary mb-3 max250 ms-auto">
-                <li class="list-group-item active">Order Summery</li>
-                <li class="list-group-item">
-                    <span class="text-primary">Order Tax:</span>
-                    {{ total_invoice_tax.toFixed(2) }}
-                </li>
-                <li class="list-group-item">
-                    <span class="text-primary">Discount:</span>
-                    {{ discount.toFixed(2) }}
-                </li>
-                <li class="list-group-item">
-                    <span class="text-primary">Shipping:</span>
-                    {{ shipping_cost.toFixed(2) }}
-                </li>
-                <li class="list-group-item">
-                    <span class="bold h6">Grand Total:</span>
-                    {{ invoice_grand_total.toFixed(2) }}
-                </li>
-            </div>
-        </div>
-
-        <!-- invoice tax, discount, shipping-->
-        <div class="row">
-            <div class="input-group input-group-sm my-1 max250">
-                <span class="input-group-text btn btn-primary">Order Tax</span>
-                <input
-                    type="number"
-                    class="form-control"
-                    min="0"
-                    v-model="invoice_tax"
-                    @input="calculateGrandTotal()"
-                />
-                <span class="input-group-text btn btn-primary">%</span>
-            </div>
-            <div class="input-group input-group-sm my-1 max250">
-                <span class="input-group-text btn btn-primary">Discount</span>
-                <input
-                    type="number"
-                    class="form-control"
-                    min="0"
-                    v-model="discount"
-                    @input="calculateGrandTotal()"
-                />
-                <span class="input-group-text btn btn-primary">$</span>
-            </div>
-            <div class="input-group input-group-sm my-1 max250">
-                <span class="input-group-text btn btn-primary">Shipping</span>
-                <input
-                    type="number"
-                    class="form-control"
-                    min="0"
-                    v-model="shipping_cost"
-                    @input="calculateGrandTotal()"
-                />
-                <span class="input-group-text btn btn-primary">$</span>
-            </div>
-        </div>
-
-        <!-- Purchase status and Payment Status -->
-        <div class="row my-3">
-            <div class="p-2 max200">
-                <label class="my-1">Purchase Status</label>
-                <select
-                    class="form-select form-select-sm"
-                    v-model="invoice_status"
-                >
-                    <option value="ordered">ordered</option>
-                    <option value="pending">pending</option>
-                    <option value="completed">completed</option>
-                </select>
-            </div>
-            <div class="p-2 max200">
-                <label class="my-1">Payment Status</label>
-                <select
-                    class="form-select form-select-sm"
-                    v-model="payment_status"
-                >
-                    <option value="unpaid">unpaid</option>
-                    <option value="partial">partial</option>
-                    <option value="paid">paid</option>
-                </select>
-            </div>
-        </div>
-        <!-- Purchase Note -->
-        <div class="row my-1">
-            <div>
-                <label class="my-2">Purchase Note</label>
-                <textarea
-                    v-model="note"
-                    class="form-control"
-                    rows="3"
-                ></textarea>
-            </div>
-        </div>
-        <div class="puchase_save my-4">
-            <button
-                class="btn btn-sm btn-primary d-inline"
-                @click="savePurchase()"
+            <!-- invoice items -->
+            <table
+                class="table bg-white table-bordered my-3 p-1 table-responsive"
             >
-                Save Purchase
-            </button>
+                <thead>
+                    <tr class="bg-primary text-white">
+                        <th class="min150">Product</th>
+                        <th class="min100">Unit Price</th>
+                        <th class="min100">Stock</th>
+                        <!-- <th class="min100">Quantity</th> -->
+                        <th class="min100">Tax</th>
+                        <th class="min100">Subtotal</th>
+                        <th class="min100">action</th>
+                    </tr>
+                </thead>
+                <tbody v-if="selected_items.length > 0">
+                    <tr v-for="p in selected_items">
+                        <td>{{ p.name }}</td>
+                        <td>{{ p.purchase_price }}</td>
+                        <!-- <td>{{ p.stock_quanity ?? 0 }}</td> -->
+                        <td>
+                            <input
+                                type="number"
+                                class="max100 form-control"
+                                min="1"
+                                v-model="p.quantity"
+                                @input="calculateGrandTotal()"
+                            />
+                        </td>
+                        <td>
+                            {{
+                                p.tax_type == "exclusive"
+                                    ? (
+                                          p.quantity *
+                                          (p.purchase_price * (p.rate / 100))
+                                      ).toFixed(2)
+                                    : (
+                                          p.quantity *
+                                          ((((100 - p.rate) *
+                                              p.purchase_price) /
+                                              100) *
+                                              (p.rate / 100))
+                                      ).toFixed(2)
+                            }}
+                            $
+                        </td>
+                        <td>
+                            {{
+                                p.tax_type == "exclusive"
+                                    ? p.quantity *
+                                      (p.purchase_price * (p.rate / 100) +
+                                          p.purchase_price)
+                                    : p.quantity * p.purchase_price
+                            }}
+                        </td>
+                        <td>
+                            <CrossSvgIcon
+                                @click="removeSelected(p.id)"
+                                color="red"
+                            />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- Order Summary -->
+            <div class="mt-1 4-3">
+                <div class="invoice_summary mb-3 max250 ms-auto">
+                    <li class="list-group-item active">Order Summery</li>
+                    <li class="list-group-item">
+                        <span class="text-primary">Order Tax:</span>
+                        {{ total_invoice_tax.toFixed(2) }}
+                    </li>
+                    <li class="list-group-item">
+                        <span class="text-primary">Discount:</span>
+                        {{ discount.toFixed(2) }}
+                    </li>
+                    <li class="list-group-item">
+                        <span class="text-primary">Shipping:</span>
+                        {{ shipping_cost.toFixed(2) }}
+                    </li>
+                    <li class="list-group-item">
+                        <span class="bold h6">Grand Total:</span>
+                        {{ invoice_grand_total.toFixed(2) }}
+                    </li>
+                </div>
+            </div>
+
+            <!-- invoice tax, discount, shipping-->
+            <div class="row">
+                <div class="input-group input-group-sm my-1 max250">
+                    <span class="input-group-text btn btn-primary"
+                        >Order Tax</span
+                    >
+                    <input
+                        type="number"
+                        class="form-control"
+                        min="0"
+                        v-model="invoice_tax"
+                        @input="calculateGrandTotal()"
+                    />
+                    <span class="input-group-text btn btn-primary">%</span>
+                </div>
+                <div class="input-group input-group-sm my-1 max250">
+                    <span class="input-group-text btn btn-primary"
+                        >Discount</span
+                    >
+                    <input
+                        type="number"
+                        class="form-control"
+                        min="0"
+                        v-model="discount"
+                        @input="calculateGrandTotal()"
+                    />
+                    <span class="input-group-text btn btn-primary">$</span>
+                </div>
+                <div class="input-group input-group-sm my-1 max250">
+                    <span class="input-group-text btn btn-primary"
+                        >Shipping</span
+                    >
+                    <input
+                        type="number"
+                        class="form-control"
+                        min="0"
+                        v-model="shipping_cost"
+                        @input="calculateGrandTotal()"
+                    />
+                    <span class="input-group-text btn btn-primary">$</span>
+                </div>
+            </div>
+
+            <!-- Purchase status and Payment Status -->
+            <div class="row my-3">
+                <div class="p-2 max200">
+                    <label class="my-1">Purchase Status</label>
+                    <select
+                        class="form-select form-select-sm"
+                        v-model="invoice_status"
+                    >
+                        <option value="ordered">ordered</option>
+                        <option value="pending">pending</option>
+                        <option value="completed">completed</option>
+                    </select>
+                </div>
+                <div class="p-2 max200">
+                    <label class="my-1">Payment Status</label>
+                    <select
+                        class="form-select form-select-sm"
+                        v-model="payment_status"
+                    >
+                        <option value="unpaid">unpaid</option>
+                        <option value="partial">partial</option>
+                        <option value="paid">paid</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Purchase Note -->
+            <div class="row my-1">
+                <div>
+                    <label class="my-2">Purchase Note</label>
+                    <textarea
+                        v-model="note"
+                        class="form-control"
+                        rows="3"
+                    ></textarea>
+                </div>
+            </div>
+            <div class="puchase_save my-4">
+                <button
+                    class="btn btn-sm btn-primary d-inline"
+                    @click="savePurchase()"
+                >
+                    Save Purchase
+                </button>
+            </div>
         </div>
-        <div class="modals-container"></div>
     </div>
 </template>
