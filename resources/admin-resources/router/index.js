@@ -99,7 +99,7 @@ const router = createRouter({
                 {
                     name: "purchase",
                     path: "purchase",
-                    component: () => import("../modules/customer/Customers.vue"),
+                    component: () => import("../modules/purchase/Purchases.vue"),
                 },
                 {
                     name: "new_purchase",

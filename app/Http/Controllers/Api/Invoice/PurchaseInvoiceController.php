@@ -43,12 +43,12 @@ class PurchaseInvoiceController extends Controller
 
         $page = $request->query('page');
         $per_page = $request->query('per_page') && $request->query('per_page') < 100 ? $request->query('per_page') : 10;
-        $q_name = $request->query('q_name');
+        $search = $request->query('search');
 
         $purchases = Invoice::query();
 
-        $purchases->when($q_name, function ($query, $q_name) {
-            $query->where('invoice_ref', 'LIKE', '%'.$q_name.'%');
+        $purchases->when($search, function ($query, $search) {
+            $query->where('invoice_ref', 'LIKE', '%'.$search.'%');
         });
 
         $purchases = $page ? $purchases->orderBy('id', 'desc')->paginate($per_page)

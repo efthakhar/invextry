@@ -1,5 +1,6 @@
 <script setup>
 import { computed, onMounted, ref } from "vue";
+import axios from "axios";
 import { useAuthStore } from "../../stores/authStore";
 import Loader from "../../components/shared/loader/Loader.vue";
 import Pagination from "../../components/shared/pagination/Pagination.vue";
@@ -17,9 +18,10 @@ const filterTab = ref(true);
 const confirmStore = useConfirmStore();
 const authStore = useAuthStore();
 const purchases = ref([]);
-const q_name = ref("");
+const search = ref("");
 const per_page = ref(10);
-const page = ref(1);
+const total_pages = ref(1)
+const current_page = ref(1);
 const selected_purchases = ref([]);
 const all_selectd = ref(false);
 
@@ -45,7 +47,7 @@ async function deleteData(id) {
                     purchaseStore.fetchPurchases(
                         purchaseStore.current_page,
                         purchaseStore.per_page,
-                        purchaseStore.q_name
+                        purchaseStore.search
                     );
 
                     if (Array.isArray(id)) {
@@ -58,16 +60,17 @@ async function deleteData(id) {
 }
 
 async function fetchData(
-    page = page.value,
-    per_page = per_page.value,
-    q_name = q_name.value
+    page = current_page.value,
+    perPage = per_page.value,
+    search_string = search.value
 ) {
     loading.value = true;
     await axios
-        .get(`/api/purchases`)
+        .get(`/api/purchases?search=${search_string}`)
         .then((response) => {
             purchases.value = response.data;
             loading.value = false;
+            // search.value = search_string
         })
         .catch((errors) => {
             loading.value = false;
@@ -109,8 +112,8 @@ onMounted(() => {
                             type="text"
                             class="form-control"
                             placeholder="type name.."
-                            v-model="q_name"
-                            @keyup="fetchData(1, per_page, q_name)"
+                            v-model="search"
+                            @keyup="fetchData(1, per_page, search)"
                         />
                     </div>
                 </div>
@@ -153,8 +156,8 @@ onMounted(() => {
                                 v-model="all_selectd"
                             />
                         </td>
-                        <td>Date</td>
-                        <td>Reference</td>
+                        <td>{{ purchase.invoice_date }}</td>
+                        <td>{{ purchase.invoice_ref }}</td>
                         <td>Supplier</td>
                         <td>Warehouse</td>
                         <td>Grand Total</td>
@@ -183,8 +186,8 @@ onMounted(() => {
         <Pagination
             v-if="loading == false && purchases.length > 0"
             :total_pages="total_pages"
-            :current_page="page"
-            :per_page="pper_page"
+            :current_page="current_page"
+            :per_page="per_page"
             @pageChange="(currentPage) => fetchData(currentPage, per_page)"
             @perPageChange="(perpage) => fetchData(1, perpage)"
         />
