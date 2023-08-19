@@ -50,7 +50,7 @@ class PurchaseService
             $product = Product::find($item['id']);
 
             $invoiceItem->unit_id = $product->purchase_unit_id;
-            $invoiceItem->tax_id = $product->tax_id;
+            $invoiceItem->tax_rate = $product->tax ? $product->tax->rate:0;
             $invoiceItem->tax_type = $product->tax_type;
             $invoiceItem->discount_type = 'flat';
             $invoiceItem->discount = 0;

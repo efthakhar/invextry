@@ -34,8 +34,6 @@ return new class extends Migration
                 ->cascadeOnUpdate()->restrictOnDelete();
             $table->foreign('unit_id')->references('id')->on('units')
                 ->cascadeOnUpdate()->restrictOnDelete();
-            $table->foreign('tax_id')->references('id')->on('taxes')
-                ->cascadeOnUpdate()->restrictOnDelete();
         });
     }
 
