@@ -20,7 +20,7 @@ const authStore = useAuthStore();
 const purchases = ref([]);
 const search = ref("");
 const per_page = ref(10);
-const total_pages = ref(1)
+const total_pages = ref(1);
 const current_page = ref(1);
 const selected_purchases = ref([]);
 const all_selectd = ref(false);
@@ -66,11 +66,12 @@ async function fetchData(
 ) {
     loading.value = true;
     await axios
-        .get(`/api/purchases?search=${search_string}`)
+        .get(
+            `/api/purchases?search=${search_string}&per_page=${perPage}&page=${page}`
+        )
         .then((response) => {
-            purchases.value = response.data;
+            purchases.value = response.data.data;
             loading.value = false;
-            // search.value = search_string
         })
         .catch((errors) => {
             loading.value = false;
