@@ -54,14 +54,37 @@ svg {
     font-family: 'Poppins', sans-serif;
 }
 
-.max150{max-width: 150px !important;}
-.min150{min-width: 150px !important;}
-.min100{min-width: 100px !important;}
-.max100{max-width: 100px !important;}
-.min200{min-width: 200px !important;}
-.max200{max-width: 200px !important;}
-.min250{min-width: 250px !important;}
-.max250{max-width: 250px !important;}
+.max150 {
+    max-width: 150px !important;
+}
+
+.min150 {
+    min-width: 150px !important;
+}
+
+.min100 {
+    min-width: 100px !important;
+}
+
+.max100 {
+    max-width: 100px !important;
+}
+
+.min200 {
+    min-width: 200px !important;
+}
+
+.max200 {
+    max-width: 200px !important;
+}
+
+.min250 {
+    min-width: 250px !important;
+}
+
+.max250 {
+    max-width: 250px !important;
+}
 
 #app {
     position: relative
@@ -1695,6 +1718,10 @@ footer {
     box-shadow: none !important;
 }
 
+.form-select:focus {
+    box-shadow: none !important;
+}
+
 /* Css for hiding elements in small device */
 @media (max-width: 600px) {
     .d-600-none {
@@ -1703,19 +1730,36 @@ footer {
 }
 
 /* Table Custom Css */
-table{
+table {
     border: 1px solid #e2e2e2;
 }
-.table > :not(caption) > * > * {
+
+.table> :not(caption)>*>* {
     padding: 10px;
 }
 
-.table > * {
+.table>* {
     font-size: 13.5px;
 }
-.table th, .table td{
+
+.table th, .table td {
     padding: 6px 10px;
 }
-.table th{
-   font-weight: 600 !important;
+
+.table th {
+    font-weight: 600 !important;
+}
+
+/* Search Dropdown */
+.dropdown-search-select-box {
+    position: relative;
+}
+
+.dropdown-search-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: auto;
+    z-index: 200;
 }

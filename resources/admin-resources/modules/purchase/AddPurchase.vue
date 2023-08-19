@@ -251,7 +251,7 @@ onMounted(async () => {
         <!-- purchase items -->
         <table class="table bg-white table-bordered my-3 p-1 table-responsive">
             <thead>
-                <tr>
+                <tr class="bg-primary text-white">
                     <th class="min150">Product</th>
                     <th class="min100">Unit Price</th>
                     <th class="min100">Stock</th>
@@ -297,7 +297,7 @@ onMounted(async () => {
                                 ? p.quantity *
                                   (p.purchase_price * (p.rate / 100) +
                                       p.purchase_price)
-                                :  p.quantity *p.purchase_price
+                                : p.quantity * p.purchase_price
                         }}
                     </td>
                     <td>
@@ -416,31 +416,3 @@ onMounted(async () => {
         <div class="modals-container"></div>
     </div>
 </template>
-
-<style>
-.dropdown-search-select-box {
-    position: relative;
-}
-.dropdown-search-list {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    height: auto;
-    z-index: 200;
-}
-.add-purchase-page .form-select:focus {
-    box-shadow: none !important;
-}
-.add-purchase-page .table > :not(caption) > * > * {
-    padding: 2px 5px;
-    font-weight: normal;
-}
-.add-purchase-page .dataTable-table thead th,
-.add-purchase-page .table thead th {
-    border: 1px solid #ffffff;
-    background-color: #5a8eeee7;
-    color: white;
-    padding: 8px 5px !important;
-}
-</style>

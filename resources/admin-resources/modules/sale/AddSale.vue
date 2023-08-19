@@ -303,31 +303,3 @@ onMounted(async () => {
         <div class="modals-container"></div>
     </div>
 </template>
-
-<style>
-.dropdown-search-select-box {
-    position: relative;
-}
-.dropdown-search-list {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    height: auto;
-    z-index: 200;
-}
-.add-sale-page .form-select:focus {
-    box-shadow: none !important;
-}
-.add-sale-page .table > :not(caption) > * > * {
-    padding: 2px 5px;
-    font-weight: normal;
-}
-.add-sale-page .dataTable-table thead th,
-.add-sale-page .table thead th {
-    border: 1px solid #ffffff;
-    background-color: #5a8eeee7;
-    color: white;
-    padding: 8px 5px !important;
-}
-</style>
