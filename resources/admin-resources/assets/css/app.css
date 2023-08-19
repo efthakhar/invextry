@@ -1273,9 +1273,12 @@ footer {
     vertical-align: middle
 }
 
-.dataTable-table thead th, .table thead th {
-    border-bottom: 2px solid #475f7b
-}
+/* .dataTable-table thead th, .table thead th {
+    border-bottom: 1px solid #7b4754;
+    font-weight: normal;
+} */
+
+
 
 .table-action-col {
     min-width: 180px !important;
@@ -1700,6 +1703,19 @@ footer {
 }
 
 /* Table Custom Css */
+table{
+    border: 1px solid #e2e2e2;
+}
 .table > :not(caption) > * > * {
     padding: 10px;
+}
+
+.table > * {
+    font-size: 13.5px;
+}
+.table th, .table td{
+    padding: 6px 10px;
+}
+.table th{
+   font-weight: 600 !important;
 }
