@@ -41,6 +41,10 @@ class DevDemo extends Seeder
         DB::table('products')->truncate();
         DB::table('parties')->truncate();
 
+        DB::table('invoices')->truncate();
+        DB::table('invoice_items')->truncate();
+        DB::table('product_stocks')->truncate();
+
         // seeding media, superadmin and roles, permissions and other modules demo data
         $this->call([
 
@@ -57,6 +61,8 @@ class DevDemo extends Seeder
             ProductCategorySeeder::class,
             ProductSeeder::class,
             PartySeeder::class,
+
+            PurchaseSeeder::class,
         ]);
 
         Schema::enableForeignKeyConstraints();

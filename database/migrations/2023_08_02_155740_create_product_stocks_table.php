@@ -13,11 +13,9 @@ return new class extends Migration
     {
         Schema::create('product_stocks', function (Blueprint $table) {
 
-            $table->id();
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('warehouse_id');
             $table->unsignedDouble('stock_quantity', 20, 4)->nullable();
-            $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products')
                 ->cascadeOnUpdate()->restrictOnDelete();

@@ -26,12 +26,17 @@ return new class extends Migration
             $table->unsignedDouble('discount', 20, 4)->nullable();
             $table->unsignedDouble('shipping', 20, 4)->nullable();
             $table->unsignedDouble('invoice_tax_rate', 10, 4)->nullable();
+            $table->unsignedDouble('total_invoice_tax', 20, 4)->nullable();
+
+            $table->unsignedDouble('itemsCostWithTax', 20, 4)->nullable();
+            $table->unsignedDouble('itemsCostWithoutTax', 20, 4)->nullable();
             //$table->unsignedBigInteger('tax_id')->nullable();
 
-            $table->unsignedDouble('total_amount', 20, 4);
+            $table->unsignedDouble('shipping_cost', 20, 4);
             $table->unsignedDouble('paid_amount', 20, 4);
             $table->unsignedDouble('returned_amount', 20, 4);
             $table->unsignedDouble('due_amount', 20, 4);
+            $table->unsignedDouble('total_amount', 20, 4);
             // due_amount = total_amount - paid_amount - returned_amount
 
             $table->string('invoice_status'); // received/pending/ordered

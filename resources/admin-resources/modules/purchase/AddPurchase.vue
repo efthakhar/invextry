@@ -11,11 +11,11 @@ const selected_warehouse = ref("");
 const selected_supplier = ref({});
 const purchase_date = ref("");
 // const discount_type = "flat";
-const purchase_discount = ref(0);
+const discount = ref(0);
 // const purchase_tax_id = ref("");
 const purchase_tax = ref(0);
 const total_purchase_tax = ref(0);
-const shipping_amount = ref(0);
+const shipping_cost = ref(0);
 const purchase_grand_total = ref(0);
 const paid_amount = ref(0);
 const purchase_status = ref("ordered");
@@ -138,9 +138,9 @@ function calculateGrandTotal() {
         totalProductsCostWithoutTax * (purchase_tax.value / 100);
 
     purchase_grand_total.value =
-        shipping_amount.value +
+        shipping_cost.value +
         totalProductsCostWithTax -
-        purchase_discount.value +
+        discount.value +
         total_purchase_tax.value;
 }
 
@@ -152,9 +152,11 @@ function savePurchase() {
         invoice_date: purchase_date.value,
         invoice_status: purchase_status.value,
         payment_status: payment_status.value,
-        invoice_tax_rate: purchase_tax.value,
         invoice_note: note.value,
-        total_amount: purchase_grand_total.value,
+
+        invoice_tax_rate: purchase_tax.value,
+        shipping_cost: shipping_cost.value,
+        discount: discount.value,
     };
     axios
         .post(`/api/purchases`, purchase)
@@ -317,11 +319,11 @@ onMounted(async () => {
                 </li>
                 <li class="list-group-item">
                     <span class="text-primary">Discount:</span>
-                    {{ purchase_discount.toFixed(2) }}
+                    {{ discount.toFixed(2) }}
                 </li>
                 <li class="list-group-item">
                     <span class="text-primary">Shipping:</span>
-                    {{ shipping_amount.toFixed(2) }}
+                    {{ shipping_cost.toFixed(2) }}
                 </li>
                 <li class="list-group-item">
                     <span class="bold h6">Grand Total:</span>
@@ -349,7 +351,7 @@ onMounted(async () => {
                     type="number"
                     class="form-control"
                     min="0"
-                    v-model="purchase_discount"
+                    v-model="discount"
                     @input="calculateGrandTotal()"
                 />
                 <span class="input-group-text btn btn-primary">$</span>
@@ -360,7 +362,7 @@ onMounted(async () => {
                     type="number"
                     class="form-control"
                     min="0"
-                    v-model="shipping_amount"
+                    v-model="shipping_cost"
                     @input="calculateGrandTotal()"
                 />
                 <span class="input-group-text btn btn-primary">$</span>
