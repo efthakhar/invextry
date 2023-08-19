@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Invoice;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Invoice\CreatePurchaseRequest;
 use App\Http\Resources\Invoice\PurchaseListResource;
 use App\Models\Invoice\Invoice;
 use App\Services\PurchaseService;
@@ -19,7 +20,7 @@ class PurchaseInvoiceController extends Controller
         $this->purchaseService = $purchaseService;
     }
 
-    public function store(Request $request)
+    public function store(CreatePurchaseRequest $request)
     {
         try {
             DB::beginTransaction();

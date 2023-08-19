@@ -1763,3 +1763,12 @@ table {
     height: auto;
     z-index: 200;
 }
+/* 
+* Validation Errors CSS
+*/
+.v-error{
+    display: block;
+    margin: 1px 0;
+    color:red;
+    font-size: 12px;
+}

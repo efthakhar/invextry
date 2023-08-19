@@ -3,6 +3,8 @@ import { onMounted, ref } from "vue";
 import CrossSvgIcon from "../../assets/icons/cross-svg-icon.vue";
 import router from "../../router";
 import axios from "axios";
+import { useNotificationStore } from "../../components/shared/notification/notificationStore";
+import formatValidationErrors from "../../utils/format-validation-errors";
 const warehouses = ref([]);
 const items = ref([]);
 const selected_items = ref([]);
@@ -21,6 +23,7 @@ const payment_status = ref("unpaid");
 const note = ref("");
 const supplier_q = ref("");
 const product_q = ref("");
+const validation_errors = ref([]);
 
 async function fetchSuppliers(name = supplier_q.value) {
     if (name.length < 1) {
@@ -162,7 +165,19 @@ function savePurchase() {
             router.push({ name: "purchase" });
         })
         .catch((error) => {
-            console.log(error);
+            const notifcationStore = useNotificationStore();
+            notifcationStore.pushNotification({
+                message: "Error Occurred",
+                type: "error",
+                time: 3000,
+            });
+
+            if (error.response.status == 422) {
+                validation_errors.value = formatValidationErrors(
+                    error.response.data.errors
+                );
+            }
+            //console.log(error);
         });
 }
 
@@ -185,6 +200,9 @@ onMounted(async () => {
                         class="form-control form-control-sm"
                         v-model="invoice_date"
                     />
+                    <span class="v-error" v-if="validation_errors.invoice_date">
+                        {{ validation_errors.invoice_date }}
+                    </span>
                 </div>
                 <div class="p-1 dropdown-search-select-box min100 max200">
                     <label class="my-1">supplier</label>
@@ -208,6 +226,9 @@ onMounted(async () => {
                             {{ c.name }}
                         </li>
                     </ul>
+                    <span class="v-error" v-if="validation_errors.party_id">
+                        {{ validation_errors.party_id }}
+                    </span>
                 </div>
                 <div class="p-1 min150">
                     <label class="my-1">warehouse</label>
@@ -221,6 +242,9 @@ onMounted(async () => {
                             {{ w.name }}
                         </option>
                     </select>
+                    <span class="v-error" v-if="validation_errors.warehouse_id">
+                        {{ validation_errors.warehouse_id }}
+                    </span>
                 </div>
                 <div class="p-1 dropdown-search-select-box">
                     <label class="my-1">search product</label>
@@ -281,7 +305,8 @@ onMounted(async () => {
                                 p.tax_type == "exclusive"
                                     ? (
                                           p.quantity *
-                                          (p.purchase_price * (p.tax_rate / 100))
+                                          (p.purchase_price *
+                                              (p.tax_rate / 100))
                                       ).toFixed(2)
                                     : (
                                           p.quantity *
@@ -311,6 +336,9 @@ onMounted(async () => {
                     </tr>
                 </tbody>
             </table>
+            <span class="v-error" v-if="validation_errors.items">
+                {{ validation_errors.items }}
+            </span>
             <!-- Order Summary -->
             <div class="mt-1 4-3">
                 <div class="invoice_summary mb-3 max250 ms-auto">
