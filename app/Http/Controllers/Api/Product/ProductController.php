@@ -82,7 +82,7 @@ class ProductController extends Controller
                 'products.id',
                 'products.name',
                 'products.purchase_price',
-                'taxes.rate',
+                'taxes.rate as tax_rate',
                 'products.tax_id',
                 'products.tax_type',
                 'products.purchase_unit_id',

@@ -37,7 +37,7 @@ class PurchaseService
         $purchase->total_amount = 0;
 
         $purchase->save();
-
+        // dd($purchase->id);
         $invoiceItems = $data['items'];
 
         // saving all invoice items
@@ -58,23 +58,23 @@ class PurchaseService
             $invoiceItem->product_quantity = $item['quantity'];
 
             $invoiceItem->save();
-
+    
             if (DB::table('product_stocks')->where(['product_id' => $item['id'], 'warehouse_id' => $data['warehouse_id']])->count() > 0) {
 
                 DB::table('product_stocks')->where(['product_id' => $item['id'], 'warehouse_id' => $data['warehouse_id']])->increment('stock_quantity', $invoiceItem->product_quantity);
 
             } else {
                 DB::table('product_stocks')
-                    ->insert(
-                        ['product_id' => $item['id'],
-                            'warehouse_id' => $data['warehouse_id'],
-                            'stock_quantity' => $invoiceItem->product_quantity, ]
-                    );
+                ->insert(
+                    ['product_id' => $item['id'],
+                    'warehouse_id' => $data['warehouse_id'],
+                    'stock_quantity' => $invoiceItem->product_quantity, ]
+                );
+               
             }
         }
-
         $calculation = $this->calculateInvoice($data);
-
+        
         // finally save again the purchase invoice after calculating grand total
         $purchase->shipping_cost = $data['shipping_cost'];
         $purchase->discount_type = 'flat';
@@ -111,11 +111,13 @@ class PurchaseService
 
             $product = Product::find($item['id']);
 
+            $product_tax_rate = $product->tax? $product->tax->rate:0;
+
             if ($product->tax_type == 'exclusive') {
 
                 $item_total_with_tax =
                 $item['quantity'] *
-                ($product->purchase_price * ($product->rate / 100) + $product->purchase_price);
+                ($product->purchase_price * ( $product_tax_rate / 100) + $product->purchase_price);
                 $item_total_without_tax = $item['quantity'] * $product->purchase_price;
                 $itemsCostWithTax += $item_total_with_tax;
                 $itemsCostWithoutTax += $item_total_without_tax;
@@ -124,7 +126,7 @@ class PurchaseService
 
                 $item_total_with_tax = $item['quantity'] * $product->purchase_price;
                 $item_total_without_tax =
-                $item['quantity'] * ((1 / (100 - $product->rate)) * $product->purchase_price);
+                $item['quantity'] * ((1 / (100 - $product_tax_rate)) * $product->purchase_price);
                 $itemsCostWithTax += $item_total_with_tax;
                 $itemsCostWithoutTax += $item_total_without_tax;
 

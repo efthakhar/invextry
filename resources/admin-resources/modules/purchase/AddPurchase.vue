@@ -119,14 +119,14 @@ function calculateGrandTotal() {
         if (p.tax_type == "exclusive") {
             let item_total_with_tax =
                 p.quantity *
-                (p.purchase_price * (p.rate / 100) + p.purchase_price);
+                (p.purchase_price * (p.tax_rate / 100) + p.purchase_price);
             let item_total_without_tax = p.quantity * p.purchase_price;
             totalProductsCostWithTax += item_total_with_tax;
             totalProductsCostWithoutTax += item_total_without_tax;
         } else {
             let item_total_with_tax = p.quantity * p.purchase_price;
             let item_total_without_tax =
-                p.quantity * ((1 / (100 - p.rate)) * p.purchase_price);
+                p.quantity * ((1 / (100 - p.tax_rate)) * p.purchase_price);
             totalProductsCostWithTax += item_total_with_tax;
             totalProductsCostWithoutTax += item_total_without_tax;
         }
@@ -281,14 +281,14 @@ onMounted(async () => {
                                 p.tax_type == "exclusive"
                                     ? (
                                           p.quantity *
-                                          (p.purchase_price * (p.rate / 100))
+                                          (p.purchase_price * (p.tax_rate / 100))
                                       ).toFixed(2)
                                     : (
                                           p.quantity *
-                                          ((((100 - p.rate) *
+                                          ((((100 - p.tax_rate) *
                                               p.purchase_price) /
                                               100) *
-                                              (p.rate / 100))
+                                              (p.tax_rate / 100))
                                       ).toFixed(2)
                             }}
                             $
@@ -297,7 +297,7 @@ onMounted(async () => {
                             {{
                                 p.tax_type == "exclusive"
                                     ? p.quantity *
-                                      (p.purchase_price * (p.rate / 100) +
+                                      (p.purchase_price * (p.tax_rate / 100) +
                                           p.purchase_price)
                                     : p.quantity * p.purchase_price
                             }}
