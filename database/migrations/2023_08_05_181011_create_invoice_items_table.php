@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedDouble('unit_price', 20, 4);
             $table->unsignedDouble('product_quantity', 20, 4);
             $table->unsignedBigInteger('unit_id')->nullable();
-            $table->unsignedBigInteger('tax_id')->nullable();
+            $table->unsignedBigInteger('tax_rate')->nullable();
             $table->string('tax_type', 20);
             $table->string('discount_type')->nullable(); // flat/percentage
             $table->unsignedDouble('discount', 20, 4)->nullable();
