@@ -127,6 +127,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/api/suppliers/{id}', [SupplierController::class, 'delete']);
 
     // purchase
+    Route::get('/api/purchases', [PurchaseInvoiceController::class, 'index']);
     Route::post('/api/purchases', [PurchaseInvoiceController::class, 'store']);
 
 });
