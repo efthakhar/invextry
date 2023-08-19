@@ -137,13 +137,14 @@ onMounted(() => {
                                 v-model="all_selectd"
                             />
                         </th>
-                        <th>Date</th>
-                        <th>Reference</th>
-                        <th>Supplier</th>
-                        <th>Warehouse</th>
-                        <th>Grand Total</th>
-                        <th>Status</th>
-                        <th>Payment Status</th>
+                        <th class="min100">Date</th>
+                        <th class="min100">Reference</th>
+                        <th class="min100">Supplier</th>
+                        <th class="min100">Warehouse</th>
+                        <th class="min100">Total</th>
+                        <th class="min100">Paid</th>
+                        <th class="">Purchase Status</th>
+                        <th class="">Payment Status</th>
                         <th class="table-action-col">Action</th>
                     </tr>
                 </thead>
@@ -159,11 +160,12 @@ onMounted(() => {
                         </td>
                         <td>{{ purchase.invoice_date }}</td>
                         <td>{{ purchase.invoice_ref }}</td>
-                        <td>Supplier</td>
-                        <td>Warehouse</td>
-                        <td>Grand Total</td>
-                        <td>Status</td>
-                        <td>Payment Status</td>
+                        <td>{{ purchase.supplier }}</td>
+                        <td>{{ purchase.warehouse }}</td>
+                        <td>{{ purchase.total_amount }}</td>
+                        <td>{{ purchase.paid_amount }}</td>
+                        <td>{{ purchase.invoice_status }}</td>
+                        <td>{{ purchase.payment_status }}</td>
                         <td class="table-action-btns">
                             <ViewSvgIcon
                                 color="#00CFDD"
