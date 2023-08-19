@@ -13,7 +13,7 @@ const selected_warehouse = ref("");
 const selected_party = ref({});
 const invoice_date = ref("");
 const discount = ref(0);
-const invoice_tax = ref(0);
+const invoice_tax_rate = ref(0);
 const total_invoice_tax = ref(0);
 const shipping_cost = ref(0);
 const invoice_grand_total = ref(0);
@@ -136,7 +136,7 @@ function calculateGrandTotal() {
     });
 
     total_invoice_tax.value =
-        totalProductsCostWithoutTax * (invoice_tax.value / 100);
+        totalProductsCostWithoutTax * (invoice_tax_rate.value / 100);
 
     invoice_grand_total.value =
         shipping_cost.value +
@@ -155,7 +155,7 @@ function savePurchase() {
         payment_status: payment_status.value,
         note: note.value,
 
-        invoice_tax_rate: invoice_tax.value,
+        invoice_tax_rate: invoice_tax_rate.value,
         shipping_cost: shipping_cost.value,
         discount: discount.value,
     };
@@ -373,7 +373,7 @@ onMounted(async () => {
                         type="number"
                         class="form-control"
                         min="0"
-                        v-model="invoice_tax"
+                        v-model="invoice_tax_rate"
                         @input="calculateGrandTotal()"
                     />
                     <span class="input-group-text btn btn-primary">%</span>
