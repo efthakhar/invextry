@@ -98,10 +98,7 @@ onMounted(() => {
                     "
                     @click="deleteData(selected_purchases)"
                 />
-                <AddNewButton
-                    v-if="authStore.userCan('create_purchase')"
-                    @click="showAddTax = true"
-                />
+                <AddNewButton  @click="$router.push({ name: 'new_purchase' })" />
                 <FilterButton @click="filterTab = !filterTab" />
             </div>
         </div>
