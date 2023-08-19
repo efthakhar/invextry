@@ -4,21 +4,19 @@ import CrossSvgIcon from "../../assets/icons/cross-svg-icon.vue";
 import router from "../../router";
 import axios from "axios";
 const warehouses = ref([]);
-const products = ref([]);
-const selected_products = ref([]);
+const items = ref([]);
+const selected_items = ref([]);
 const suppliers = ref([]);
 const selected_warehouse = ref("");
-const selected_supplier = ref({});
-const purchase_date = ref("");
-// const discount_type = "flat";
+const selected_party = ref({});
+const invoice_date = ref("");
 const discount = ref(0);
-// const purchase_tax_id = ref("");
-const purchase_tax = ref(0);
-const total_purchase_tax = ref(0);
+const invoice_tax = ref(0);
+const total_invoice_tax = ref(0);
 const shipping_cost = ref(0);
-const purchase_grand_total = ref(0);
+const invoice_grand_total = ref(0);
 const paid_amount = ref(0);
-const purchase_status = ref("ordered");
+const invoice_status = ref("ordered");
 const payment_status = ref("unpaid");
 const note = ref("");
 const supplier_q = ref("");
@@ -47,8 +45,8 @@ async function fetchProducts(name = product_q.value) {
     await axios
         .get(`/api/products-by-name/${name}`)
         .then((response) => {
-            products.value = [];
-            products.value = response.data;
+            items.value = [];
+            items.value = response.data;
         })
         .catch((errors) => {
             console.log(errors.response);
@@ -70,15 +68,15 @@ function clearSuppliers() {
     suppliers.value = [];
 }
 function clearProducts() {
-    products.value = [];
+    items.value = [];
 }
 function clearSelectedProducts() {
-    selected_products.value = [];
+    selected_items.value = [];
     calculateGrandTotal();
 }
 
 function onSelectSupplier(supplier) {
-    selected_supplier.value = supplier;
+    selected_party.value = supplier;
     supplier_q.value = supplier.name;
     clearSuppliers();
 }
@@ -89,7 +87,7 @@ function onSelectWarehouse() {
 }
 
 function onSelectProduct(product) {
-    const existingProduct = selected_products.value.find(
+    const existingProduct = selected_items.value.find(
         (item) => item.id === product.id
     );
 
@@ -97,7 +95,7 @@ function onSelectProduct(product) {
         existingProduct.quantity += 1;
     } else {
         product.quantity = 1;
-        selected_products.value.push(product);
+        selected_items.value.push(product);
     }
     clearProducts();
     product_q.value = "";
@@ -105,7 +103,7 @@ function onSelectProduct(product) {
 }
 
 function removeSelected(id) {
-    selected_products.value = selected_products.value.filter((product) => {
+    selected_items.value = selected_items.value.filter((product) => {
         return id != product.id;
     });
     calculateGrandTotal();
@@ -114,52 +112,52 @@ function removeSelected(id) {
 function calculateGrandTotal() {
     let totalProductsCostWithTax = 0;
     let totalProductsCostWithoutTax = 0;
-    total_purchase_tax.value = 0;
-    purchase_grand_total.value = 0;
+    total_invoice_tax.value = 0;
+    invoice_grand_total.value = 0;
 
-    selected_products.value.forEach((p) => {
+    selected_items.value.forEach((p) => {
         if (p.tax_type == "exclusive") {
             let item_total_with_tax =
                 p.quantity *
-                (p.purchase_price * (p.rate / 100) + p.purchase_price);
-            let item_total_without_tax = p.quantity * p.purchase_price;
+                (p.invoice_price * (p.rate / 100) + p.invoice_price);
+            let item_total_without_tax = p.quantity * p.invoice_price;
             totalProductsCostWithTax += item_total_with_tax;
             totalProductsCostWithoutTax += item_total_without_tax;
         } else {
-            let item_total_with_tax = p.quantity * p.purchase_price;
+            let item_total_with_tax = p.quantity * p.invoice_price;
             let item_total_without_tax =
-                p.quantity * ((1 / (100 - p.rate)) * p.purchase_price);
+                p.quantity * ((1 / (100 - p.rate)) * p.invoice_price);
             totalProductsCostWithTax += item_total_with_tax;
             totalProductsCostWithoutTax += item_total_without_tax;
         }
     });
 
-    total_purchase_tax.value =
-        totalProductsCostWithoutTax * (purchase_tax.value / 100);
+    total_invoice_tax.value =
+        totalProductsCostWithoutTax * (invoice_tax.value / 100);
 
-    purchase_grand_total.value =
+    invoice_grand_total.value =
         shipping_cost.value +
         totalProductsCostWithTax -
         discount.value +
-        total_purchase_tax.value;
+        total_invoice_tax.value;
 }
 
 function savePurchase() {
-    let purchase = {
-        products: selected_products.value,
+    let invoice = {
+        items: selected_items.value,
         warehouse_id: selected_warehouse.value,
-        supplier_id: selected_supplier.value.id,
-        invoice_date: purchase_date.value,
-        invoice_status: purchase_status.value,
+        party_id: selected_party.value.id,
+        invoice_date: invoice_date.value,
+        invoice_status: invoice_status.value,
         payment_status: payment_status.value,
-        invoice_note: note.value,
+        note: note.value,
 
-        invoice_tax_rate: purchase_tax.value,
+        invoice_tax_rate: invoice_tax.value,
         shipping_cost: shipping_cost.value,
         discount: discount.value,
     };
     axios
-        .post(`/api/purchases`, purchase)
+        .post(`/api/purchases`, invoice)
         .then((response) => {
             router.push({ name: "purchase" });
         })
@@ -173,9 +171,9 @@ onMounted(async () => {
 });
 </script>
 <template>
-    <div class="add-purchase-page">
+    <div class="add-invoice-page">
         <div class="page-top-box d-flex flex-wrap align-items-center">
-            <h3 class="h3">Add Purchase</h3>
+            <h3 class="h5">Add New Purchase</h3>
         </div>
         <!-- Product, warehouse, supplier selection -->
         <div class="d-flex flex-wrap">
@@ -184,7 +182,7 @@ onMounted(async () => {
                 <input
                     type="date"
                     class="form-control form-control-sm"
-                    v-model="purchase_date"
+                    v-model="invoice_date"
                 />
             </div>
             <div class="p-1 dropdown-search-select-box min100 max200">
@@ -229,26 +227,26 @@ onMounted(async () => {
                     :disabled="!selected_warehouse"
                     type="text"
                     class="form-control form-control-sm"
-                    placeholder="search products.."
+                    placeholder="search items.."
                     v-model="product_q"
                     @keyup="fetchProducts(product_q)"
                 />
                 <ul
                     class="list-group dropdown-search-list"
-                    v-if="products.length > 0"
+                    v-if="items.length > 0"
                 >
                     <li
                         @click="onSelectProduct(p)"
                         :key="p.id"
                         class="list-group-item cursor-pointer"
-                        v-for="p in products"
+                        v-for="p in items"
                     >
                         {{ p.name }}
                     </li>
                 </ul>
             </div>
         </div>
-        <!-- purchase items -->
+        <!-- invoice items -->
         <table class="table bg-white table-bordered my-3 p-1 table-responsive">
             <thead>
                 <tr class="bg-primary text-white">
@@ -261,10 +259,10 @@ onMounted(async () => {
                     <th class="min100">action</th>
                 </tr>
             </thead>
-            <tbody v-if="selected_products.length > 0">
-                <tr v-for="p in selected_products">
+            <tbody v-if="selected_items.length > 0">
+                <tr v-for="p in selected_items">
                     <td>{{ p.name }}</td>
-                    <td>{{ p.purchase_price }}</td>
+                    <td>{{ p.invoice_price }}</td>
                     <!-- <td>{{ p.stock_quanity ?? 0 }}</td> -->
                     <td>
                         <input
@@ -280,11 +278,11 @@ onMounted(async () => {
                             p.tax_type == "exclusive"
                                 ? (
                                       p.quantity *
-                                      (p.purchase_price * (p.rate / 100))
+                                      (p.invoice_price * (p.rate / 100))
                                   ).toFixed(2)
                                 : (
                                       p.quantity *
-                                      ((((100 - p.rate) * p.purchase_price) /
+                                      ((((100 - p.rate) * p.invoice_price) /
                                           100) *
                                           (p.rate / 100))
                                   ).toFixed(2)
@@ -295,9 +293,9 @@ onMounted(async () => {
                         {{
                             p.tax_type == "exclusive"
                                 ? p.quantity *
-                                  (p.purchase_price * (p.rate / 100) +
-                                      p.purchase_price)
-                                : p.quantity * p.purchase_price
+                                  (p.invoice_price * (p.rate / 100) +
+                                      p.invoice_price)
+                                : p.quantity * p.invoice_price
                         }}
                     </td>
                     <td>
@@ -315,7 +313,7 @@ onMounted(async () => {
                 <li class="list-group-item active">Order Summery</li>
                 <li class="list-group-item">
                     <span class="text-primary">Order Tax:</span>
-                    {{ total_purchase_tax.toFixed(2) }}
+                    {{ total_invoice_tax.toFixed(2) }}
                 </li>
                 <li class="list-group-item">
                     <span class="text-primary">Discount:</span>
@@ -327,12 +325,12 @@ onMounted(async () => {
                 </li>
                 <li class="list-group-item">
                     <span class="bold h6">Grand Total:</span>
-                    {{ purchase_grand_total.toFixed(2) }}
+                    {{ invoice_grand_total.toFixed(2) }}
                 </li>
             </div>
         </div>
 
-        <!-- purchase tax, discount, shipping-->
+        <!-- invoice tax, discount, shipping-->
         <div class="row">
             <div class="input-group input-group-sm my-1 max250">
                 <span class="input-group-text btn btn-primary">Order Tax</span>
@@ -340,7 +338,7 @@ onMounted(async () => {
                     type="number"
                     class="form-control"
                     min="0"
-                    v-model="purchase_tax"
+                    v-model="invoice_tax"
                     @input="calculateGrandTotal()"
                 />
                 <span class="input-group-text btn btn-primary">%</span>
@@ -375,7 +373,7 @@ onMounted(async () => {
                 <label class="my-1">Purchase Status</label>
                 <select
                     class="form-select form-select-sm"
-                    v-model="purchase_status"
+                    v-model="invoice_status"
                 >
                     <option value="ordered">ordered</option>
                     <option value="pending">pending</option>

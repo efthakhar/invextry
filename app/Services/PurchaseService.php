@@ -21,9 +21,9 @@ class PurchaseService
         $purchase->invoice_status = $data['invoice_status'];
         $purchase->payment_status = $data['payment_status'];
         $purchase->invoice_date = $data['invoice_date'];
-        $purchase->note = $data['invoice_note'];
+        $purchase->note = $data['note'];
         $purchase->created_by = auth()->user()->id;
-        $purchase->party_id = $data['supplier_id'];
+        $purchase->party_id = $data['party_id'];
         $purchase->warehouse_id = $data['warehouse_id'];
 
         // saving wihtout grandtotal and necessary amounts with 0 value
@@ -38,7 +38,7 @@ class PurchaseService
 
         $purchase->save();
 
-        $invoiceItems = $data['products'];
+        $invoiceItems = $data['items'];
 
         // saving all invoice items
         foreach ($invoiceItems as $item) {
@@ -105,7 +105,7 @@ class PurchaseService
         $discount = $data['discount'];
 
         // loop over all added items
-        $items = $data['products'];
+        $items = $data['items'];
 
         foreach ($items as $item) {
 

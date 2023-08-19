@@ -13,13 +13,13 @@ class PurchaseSeeder extends Seeder
             'invoice_status' => 'ordered',
             'payment_status' => 'unpaid',
             'invoice_date' => '2023-08-09',
-            'invoice_note' => 'New Purchase Order .',
-            'supplier_id' => 20,
+            'note' => 'New Purchase Order .',
+            'party_id' => 20,
             'warehouse_id' => 1,
             'discount' => 100,
             'shipping_cost' => 50,
             'invoice_tax_rate' => 2,
-            'products' => [
+            'items' => [
                 [
                     'id' => 1,
                     'quantity' => 5,
@@ -36,13 +36,13 @@ class PurchaseSeeder extends Seeder
             'invoice_status' => 'ordered',
             'payment_status' => 'unpaid',
             'invoice_date' => '2023-08-09',
-            'invoice_note' => 'New Purchase Order .',
-            'supplier_id' => 7,
+            'note' => 'New Purchase Order .',
+            'party_id' => 7,
             'warehouse_id' => 1,
             'discount' => 100,
             'shipping_cost' => 130,
             'invoice_tax_rate' => 1.3,
-            'products' => [
+            'items' => [
                 [
                     'id' => 1,
                     'quantity' => 25,
@@ -58,13 +58,13 @@ class PurchaseSeeder extends Seeder
             'invoice_status' => 'ordered',
             'payment_status' => 'unpaid',
             'invoice_date' => '2023-08-19',
-            'invoice_note' => 'New Purchase Order .',
-            'supplier_id' => 7,
+            'note' => 'New Purchase Order .',
+            'party_id' => 7,
             'warehouse_id' => 2,
             'discount' => 100,
             'shipping_cost' => 130,
             'invoice_tax_rate' => 2.7,
-            'products' => [
+            'items' => [
                 [
                     'id' => 2,
                     'quantity' => 125,
