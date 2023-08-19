@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Invoice;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Invoice\PurchaseListResource;
 use App\Models\Invoice\Invoice;
 use App\Services\PurchaseService;
 use Exception;
@@ -54,6 +55,6 @@ class PurchaseInvoiceController extends Controller
         $purchases = $page ? $purchases->orderBy('id', 'desc')->paginate($per_page)
             : $purchases->orderBy('id', 'desc')->get();
 
-        return $purchases;
+        return PurchaseListResource::collection($purchases);
     }
 }
