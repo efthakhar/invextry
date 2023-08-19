@@ -24,7 +24,6 @@ return new class extends Migration
 
             $table->string('discount_type')->nullable(); // flat/percentage
             $table->unsignedDouble('discount', 20, 4)->nullable();
-            $table->unsignedDouble('shipping', 20, 4)->nullable();
             $table->unsignedDouble('invoice_tax_rate', 10, 4)->nullable();
             $table->unsignedDouble('total_invoice_tax', 20, 4)->nullable();
 
