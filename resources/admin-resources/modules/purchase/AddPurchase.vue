@@ -272,70 +272,73 @@ onMounted(async () => {
                 </div>
             </div>
             <!-- invoice items -->
-            <table
-                class="table bg-white table-bordered my-3 p-1 table-responsive"
-            >
-                <thead>
-                    <tr class="bg-primary text-white">
-                        <th class="min150">Product</th>
-                        <th class="min100">Unit Price</th>
-                        <th class="min100">Stock</th>
-                        <!-- <th class="min100">Quantity</th> -->
-                        <th class="min100">Tax</th>
-                        <th class="min100">Subtotal</th>
-                        <th class="min100">action</th>
-                    </tr>
-                </thead>
-                <tbody v-if="selected_items.length > 0">
-                    <tr v-for="p in selected_items">
-                        <td>{{ p.name }}</td>
-                        <td>{{ p.purchase_price }}</td>
-                        <!-- <td>{{ p.stock_quanity ?? 0 }}</td> -->
-                        <td>
-                            <input
-                                type="number"
-                                class="max100 form-control"
-                                min="1"
-                                v-model="p.quantity"
-                                @input="calculateGrandTotal()"
-                            />
-                        </td>
-                        <td>
-                            {{
-                                p.tax_type == "exclusive"
-                                    ? (
-                                          p.quantity *
+            <div class="table-responsive">
+                <table
+                    class="table bg-white table-bordered my-3 p-1 table-responsive"
+                >
+                    <thead>
+                        <tr class="bg-primary text-white">
+                            <th class="min150">Product</th>
+                            <th class="min100">Unit Price</th>
+                            <th class="min100">Stock</th>
+                            <!-- <th class="min100">Quantity</th> -->
+                            <th class="min100">Tax</th>
+                            <th class="min100">Subtotal</th>
+                            <th class="min100">action</th>
+                        </tr>
+                    </thead>
+                    <tbody v-if="selected_items.length > 0">
+                        <tr v-for="p in selected_items">
+                            <td>{{ p.name }}</td>
+                            <td>{{ p.purchase_price }}</td>
+                            <!-- <td>{{ p.stock_quanity ?? 0 }}</td> -->
+                            <td>
+                                <input
+                                    type="number"
+                                    class="max100 form-control"
+                                    min="1"
+                                    v-model="p.quantity"
+                                    @input="calculateGrandTotal()"
+                                />
+                            </td>
+                            <td>
+                                {{
+                                    p.tax_type == "exclusive"
+                                        ? (
+                                              p.quantity *
+                                              (p.purchase_price *
+                                                  (p.tax_rate / 100))
+                                          ).toFixed(2)
+                                        : (
+                                              p.quantity *
+                                              ((((100 - p.tax_rate) *
+                                                  p.purchase_price) /
+                                                  100) *
+                                                  (p.tax_rate / 100))
+                                          ).toFixed(2)
+                                }}
+                                $
+                            </td>
+                            <td>
+                                {{
+                                    p.tax_type == "exclusive"
+                                        ? p.quantity *
                                           (p.purchase_price *
-                                              (p.tax_rate / 100))
-                                      ).toFixed(2)
-                                    : (
-                                          p.quantity *
-                                          ((((100 - p.tax_rate) *
-                                              p.purchase_price) /
-                                              100) *
-                                              (p.tax_rate / 100))
-                                      ).toFixed(2)
-                            }}
-                            $
-                        </td>
-                        <td>
-                            {{
-                                p.tax_type == "exclusive"
-                                    ? p.quantity *
-                                      (p.purchase_price * (p.tax_rate / 100) +
-                                          p.purchase_price)
-                                    : p.quantity * p.purchase_price
-                            }}
-                        </td>
-                        <td>
-                            <CrossSvgIcon
-                                @click="removeSelected(p.id)"
-                                color="red"
-                            />
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                                              (p.tax_rate / 100) +
+                                              p.purchase_price)
+                                        : p.quantity * p.purchase_price
+                                }}
+                            </td>
+                            <td>
+                                <CrossSvgIcon
+                                    @click="removeSelected(p.id)"
+                                    color="red"
+                                />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <span class="v-error" v-if="validation_errors.items">
                 {{ validation_errors.items }}
             </span>
