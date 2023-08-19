@@ -280,8 +280,7 @@ onMounted(async () => {
                         <tr class="bg-primary text-white">
                             <th class="min150">Product</th>
                             <th class="min100">Unit Price</th>
-                            <th class="min100">Stock</th>
-                            <!-- <th class="min100">Quantity</th> -->
+                            <th class="min100">Quantity</th>
                             <th class="min100">Tax</th>
                             <th class="min100">Subtotal</th>
                             <th class="min100">action</th>
@@ -291,7 +290,6 @@ onMounted(async () => {
                         <tr v-for="p in selected_items">
                             <td>{{ p.name }}</td>
                             <td>{{ p.purchase_price }}</td>
-                            <!-- <td>{{ p.stock_quanity ?? 0 }}</td> -->
                             <td>
                                 <input
                                     type="number"
