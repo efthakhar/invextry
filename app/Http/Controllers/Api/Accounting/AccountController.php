@@ -35,7 +35,7 @@ class AccountController extends Controller
     public function list(Request $request)
     {
         $this->authorize('view_account');
-        
+
         $q_name = $request->query('q_name');
 
         $accounts = Account::query();
@@ -44,7 +44,7 @@ class AccountController extends Controller
             $query->where('name', 'LIKE', '%'.$q_name.'%');
         });
 
-        $accounts =  $accounts->orderBy('id', 'desc')->get();
+        $accounts = $accounts->orderBy('id', 'desc')->get();
 
         return AccountResource::collection($accounts);
     }
@@ -119,5 +119,4 @@ class AccountController extends Controller
         ], 204);
 
     }
-
 }
