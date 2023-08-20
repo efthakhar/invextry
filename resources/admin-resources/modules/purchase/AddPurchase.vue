@@ -146,20 +146,21 @@ function calculateGrandTotal() {
         total_invoice_tax.value;
 
     // determining payment status
-    if (paid_amount.value == 0) {
+    if (paid_amount.value === 0) {
         payment_status.value = "unpaid";
-    } else if (paid_amount.value == invoice_grand_total.value) {
+    } else if (paid_amount.value === invoice_grand_total.value) {
         payment_status.value = "paid";
-    } else if (paid_amount.value == invoice_grand_total.value) {
+    } else if (paid_amount.value < invoice_grand_total.value) {
         payment_status.value = "partial";
-    }else if(paid_amount.value > invoice_grand_total.value){
+    } else if (paid_amount.value > invoice_grand_total.value) {
         paid_amount.value = invoice_grand_total.value;
+        payment_status.value = "paid";
         const notifcationStore = useNotificationStore();
-            notifcationStore.pushNotification({
-                message: "Paid amount can not be greater than total amount",
-                type: "warning",
-                time: 5000,
-            });
+        notifcationStore.pushNotification({
+            message: "Paid amount can not be greater than total amount",
+            type: "warning",
+            time: 5000,
+        });
     }
 }
 
@@ -171,7 +172,7 @@ function savePurchase() {
         invoice_date: invoice_date.value,
         invoice_status: invoice_status.value,
         payment_status: payment_status.value,
-        paid_amount : paid_amount.value,
+        paid_amount: paid_amount.value,
         note: note.value,
 
         invoice_tax_rate: invoice_tax_rate.value,
@@ -455,7 +456,6 @@ onMounted(async () => {
                         type="number"
                         class="form-control"
                         min="0"
-                        :max="invoice_grand_total"
                         v-model="paid_amount"
                         @input="calculateGrandTotal()"
                     />
