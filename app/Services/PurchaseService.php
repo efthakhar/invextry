@@ -5,12 +5,14 @@ namespace App\Services;
 use App\Models\Invoice\Invoice;
 use App\Models\Invoice\InvoiceItem;
 use App\Models\Product\Product;
-use Illuminate\Support\Facades\DB;
 
 class PurchaseService
 {
-    public function __construct()
+    protected $stockService;
+
+    public function __construct(StockService $stockService)
     {
+        $this->stockService = $stockService;
     }
 
     public function create($data)
@@ -59,14 +61,8 @@ class PurchaseService
 
             $invoiceItem->save();
 
-            if (DB::table('product_stocks')->where(['product_id' => $item['id'], 'warehouse_id' => $data['warehouse_id']])->count() > 0) {
-                DB::table('product_stocks')->where(['product_id' => $item['id'], 'warehouse_id' => $data['warehouse_id']])->increment('stock_quantity', $invoiceItem->product_quantity);
-            } else {
-                DB::table('product_stocks')
-                    ->insert(['product_id' => $item['id'],
-                        'warehouse_id' => $data['warehouse_id'],
-                        'stock_quantity' => $invoiceItem->product_quantity, ]);
-            }
+            $this->stockService->addStock($data['warehouse_id'], $item['id'], $item['quantity']);
+
         }
         $calculation = $this->calculateInvoice($data);
 

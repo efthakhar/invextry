@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Services\PurchaseService;
+use App\Services\StockService;
 use Illuminate\Database\Seeder;
 
 class PurchaseSeeder extends Seeder
@@ -81,10 +82,8 @@ class PurchaseSeeder extends Seeder
 
     public function run(): void
     {
-        $purchaseService = new PurchaseService();
-
         foreach ($this->purchases as $purchase) {
-            $purchaseService->create($purchase);
+            (new PurchaseService(new StockService()))->create($purchase);
         }
     }
 }
