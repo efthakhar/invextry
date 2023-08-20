@@ -1781,3 +1781,6 @@ table {
     border: 1px solid currentColor;
     border-radius: 3px;
 }
+
+/* custom bg colors */
+.bg-ass{background-color: #f8f8f8 !important;}

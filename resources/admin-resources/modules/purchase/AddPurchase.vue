@@ -297,7 +297,7 @@ onMounted(async () => {
                     class="table bg-white table-bordered my-3 p-1 table-responsive"
                 >
                     <thead>
-                        <tr class="bg-primary text-white">
+                        <tr class="bg-ass text-secondary">
                             <th class="min150">Product</th>
                             <th class="min100">Unit Price</th>
                             <th class="min100">Quantity</th>
@@ -363,7 +363,7 @@ onMounted(async () => {
             <!-- Order Summary -->
             <div class="mt-1 4-3">
                 <div class="invoice_summary mb-3 max250 ms-auto">
-                    <li class="list-group-item active">Order Summery</li>
+                    <li class="list-group-item bg-ass text-secondary">Order Summary</li>
                     <li class="list-group-item">
                         <span class="text-primary">Order Tax:</span>
                         {{ total_invoice_tax.toFixed(2) }}
@@ -377,6 +377,14 @@ onMounted(async () => {
                         {{ shipping_cost.toFixed(2) }}
                     </li>
                     <li class="list-group-item">
+                        <span class="text-primary">Paid:</span>
+                        {{ paid_amount.toFixed(2) }}
+                    </li>
+                    <li class="list-group-item">
+                        <span class="text-primary">Due:</span>
+                        {{ (invoice_grand_total- paid_amount).toFixed(2) }}
+                    </li>
+                    <li class="list-group-item bg-ass text-secondary">
                         <span class="bold h6">Grand Total:</span>
                         {{ invoice_grand_total.toFixed(2) }}
                     </li>
@@ -386,7 +394,7 @@ onMounted(async () => {
             <!-- invoice tax, discount, shipping-->
             <div class="row">
                 <div class="input-group input-group-sm my-1 max250">
-                    <span class="input-group-text btn btn-primary"
+                    <span class="input-group-text bg-ass text-secondary"
                         >Order Tax</span
                     >
                     <input
@@ -396,10 +404,10 @@ onMounted(async () => {
                         v-model="invoice_tax_rate"
                         @input="calculateGrandTotal()"
                     />
-                    <span class="input-group-text btn btn-primary">%</span>
+                    <span class="input-group-text bg-ass text-secondary">%</span>
                 </div>
                 <div class="input-group input-group-sm my-1 max250">
-                    <span class="input-group-text btn btn-primary"
+                    <span class="input-group-text bg-ass text-secondary"
                         >Discount</span
                     >
                     <input
@@ -409,10 +417,10 @@ onMounted(async () => {
                         v-model="discount"
                         @input="calculateGrandTotal()"
                     />
-                    <span class="input-group-text btn btn-primary">$</span>
+                    <span class="input-group-text bg-ass text-secondary">$</span>
                 </div>
                 <div class="input-group input-group-sm my-1 max250">
-                    <span class="input-group-text btn btn-primary"
+                    <span class="input-group-text bg-ass text-secondary"
                         >Shipping</span
                     >
                     <input
@@ -422,7 +430,7 @@ onMounted(async () => {
                         v-model="shipping_cost"
                         @input="calculateGrandTotal()"
                     />
-                    <span class="input-group-text btn btn-primary">$</span>
+                    <span class="input-group-text bg-ass text-secondary">$</span>
                 </div>
             </div>
 
