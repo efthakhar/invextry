@@ -40,6 +40,7 @@ async function fetchSuppliers(name = supplier_q.value) {
             console.log(errors);
         });
 }
+
 async function fetchProducts(name = product_q.value) {
     if (name.length < 1) {
         clearProducts();
@@ -143,6 +144,23 @@ function calculateGrandTotal() {
         totalProductsCostWithTax -
         discount.value +
         total_invoice_tax.value;
+
+    // determining payment status
+    if (paid_amount.value == 0) {
+        payment_status.value = "unpaid";
+    } else if (paid_amount.value == invoice_grand_total.value) {
+        payment_status.value = "paid";
+    } else if (paid_amount.value == invoice_grand_total.value) {
+        payment_status.value = "partial";
+    }else if(paid_amount.value > invoice_grand_total.value){
+        paid_amount.value = invoice_grand_total.value;
+        const notifcationStore = useNotificationStore();
+            notifcationStore.pushNotification({
+                message: "Paid amount can not be greater than total amount",
+                type: "warning",
+                time: 5000,
+            });
+    }
 }
 
 function savePurchase() {
@@ -153,6 +171,7 @@ function savePurchase() {
         invoice_date: invoice_date.value,
         invoice_status: invoice_status.value,
         payment_status: payment_status.value,
+        paid_amount : paid_amount.value,
         note: note.value,
 
         invoice_tax_rate: invoice_tax_rate.value,
@@ -429,6 +448,17 @@ onMounted(async () => {
                         <option value="partial">partial</option>
                         <option value="paid">paid</option>
                     </select>
+                </div>
+                <div class="p-2 max200">
+                    <label class="my-1">Paid Amount</label>
+                    <input
+                        type="number"
+                        class="form-control"
+                        min="0"
+                        :max="invoice_grand_total"
+                        v-model="paid_amount"
+                        @input="calculateGrandTotal()"
+                    />
                 </div>
             </div>
             <!-- Purchase Note -->
