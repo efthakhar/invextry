@@ -23,6 +23,8 @@ class RolePermissionSeeder extends Seeder
         'create_supplier', 'view_supplier', 'update_supplier', 'delete_supplier',
         'create_sale', 'view_sale', 'update_sale', 'delete_sale',
         'create_purchase', 'view_purchase', 'update_purchase', 'delete_purchase',
+        'create_account', 'view_account', 'update_account', 'delete_account',
+        'create_account_adjustment', 'view_account_adjustment', 'update_account_adjustment', 'delete_account_adjustment',
         'create_payment', 'view_payment', 'update_payment', 'delete_payment',
         'create_payment_method', 'view_payment_method', 'update_payment_method', 'delete_payment_method',
     ];

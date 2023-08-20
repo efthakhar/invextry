@@ -83,6 +83,13 @@ const router = createRouter({
                     component: () => import("../modules/supplier/Suppliers.vue"),
                 },
 
+                // Account Route
+                {
+                    name: "account",
+                    path: "account",
+                    component: () => import("../modules/account/Accounts.vue"),
+                },
+
                 // Sale Route
                 {
                     name: "sale",

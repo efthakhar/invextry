@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Accounting\AccountController;
+use App\Http\Controllers\Api\Accounting\AccountController;
 use App\Http\Controllers\Api\Invoice\PurchaseInvoiceController;
 use App\Http\Controllers\Api\Party\CustomerController;
 use App\Http\Controllers\Api\Party\SupplierController;

@@ -94,6 +94,19 @@ const navlinks = [
     },
 
     {
+        label: "accounting",
+        link: " ",
+        icon_name: "booklet-svg-icon",
+        sub_links: [
+            {
+                label: "account",
+                link: "/admin/account",
+                permission: "view_warehouse",
+            },
+        ],
+    },
+    
+    {
         label: "settings",
         link: " ",
         icon_name: "setting-svg-icon",
