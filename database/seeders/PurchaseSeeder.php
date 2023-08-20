@@ -10,7 +10,7 @@ class PurchaseSeeder extends Seeder
     public $purchases = [
 
         [
-            'invoice_status' => 'ordered',
+            'invoice_status' => 'pending',
             'paid_amount' => 0,
             'invoice_date' => '2023-08-09',
             'note' => 'New Purchase Order .',
@@ -55,7 +55,7 @@ class PurchaseSeeder extends Seeder
 
         ],
         [
-            'invoice_status' => 'ordered',
+            'invoice_status' => 'received',
             'paid_amount' => 1050,
             'invoice_date' => '2023-08-19',
             'note' => 'New Purchase Order .',

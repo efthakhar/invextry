@@ -434,9 +434,9 @@ onMounted(async () => {
                         class="form-select form-select-sm"
                         v-model="invoice_status"
                     >
-                        <option value="ordered">ordered</option>
-                        <option value="pending">pending</option>
-                        <option value="completed">completed</option>
+                    <option value="received">received</option>
+                    <option value="pending">pending</option>
+                    <option value="ordered">ordered</option>
                     </select>
                 </div>
                 <div class="p-2 max200">

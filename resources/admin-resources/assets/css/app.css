@@ -1763,12 +1763,21 @@ table {
     height: auto;
     z-index: 200;
 }
+
 /* 
 * Validation Errors CSS
 */
-.v-error{
+.v-error {
     display: block;
     margin: 1px 0;
-    color:red;
+    color: red;
     font-size: 12px;
+}
+
+/* Custom badge of sqaure size */
+.badge-sqaure {
+    padding: 1px 5px;
+    font-size: 11px;
+    border: 1px solid currentColor;
+    border-radius: 3px;
 }

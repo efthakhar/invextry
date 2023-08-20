@@ -98,7 +98,7 @@ onMounted(() => {
                     "
                     @click="deleteData(selected_purchases)"
                 />
-                <AddNewButton  @click="$router.push({ name: 'new_purchase' })" />
+                <AddNewButton @click="$router.push({ name: 'new_purchase' })" />
                 <FilterButton @click="filterTab = !filterTab" />
             </div>
         </div>
@@ -161,8 +161,42 @@ onMounted(() => {
                         <td>{{ purchase.warehouse }}</td>
                         <td>{{ purchase.total_amount }}</td>
                         <td>{{ purchase.paid_amount }}</td>
-                        <td>{{ purchase.invoice_status }}</td>
-                        <td>{{ purchase.payment_status }}</td>
+                        <td>
+                            <span
+                                class="badge-sqaure text-capitalize"
+                                :class="[
+                                    purchase.invoice_status == 'received'
+                                        ? 'btn-outline-success'
+                                        : '',
+                                    purchase.invoice_status == 'ordered'
+                                        ? 'btn-outline-primary'
+                                        : '',
+                                    purchase.invoice_status == 'pending'
+                                        ? 'btn-outline-warning'
+                                        : '',
+                                ]"
+                            >
+                                {{ purchase.invoice_status }}
+                            </span>
+                        </td>
+                        <td>
+                            <span
+                                class="badge py-1 px-2 text-capitalize"
+                                :class="[
+                                    purchase.payment_status == 'paid'
+                                        ? 'bg-success'
+                                        : '',
+                                    purchase.payment_status == 'unpaid'
+                                        ? 'bg-danger'
+                                        : '',
+                                    purchase.payment_status == 'partial'
+                                        ? 'bg-warning'
+                                        : '',
+                                ]"
+                            >
+                                {{ purchase.payment_status }}
+                            </span>
+                        </td>
                         <td class="table-action-btns">
                             <ViewSvgIcon
                                 color="#00CFDD"
