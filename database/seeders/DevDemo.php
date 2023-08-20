@@ -41,6 +41,7 @@ class DevDemo extends Seeder
         DB::table('products')->truncate();
         DB::table('parties')->truncate();
         DB::table('accounts')->truncate();
+        DB::table('account_adjustments')->truncate();
 
         DB::table('invoices')->truncate();
         DB::table('invoice_items')->truncate();
@@ -63,6 +64,7 @@ class DevDemo extends Seeder
             ProductSeeder::class,
             PartySeeder::class,
             AccountSeeder::class,
+            AccountAdjustmentSeeder::class,
 
             PurchaseSeeder::class,
         ]);
