@@ -13,7 +13,7 @@ import FilterButton from "../../components/buttons/FilterButton.vue";
 import BulkDeleteButton from "../../components/buttons/BulkDeleteButton.vue";
 import AddAccount from "./AddAccount.vue";
 import EditAccount from "./EditAccount.vue";
-// import ViewAccount from "./ViewAccount.vue";
+import ViewAccount from "./ViewAccount.vue";
 
 const loading = ref(false);
 const filterTab = ref(true);

@@ -2,29 +2,28 @@
 import { ref, computed, onMounted } from "vue";
 import CrossSvgIcon from "../../assets/icons/cross-svg-icon.vue";
 import Loader from "../../components/shared/loader/Loader.vue";
-import { useCustomerStore } from "./customerStore";
+import { useAccountStore } from "./accountStore";
 
-const props = defineProps(["customer_id"]);
+const props = defineProps(["account_id"]);
 const emit = defineEmits(["close"]);
 
 const loading = ref(false);
-const customerStore = useCustomerStore();
-const customer_data = computed(() => customerStore.current_customer_item);
-
+const accountStore = useAccountStore();
+const account_data = computed(() => accountStore.current_account_item);
 
 async function fetchData(id) {
     loading.value = true;
-    await customerStore.fetchCustomer(id);
+    await accountStore.fetchAccount(id);
     loading.value = false;
 }
 
-async function closeViewCustomerModal() {
-    customerStore.resetCurrentCustomerData();
+async function closeViewAccountModal() {
+    accountStore.resetCurrentAccountData();
     emit("close");
 }
 
 onMounted(() => {
-    fetchData(props.customer_id);
+    fetchData(props.account_id);
 });
 </script>
 
@@ -33,9 +32,9 @@ onMounted(() => {
         <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Customer Details</h5>
+                    <h5 class="modal-title">Account Details</h5>
                     <button type="button" class="close">
-                        <CrossSvgIcon @click="closeViewCustomerModal" />
+                        <CrossSvgIcon @click="closeViewAccountModal" />
                     </button>
                 </div>
 
@@ -45,17 +44,15 @@ onMounted(() => {
                         <form action="">
                             <div class="form-item mt-4">
                                 <label class="my-2">Staus</label>
+
                                 <div class="d-flex">
                                     <span class="form-check">
-                                        <input disabled
+                                        <input
                                             class="form-check-input"
                                             type="radio"
-                                            v-model="customer_data.status"
+                                            v-model="account_data.status"
                                             id="active"
                                             value="active"
-                                            :checked="
-                                                customer_data.status == 'active'
-                                            "
                                         />
                                         <label
                                             class="form-check-label"
@@ -65,16 +62,12 @@ onMounted(() => {
                                         </label>
                                     </span>
                                     <span class="form-check ms-2">
-                                        <input disabled
+                                        <input
                                             class="form-check-input"
                                             type="radio"
-                                            v-model="customer_data.status"
+                                            v-model="account_data.status"
                                             id="disabled"
                                             value="disabled"
-                                            :checked="
-                                                customer_data.status ==
-                                                'disabled'
-                                            "
                                         />
                                         <label
                                             class="form-check-label"
@@ -87,87 +80,54 @@ onMounted(() => {
                             </div>
                             <div class="form-item">
                                 <label class="my-2">Name</label>
-                            
-                                <input disabled
-                                    type="text"
-                                    class="form-control"
-                                    v-model="customer_data.name"
-                                />
-                            </div>
-                            <div class="form-item">
-                                <label class="my-2">Email</label>
-                                
-                                <input disabled
-                                    type="email"
-                                    class="form-control"
-                                    v-model="customer_data.email"
-                                />
-                            </div>
-                            <div class="form-item">
-                                <label class="my-2">Phone</label>
-                               
-                                <input disabled
-                                    type="tel"
-                                    class="form-control"
-                                    v-model="customer_data.phone"
-                                />
-                            </div>
-                            <div class="form-item">
-                                <label class="my-2">Tax Number</label>
-                               
                                 <input
+                                    disabled
                                     type="text"
                                     class="form-control"
-                                    v-model="customer_data.tax_number"
+                                    v-model="account_data.name"
                                 />
                             </div>
                             <div class="form-item">
-                                <label class="my-2">Country</label>
-                                
-                                <input disabled
+                                <label class="my-2">Bank Name</label>
+                                <input
+                                    disabled
                                     type="text"
                                     class="form-control"
-                                    v-model="customer_data.country"
+                                    v-model="account_data.bank_name"
                                 />
                             </div>
                             <div class="form-item">
-                                <label class="my-2">City</label>
-                                
-                                <input disabled
+                                <label class="my-2">Branch Name</label>
+                                <input
+                                    disabled
                                     type="text"
                                     class="form-control"
-                                    v-model="customer_data.city"
+                                    v-model="account_data.branch_name"
                                 />
                             </div>
                             <div class="form-item">
-                                <label class="my-2">Postal Code</label>
-                               
-                                <input disabled
-                                    type="text"
+                                <label class="my-2">Account Number</label>
+                                <input
+                                disabled
+                                    type="text" 
                                     class="form-control"
-                                    v-model="customer_data.postal_code"
+                                    v-model="account_data.account_number"
+                                />
+                            </div>
+                            <div class="form-item">
+                                <label class="my-2">Balance</label>
+                                <input
+                                disabled
+                                    type="number"
+                                    min="0"
+                                    class="form-control"
+                                    v-model="account_data.balance"
                                 />
                             </div>
                             <div class="form-item mt-4">
-                                <label class="my-2">Address</label>
+                                <label class="my-2">Details</label>
                                 <textarea disabled
-                                    v-model="customer_data.address"
-                                    class="form-control"
-                                    rows="3"
-                                ></textarea>
-                            </div>
-                            <div class="form-item mt-4">
-                                <label class="my-2">Billing Address</label>
-                                <textarea disabled
-                                    v-model="customer_data.billing_address"
-                                    class="form-control"
-                                    rows="3"
-                                ></textarea>
-                            </div>
-                            <div class="form-item mt-4">
-                                <label class="my-2">Shipping Address</label>
-                                <textarea disabled
-                                    v-model="customer_data.shipping_address"
+                                    v-model="account_data.details"
                                     class="form-control"
                                     rows="3"
                                 ></textarea>
