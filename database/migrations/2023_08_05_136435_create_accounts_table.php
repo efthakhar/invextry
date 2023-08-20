@@ -11,8 +11,12 @@ return new class extends Migration
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('no');
+            $table->string('bank_name')->nullable();
+            $table->string('branch_name')->nullable();
+            $table->string('number');
             $table->unsignedDouble('balance', 20, 4)->nullable();
+            $table->text('details')->nullable();
+            $table->string('status', 20);
             $table->timestamps();
         });
     }
