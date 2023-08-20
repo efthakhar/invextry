@@ -4,7 +4,6 @@ namespace App\Http\Requests\Invoice;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Validation\Rule;
 
 class CreatePurchaseRequest extends FormRequest
 {
@@ -21,19 +20,19 @@ class CreatePurchaseRequest extends FormRequest
             'note' => ['nullable', 'string'],
             'warehouse_id' => ['required'],
             'party_id' => ['required'],
-            'shipping_cost' => ['nullable','numeric'],
-            'discount_type' => ['nullable','in:flat,percentage'],
-            'discount' => ['nullable','numeric'],
-            'invoice_tax_rate' => ['nullable','numeric'],
-            'paid_amount' => ['nullable','numeric'],
+            'shipping_cost' => ['nullable', 'numeric'],
+            'discount_type' => ['nullable', 'in:flat,percentage'],
+            'discount' => ['nullable', 'numeric'],
+            'invoice_tax_rate' => ['nullable', 'numeric'],
+            'paid_amount' => ['nullable', 'numeric'],
             'items' => [
                 function ($attribute, $value, $fail) {
-                    if (!is_array($value)) {
+                    if (! is_array($value)) {
                         $fail($attribute.' must be an array.');
                     }
                 },
                 function ($attribute, $value, $fail) {
-                    if (count($value)<1) {
+                    if (count($value) < 1) {
                         $fail('select at least one item');
                     }
                 },

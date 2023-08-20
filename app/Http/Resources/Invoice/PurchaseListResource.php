@@ -12,8 +12,8 @@ class PurchaseListResource extends JsonResource
 
         return [
             'id' => $this->id,
-            'invoice_ref' => $this->invoice_ref, 
-            'invoice_date' => $this->invoice_date, 
+            'invoice_ref' => $this->invoice_ref,
+            'invoice_date' => $this->invoice_date,
             'biller' => $this->creator->name,
             'supplier' => $this->party->name,
             'warehouse' => $this->warehouse->name,
