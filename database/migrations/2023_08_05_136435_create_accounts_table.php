@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('bank_name')->nullable();
             $table->string('branch_name')->nullable();
-            $table->string('number');
+            $table->string('account_number');
             $table->unsignedDouble('balance', 20, 4)->nullable();
             $table->text('details')->nullable();
             $table->string('status', 20);
