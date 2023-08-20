@@ -101,11 +101,11 @@ const navlinks = [
             {
                 label: "account",
                 link: "/admin/account",
-                permission: "view_warehouse",
+                permission: "view_account",
             },
         ],
     },
-    
+
     {
         label: "settings",
         link: " ",
