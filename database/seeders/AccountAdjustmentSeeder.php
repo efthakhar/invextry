@@ -2,8 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Accounting\Account;
-use App\Models\Accounting\AccountAdjustment;
+use App\Services\AccountAdjustmentService;
 use Illuminate\Database\Seeder;
 
 class AccountAdjustmentSeeder extends Seeder
@@ -59,15 +58,8 @@ class AccountAdjustmentSeeder extends Seeder
     public function run(): void
     {
         foreach ($this->adjustments as $adjustment) {
-
-            AccountAdjustment::create($adjustment);
-            $account = Account::where('id', $adjustment['account_id']);
-
-            if ($adjustment['type'] == 'add') {
-                $account->increment('balance', $adjustment['amount']);
-            } elseif ($adjustment['type'] == 'subtract') {
-                $account->decrement('balance', $adjustment['amount']);
-            }
+           (new AccountAdjustmentService())
+           ->createAdjustment($adjustment);
         }
     }
 }
