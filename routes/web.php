@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Accounting\AccountController;
 use App\Http\Controllers\Api\Invoice\PurchaseInvoiceController;
 use App\Http\Controllers\Api\Party\CustomerController;
 use App\Http\Controllers\Api\Party\SupplierController;
@@ -129,5 +130,13 @@ Route::group(['middleware' => ['auth']], function () {
     // purchase
     Route::get('/api/purchases', [PurchaseInvoiceController::class, 'index']);
     Route::post('/api/purchases', [PurchaseInvoiceController::class, 'store']);
+
+    // Account
+    Route::get('/api/accounts', [AccountController::class, 'index']);
+    Route::get('/api/accounts/list', [AccountController::class, 'list']);
+    Route::get('/api/accounts/{id}', [AccountController::class, 'show']);
+    Route::post('/api/accounts', [AccountController::class, 'store']);
+    Route::put('/api/accounts/{id}', [AccountController::class, 'update']);
+    Route::delete('/api/accounts/{id}', [AccountController::class, 'delete']);
 
 });
