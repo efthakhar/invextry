@@ -72,14 +72,15 @@ class PurchaseService {
 		$purchase->discount_type       = 'flat';
 		$purchase->discount            = $data['discount'] ?? 0;
 		$purchase->invoice_tax_rate    = $data['invoice_tax_rate'] ?? 0;
-		$purchase->paid_amount         = $data['paid_amount'] ?? 0;
 		$purchase->returned_amount     = 0;
 		$purchase->itemsCostWithTax    = $calculation['itemsCostWithTax'];
 		$purchase->itemsCostWithoutTax = $calculation['itemsCostWithoutTax'];
 		$purchase->total_invoice_tax   = $calculation['total_invoice_tax'];
 		$purchase->total_amount        = $calculation['grand_total'];
-		$purchase->due_amount          = $purchase->total_amount - $purchase->paid_amount;
+        $purchase->paid_amount         = $data['paid_amount'] ?? 0;
+        $purchase->paid_amount >= $purchase->total_amount ? $purchase->paid_amount = $purchase->total_amount : '';
         $purchase->payment_status = $this->determinePaymentStatus($purchase->total_amount, $purchase->paid_amount);
+		$purchase->due_amount          = $purchase->total_amount - $purchase->paid_amount;
 
 		$purchase->save();
 
@@ -130,12 +131,14 @@ class PurchaseService {
 	}
 
 	public function determinePaymentStatus($total, $paid) {
-		if ($paid==0) {
-			return 'unpaid';
-		}else if($paid==$total) {        
+
+        if ($paid == 0) {
+            return 'unpaid';
+        } else if ($paid >= $total) {        
             return 'paid';
-        }else if($paid<$total){     
+        } else {
             return 'partial';
         }
+        
 	}
 }
