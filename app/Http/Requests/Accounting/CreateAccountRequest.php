@@ -19,11 +19,11 @@ class CreateAccountRequest extends FormRequest
         return [
             'name' => ['required', 'string', Rule::unique('accounts')],
             'bank_name' => ['string', 'required_with:branch_name'],
-            'branch_name' => ['string'],
+            'branch_name' => ['string','nullable'],
             'account_number' => ['required', 'string'],
             'balance' => ['numeric'],
-            'details' => ['string'],
-            'status' => ['in:active,disabled'],
+            'details' => ['nullable','string'],
+            'status' => ['required','in:active,disabled'],
         ];
     }
 }

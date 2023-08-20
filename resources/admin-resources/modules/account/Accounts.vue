@@ -11,7 +11,7 @@ import ViewSvgIcon from "../../assets/icons/view-svg-icon.vue";
 import AddNewButton from "../../components/buttons/AddNewButton.vue";
 import FilterButton from "../../components/buttons/FilterButton.vue";
 import BulkDeleteButton from "../../components/buttons/BulkDeleteButton.vue";
-// import AddAccount from "./AddAccount.vue";
+import AddAccount from "./AddAccount.vue";
 // import EditAccount from "./EditAccount.vue";
 // import ViewAccount from "./ViewAccount.vue";
 

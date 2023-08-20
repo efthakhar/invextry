@@ -170,16 +170,12 @@ export const useAccountStore = defineStore("account", {
             this.current_account_item = {
                 id: null,
                 name: null,
-                phone: null,
-                email: null,
-                tax_number: null,
-                country: null,
-                city: null,
-                postal_code: null,
-                address: null,
-                billing_address: null,
-                shipping_address: null,
-                status: "",
+                bank_name: null,
+                branch_name: null,
+                account_number: null,
+                balance: 0,
+                details: null,
+                status: "active",
             };
             this.add_account_errors = [];
             this.edit_account_errors = [];
