@@ -2,19 +2,19 @@
 import { ref, computed, onMounted } from "vue";
 import CrossSvgIcon from "../../assets/icons/cross-svg-icon.vue";
 import Loader from "../../components/shared/loader/Loader.vue";
-import { useCustomerStore } from "./customerStore";
+import { useAccountStore } from "./accountStore";
 
-const props = defineProps(["customer_id"]);
+const props = defineProps(["account_id"]);
 const emit = defineEmits(["close", "refreshData"]);
 
 const loading = ref(false);
-const customerStore = useCustomerStore();
-const customer_data = computed(() => customerStore.current_customer_item);
+const accountStore = useAccountStore();
+const account_data = computed(() => accountStore.current_account_item);
 
 async function submitData() {
-    customerStore
-        .editCustomer(
-            JSON.parse(JSON.stringify(customerStore.current_customer_item))
+    accountStore
+        .editAccount(
+            JSON.parse(JSON.stringify(accountStore.current_account_item))
         )
         .then(() => {
             emit("refreshData");
@@ -27,17 +27,17 @@ async function submitData() {
 
 async function fetchData(id) {
     loading.value = true;
-    await customerStore.fetchCustomer(id);
+    await accountStore.fetchAccount(id);
     loading.value = false;
 }
 
-async function closeEditCustomerModal() {
-    customerStore.resetCurrentCustomerData();
+async function closeEditAccountModal() {
+    accountStore.resetCurrentAccountData();
     emit("close");
 }
 
 onMounted(() => {
-    fetchData(props.customer_id);
+    fetchData(props.account_id);
 });
 </script>
 
@@ -46,9 +46,9 @@ onMounted(() => {
         <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Customer</h5>
+                    <h5 class="modal-title">Edit Account</h5>
                     <button type="button" class="close">
-                        <CrossSvgIcon @click="closeEditCustomerModal" />
+                        <CrossSvgIcon @click="closeEditAccountModal" />
                     </button>
                 </div>
 
@@ -61,26 +61,19 @@ onMounted(() => {
                                 <p
                                     class="text-danger"
                                     v-if="
-                                        customerStore.edit_customer_errors
-                                            .status
+                                        accountStore.edit_account_errors.status
                                     "
                                 >
-                                    {{
-                                        customerStore.edit_customer_errors
-                                            .status
-                                    }}
+                                    {{ accountStore.edit_account_errors.status }}
                                 </p>
                                 <div class="d-flex">
                                     <span class="form-check">
                                         <input
                                             class="form-check-input"
                                             type="radio"
-                                            v-model="customer_data.status"
+                                            v-model="account_data.status"
                                             id="active"
                                             value="active"
-                                            :checked="
-                                                customer_data.status == 'active'
-                                            "
                                         />
                                         <label
                                             class="form-check-label"
@@ -93,13 +86,9 @@ onMounted(() => {
                                         <input
                                             class="form-check-input"
                                             type="radio"
-                                            v-model="customer_data.status"
+                                            v-model="account_data.status"
                                             id="disabled"
                                             value="disabled"
-                                            :checked="
-                                                customer_data.status ==
-                                                'disabled'
-                                            "
                                         />
                                         <label
                                             class="form-check-label"
@@ -114,154 +103,99 @@ onMounted(() => {
                                 <label class="my-2">Name</label>
                                 <p
                                     class="text-danger"
+                                    v-if="accountStore.edit_account_errors.name"
+                                >
+                                    {{ accountStore.edit_account_errors.name }}
+                                </p>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    v-model="account_data.name"
+                                />
+                            </div>
+                            <div class="form-item">
+                                <label class="my-2">Bank Name</label>
+                                <p
+                                    class="text-danger"
                                     v-if="
-                                        customerStore.edit_customer_errors.name
+                                        accountStore.edit_account_errors
+                                            .bank_name
                                     "
                                 >
                                     {{
-                                        customerStore.edit_customer_errors.name
+                                        accountStore.edit_account_errors
+                                            .bank_name
                                     }}
                                 </p>
                                 <input
                                     type="text"
                                     class="form-control"
-                                    v-model="customer_data.name"
+                                    v-model="account_data.bank_name"
                                 />
                             </div>
                             <div class="form-item">
-                                <label class="my-2">Email</label>
+                                <label class="my-2">Branch Name</label>
                                 <p
                                     class="text-danger"
                                     v-if="
-                                        customerStore.edit_customer_errors.email
+                                        accountStore.edit_account_errors
+                                            .branch_name
                                     "
                                 >
                                     {{
-                                        customerStore.edit_customer_errors.email
-                                    }}
-                                </p>
-                                <input
-                                    type="email"
-                                    class="form-control"
-                                    v-model="customer_data.email"
-                                />
-                            </div>
-                            <div class="form-item">
-                                <label class="my-2">Phone</label>
-                                <p
-                                    class="text-danger"
-                                    v-if="
-                                        customerStore.edit_customer_errors.phone
-                                    "
-                                >
-                                    {{
-                                        customerStore.edit_customer_errors.phone
-                                    }}
-                                </p>
-                                <input
-                                    type="tel"
-                                    class="form-control"
-                                    v-model="customer_data.phone"
-                                />
-                            </div>
-                            <div class="form-item">
-                                <label class="my-2">Tax Number</label>
-                                <p
-                                    class="text-danger"
-                                    v-if="
-                                        customerStore.edit_customer_errors
-                                            .tax_number
-                                    "
-                                >
-                                    {{
-                                        customerStore.edit_customer_errors
-                                            .tax_number
+                                        accountStore.edit_account_errors
+                                            .branch_name
                                     }}
                                 </p>
                                 <input
                                     type="text"
                                     class="form-control"
-                                    v-model="customer_data.tax_number"
+                                    v-model="account_data.branch_name"
                                 />
                             </div>
                             <div class="form-item">
-                                <label class="my-2">Country</label>
+                                <label class="my-2">Account Number</label>
                                 <p
                                     class="text-danger"
                                     v-if="
-                                        customerStore.edit_customer_errors
-                                            .country
+                                        accountStore.edit_account_errors
+                                            .account_number
                                     "
                                 >
                                     {{
-                                        customerStore.edit_customer_errors
-                                            .country
+                                        accountStore.edit_account_errors
+                                            .account_number
                                     }}
                                 </p>
                                 <input
                                     type="text"
                                     class="form-control"
-                                    v-model="customer_data.country"
+                                    v-model="account_data.account_number"
                                 />
                             </div>
                             <div class="form-item">
-                                <label class="my-2">City</label>
+                                <label class="my-2">Balance</label>
                                 <p
                                     class="text-danger"
                                     v-if="
-                                        customerStore.edit_customer_errors.city
+                                        accountStore.edit_account_errors.balance
                                     "
                                 >
                                     {{
-                                        customerStore.edit_customer_errors.city
+                                        accountStore.edit_account_errors.balance
                                     }}
                                 </p>
                                 <input
-                                    type="text"
+                                    type="number"
+                                    min="0"
                                     class="form-control"
-                                    v-model="customer_data.city"
-                                />
-                            </div>
-                            <div class="form-item">
-                                <label class="my-2">Postal Code</label>
-                                <p
-                                    class="text-danger"
-                                    v-if="
-                                        customerStore.edit_customer_errors
-                                            .postal_code
-                                    "
-                                >
-                                    {{
-                                        customerStore.edit_customer_errors
-                                            .postal_code
-                                    }}
-                                </p>
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    v-model="customer_data.postal_code"
+                                    v-model="account_data.balance"
                                 />
                             </div>
                             <div class="form-item mt-4">
-                                <label class="my-2">Address</label>
+                                <label class="my-2">Details</label>
                                 <textarea
-                                    v-model="customer_data.address"
-                                    class="form-control"
-                                    rows="3"
-                                ></textarea>
-                            </div>
-                            <div class="form-item mt-4">
-                                <label class="my-2">Billing Address</label>
-                                <textarea
-                                    v-model="customer_data.billing_address"
-                                    class="form-control"
-                                    rows="3"
-                                ></textarea>
-                            </div>
-                            <div class="form-item mt-4">
-                                <label class="my-2">Shipping Address</label>
-                                <textarea
-                                    v-model="customer_data.shipping_address"
+                                    v-model="account_data.details"
                                     class="form-control"
                                     rows="3"
                                 ></textarea>
@@ -273,7 +207,7 @@ onMounted(() => {
                 <div class="modal-footer">
                     <button
                         class="btn btn-danger btn-sm"
-                        @click="closeEditCustomerModal"
+                        @click="closeEditAccountModal"
                     >
                         Cancel
                     </button>
