@@ -75,6 +75,7 @@ class PurchaseService {
 		$purchase->itemsCostWithoutTax = $calculation['itemsCostWithoutTax'];
 		$purchase->total_invoice_tax   = $calculation['total_invoice_tax'];
 		$purchase->total_amount        = $calculation['grand_total'];
+		$purchase->due_amount         = $calculation['grand_total'];
 
 		$purchase->save();
 

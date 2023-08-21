@@ -29,10 +29,14 @@ class PaymentService
         $payment->date = $data['date'];
         $payment->note = $data['note'];
 
+
+        if($invoice->payment_status=='paid'){
+            $payment->amount = 0;
+        }
         /*
-            Ensure payment amount can not be greater than total amount
+            Ensure payment amount can not be greater than due amount
         */
-        $payment->amount >= $invoice->total_amount ? $payment->amount = $invoice->total_amount = $invoice->paid_amount : '';
+        $payment->amount >= $invoice->due_amount ? $payment->amount = $invoice->due_amount  : '';
 
 
         
