@@ -3,6 +3,7 @@
 namespace App\Models\Invoice;
 
 use App\Models\Party;
+use App\Models\Payment;
 use App\Models\Setting\Warehouse;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,6 +16,11 @@ class Invoice extends Model
     public function invoiceItems()
     {
         return $this->hasMany(InvoiceItem::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
     }
 
     public function party()

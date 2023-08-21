@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('party_id');
             $table->unsignedBigInteger('account_id')->nullable();
             $table->unsignedBigInteger('invoice_id')->nullable();
+            $table->string('invoice_type', 50)->nullable(); // sales/purchase/sales_return/purchase_return
             //$table->unsignedBigInteger('payment_method_id');
             $table->string('payment_method', 50);
             $table->unsignedDouble('amount', 20, 4);
