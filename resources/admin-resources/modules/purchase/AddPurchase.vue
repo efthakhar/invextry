@@ -10,7 +10,7 @@ const items = ref([]);
 const selected_items = ref([]);
 const suppliers = ref([]);
 const accounts = ref([]);
-const selected_account = ref("");
+const account_id = ref("");
 const payment_method = ref("");
 const selected_warehouse = ref("");
 const selected_party = ref({});
@@ -188,7 +188,7 @@ function savePurchase() {
         payment_status: payment_status.value,
         paid_amount: paid_amount.value,
         payment_method: payment_method.value,
-        account_id: selected_account.value,
+        account_id: account_id.value,
         note: note.value,
         invoice_tax_rate: invoice_tax_rate.value,
         shipping_cost: shipping_cost.value,
@@ -496,13 +496,16 @@ onMounted(async () => {
                     <label class="my-1">Select Account</label>
                     <select
                         class="form-select form-select-sm"
-                        v-model="selected_account"
+                        v-model="account_id"
                     >
                         <option value="">none</option>
                         <option :value="account.id" v-for="account in accounts">
-                            {{ account.name }}
+                            {{ account.name }} -- {{ account.balance }}
                         </option>
                     </select>
+                    <span class="v-error" v-if="validation_errors.account_id">
+                        {{ validation_errors.account_id }}
+                    </span>
                 </div>
                 <div class="p-2 max200">
                     <label class="my-1">Payment Method</label>
@@ -518,6 +521,9 @@ onMounted(async () => {
                         <option value="paypal">paypal</option>
                         <option value="card">card</option>
                     </select>
+                    <span class="v-error" v-if="validation_errors.payment_method">
+                        {{ validation_errors.payment_method }}
+                    </span>
                 </div>
             </div>
             <!-- Purchase Note -->

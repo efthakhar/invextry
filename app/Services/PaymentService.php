@@ -28,7 +28,6 @@ class PaymentService
         $payment->amount = $data['amount'];
         $payment->date = $data['date'];
         $payment->note = $data['note'];
-        $payment->save();
 
         /*
             Ensure payment amount can not be greater than total amount
@@ -67,6 +66,9 @@ class PaymentService
 
         $party->save();
 
+        if($payment->amount>0){
+            $payment->save();
+        }
 
         return $payment;
 
