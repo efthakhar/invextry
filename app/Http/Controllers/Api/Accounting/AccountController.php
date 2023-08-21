@@ -44,7 +44,7 @@ class AccountController extends Controller
             $query->where('name', 'LIKE', '%'.$q_name.'%');
         });
 
-        $accounts = $accounts->orderBy('id', 'desc')->get();
+        $accounts = $accounts->where('status', 'active')->orderBy('id', 'desc')->get();
 
         return AccountResource::collection($accounts);
     }
