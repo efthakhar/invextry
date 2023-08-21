@@ -16,4 +16,9 @@ class AccountAdjustment extends Model
         'date',
         'note',
     ];
+
+    function account()
+    {     
+        return $this->belongsTo(Account::class, 'account_id');
+    }
 }
