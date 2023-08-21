@@ -1,17 +1,18 @@
 <?php
 
 namespace App\Services;
+
 use App\Models\Accounting\Account;
 use App\Models\Accounting\AccountAdjustment;
 
-class AccountAdjustmentService {
-
-    public function __construct() 
+class AccountAdjustmentService
+{
+    public function __construct()
     {
-        
+
     }
 
-    function createAdjustment(array $adjustment)
+    public function createAdjustment(array $adjustment)
     {
         AccountAdjustment::create($adjustment);
         $account = Account::where('id', $adjustment['account_id']);
@@ -22,5 +23,4 @@ class AccountAdjustmentService {
             $account->decrement('balance', $adjustment['amount']);
         }
     }
-
 }

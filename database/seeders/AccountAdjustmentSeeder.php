@@ -58,8 +58,8 @@ class AccountAdjustmentSeeder extends Seeder
     public function run(): void
     {
         foreach ($this->adjustments as $adjustment) {
-           (new AccountAdjustmentService())
-           ->createAdjustment($adjustment);
+            (new AccountAdjustmentService())
+                ->createAdjustment($adjustment);
         }
     }
 }
