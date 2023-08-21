@@ -9,6 +9,9 @@ const warehouses = ref([]);
 const items = ref([]);
 const selected_items = ref([]);
 const suppliers = ref([]);
+const accounts = ref([]);
+const selected_account = ref("");
+const payment_method = ref("");
 const selected_warehouse = ref("");
 const selected_party = ref({});
 const invoice_date = ref("");
@@ -62,6 +65,17 @@ async function fetchWarehouses() {
         .get(`/api/warehouses`)
         .then((response) => {
             warehouses.value = response.data.data;
+        })
+        .catch((errors) => {
+            console.log(errors);
+        });
+}
+
+async function fetchAccounts() {
+    await axios
+        .get(`/api/accounts/list`)
+        .then((response) => {
+            accounts.value = response.data.data;
         })
         .catch((errors) => {
             console.log(errors);
@@ -173,8 +187,9 @@ function savePurchase() {
         invoice_status: invoice_status.value,
         payment_status: payment_status.value,
         paid_amount: paid_amount.value,
+        payment_method: payment_method.value,
+        account_id: selected_account.value,
         note: note.value,
-
         invoice_tax_rate: invoice_tax_rate.value,
         shipping_cost: shipping_cost.value,
         discount: discount.value,
@@ -203,6 +218,7 @@ function savePurchase() {
 
 onMounted(async () => {
     await fetchWarehouses();
+    await fetchAccounts();
 });
 </script>
 <template>
@@ -363,7 +379,9 @@ onMounted(async () => {
             <!-- Order Summary -->
             <div class="mt-1 4-3">
                 <div class="invoice_summary mb-3 max250 ms-auto">
-                    <li class="list-group-item bg-ass text-secondary">Order Summary</li>
+                    <li class="list-group-item bg-ass text-secondary">
+                        Order Summary
+                    </li>
                     <li class="list-group-item">
                         <span class="text-primary">Order Tax:</span>
                         {{ total_invoice_tax.toFixed(2) }}
@@ -382,7 +400,7 @@ onMounted(async () => {
                     </li>
                     <li class="list-group-item">
                         <span class="text-primary">Due:</span>
-                        {{ (invoice_grand_total- paid_amount).toFixed(2) }}
+                        {{ (invoice_grand_total - paid_amount).toFixed(2) }}
                     </li>
                     <li class="list-group-item bg-ass text-secondary">
                         <span class="bold h6">Grand Total:</span>
@@ -404,7 +422,9 @@ onMounted(async () => {
                         v-model="invoice_tax_rate"
                         @input="calculateGrandTotal()"
                     />
-                    <span class="input-group-text bg-ass text-secondary">%</span>
+                    <span class="input-group-text bg-ass text-secondary"
+                        >%</span
+                    >
                 </div>
                 <div class="input-group input-group-sm my-1 max250">
                     <span class="input-group-text bg-ass text-secondary"
@@ -417,7 +437,9 @@ onMounted(async () => {
                         v-model="discount"
                         @input="calculateGrandTotal()"
                     />
-                    <span class="input-group-text bg-ass text-secondary">$</span>
+                    <span class="input-group-text bg-ass text-secondary"
+                        >$</span
+                    >
                 </div>
                 <div class="input-group input-group-sm my-1 max250">
                     <span class="input-group-text bg-ass text-secondary"
@@ -430,7 +452,9 @@ onMounted(async () => {
                         v-model="shipping_cost"
                         @input="calculateGrandTotal()"
                     />
-                    <span class="input-group-text bg-ass text-secondary">$</span>
+                    <span class="input-group-text bg-ass text-secondary"
+                        >$</span
+                    >
                 </div>
             </div>
 
@@ -442,9 +466,9 @@ onMounted(async () => {
                         class="form-select form-select-sm"
                         v-model="invoice_status"
                     >
-                    <option value="received">received</option>
-                    <option value="pending">pending</option>
-                    <option value="ordered">ordered</option>
+                        <option value="received">received</option>
+                        <option value="pending">pending</option>
+                        <option value="ordered">ordered</option>
                     </select>
                 </div>
                 <div class="p-2 max200">
@@ -467,6 +491,33 @@ onMounted(async () => {
                         v-model="paid_amount"
                         @input="calculateGrandTotal()"
                     />
+                </div>
+                <div class="p-2 max200">
+                    <label class="my-1">Select Account</label>
+                    <select
+                        class="form-select form-select-sm"
+                        v-model="selected_account"
+                    >
+                        <option value="">none</option>
+                        <option :value="account.id" v-for="account in accounts">
+                            {{ account.name }}
+                        </option>
+                    </select>
+                </div>
+                <div class="p-2 max200">
+                    <label class="my-1">Payment Method</label>
+                    <select
+                        class="form-select form-select-sm"
+                        v-model="payment_method"
+                    >
+                        <option value="">none</option>
+                        <option value="cash">cash</option>
+                        <option value="payoneer">payoneer</option>
+                        <option value="wise">wise</option>
+                        <option value="bank">bank</option>
+                        <option value="paypal">paypal</option>
+                        <option value="card">card</option>
+                    </select>
                 </div>
             </div>
             <!-- Purchase Note -->
