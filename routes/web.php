@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\Accounting\AccountController;
 use App\Http\Controllers\Api\Invoice\PurchaseInvoiceController;
 use App\Http\Controllers\Api\Party\CustomerController;
 use App\Http\Controllers\Api\Party\SupplierController;
+use App\Http\Controllers\Api\Payment\PaymentController;
 use App\Http\Controllers\Api\Product\BrandController;
 use App\Http\Controllers\Api\Product\ProductCategoryController;
 use App\Http\Controllers\Api\Product\ProductController;
@@ -144,5 +145,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/api/account-adjustments', [AccountAdjustmentController::class, 'index']);
     Route::get('/api/account-adjustments/{id}', [AccountAdjustmentController::class, 'show']);
     Route::post('/api/account-adjustments', [AccountAdjustmentController::class, 'store']);
+
+    // Payment 
+    Route::post('/api/payments', [PaymentController::class, 'store']);
 
 });

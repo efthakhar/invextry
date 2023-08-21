@@ -24,7 +24,7 @@ class PaymentService
         $payment->party_id = $invoice->party_id;
         $payment->account_id = $data['account_id'];
         $payment->invoice_type = $invoice->type;
-        $payment->payment_method = $data['payment_method'] ?? 'cache';
+        $payment->payment_method = $data['payment_method'] ?? 'cash';
         $payment->amount = $data['amount'];
         $payment->date = $data['date'];
         $payment->note = $data['note'];
@@ -32,7 +32,7 @@ class PaymentService
         /*
             Ensure payment amount can not be greater than total amount
         */
-        $payment->amount >= $invoice->total_amount ? $payment->amount = $invoice->total_amount : '';
+        $payment->amount >= $invoice->total_amount ? $payment->amount = $invoice->total_amount = $invoice->paid_amount : '';
 
 
         
