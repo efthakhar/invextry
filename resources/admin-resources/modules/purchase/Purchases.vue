@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import axios from "axios";
 import { useAuthStore } from "../../stores/authStore";
 import Loader from "../../components/shared/loader/Loader.vue";
@@ -12,6 +12,7 @@ import WalletSvgIcon from "../../assets/icons/wallet-svg-icon.vue";
 import AddNewButton from "../../components/buttons/AddNewButton.vue";
 import FilterButton from "../../components/buttons/FilterButton.vue";
 import BulkDeleteButton from "../../components/buttons/BulkDeleteButton.vue";
+import AddPayment from "../payment/AddPayment.vue";
 
 const loading = ref(false);
 const filterTab = ref(true);
@@ -84,9 +85,15 @@ async function fetchData(
 
 let showPaymentModal = ref(false)
 
-function openPaymentModal() {
-    showPaymentModal.value = true
-    
+let paymentInfo = reactive({
+    invoice_id : '',
+    due_amount: ''
+})
+
+function openPaymentModal(invoice_id,due_amount) {
+    showPaymentModal.value = true;
+    paymentInfo.invoice_id = invoice_id;
+    paymentInfo.due_amount = due_amount;
 }
 
 onMounted(() => {
@@ -221,8 +228,8 @@ onMounted(() => {
                                 @click="deleteData(purchase.id)"
                             /> -->
                             <WalletSvgIcon
-                                v-if="authStore.userCan('update_purchase')"
-                                @click="deleteData(purchase.id)"
+                                v-if="authStore.userCan('create_payment')"
+                                @click="openPaymentModal(purchase.id,purchase.due_amount)"
                             />
                         </td>
                     </tr>
@@ -237,5 +244,14 @@ onMounted(() => {
             @pageChange="(currentPage) => fetchData(currentPage, per_page)"
             @perPageChange="(perpage) => fetchData(1, perpage)"
         />
+        <div class="modals-container">
+            <AddPayment
+                v-if="showPaymentModal"
+                :invoice_id="paymentInfo.invoice_id"
+                :due_amount="paymentInfo.due_amount"
+                @close="showPaymentModal = false"
+                @refreshData="fetchData(currentPage, per_page)"
+            />
+        </div>
     </div>
 </template>
