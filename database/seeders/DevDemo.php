@@ -48,7 +48,6 @@ class DevDemo extends Seeder
         DB::table('product_stocks')->truncate();
         DB::table('payments')->truncate();
 
-
         // seeding media, superadmin and roles, permissions and other modules demo data
         $this->call([
 

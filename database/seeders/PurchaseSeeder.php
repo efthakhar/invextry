@@ -13,7 +13,7 @@ class PurchaseSeeder extends Seeder
 
         [
             'invoice_status' => 'pending',
-            'paid_amount' => 30,
+            'paid_amount' => 0,
             'invoice_date' => '2023-08-09',
             'note' => 'New Purchase Order .',
             'party_id' => 20,
@@ -24,7 +24,7 @@ class PurchaseSeeder extends Seeder
             'items' => [
                 [
                     'id' => 1,
-                    'quantity' => 5,
+                    'quantity' => 2,
                 ],
                 [
                     'id' => 2,
@@ -32,14 +32,14 @@ class PurchaseSeeder extends Seeder
                 ],
             ],
             'account_id' => 1,
-            'payment_method' => "cash",
-            'payment_note' => " "
+            'payment_method' => 'cash',
+            'payment_note' => ' ',
 
         ],
 
         [
             'invoice_status' => 'ordered',
-            'paid_amount' => 12364.5,
+            'paid_amount' => 12364,
             'invoice_date' => '2023-08-09',
             'note' => 'New Purchase Order .',
             'party_id' => 7,
@@ -50,41 +50,41 @@ class PurchaseSeeder extends Seeder
             'items' => [
                 [
                     'id' => 1,
-                    'quantity' => 25,
+                    'quantity' => 5,
                 ],
                 [
                     'id' => 2,
-                    'quantity' => 7,
+                    'quantity' => 3,
                 ],
             ],
             'account_id' => 1,
-            'payment_method' => "cash",
-            'payment_note' => " "
+            'payment_method' => 'cash',
+            'payment_note' => ' ',
 
         ],
         [
             'invoice_status' => 'received',
-            'paid_amount' => 1050,
+            'paid_amount' => 100,
             'invoice_date' => '2023-08-19',
             'note' => 'New Purchase Order .',
             'party_id' => 7,
             'warehouse_id' => 2,
             'discount' => 100,
             'shipping_cost' => 130,
-            'invoice_tax_rate' => 2.7,
+            'invoice_tax_rate' => 0,
             'items' => [
                 [
                     'id' => 2,
-                    'quantity' => 125,
+                    'quantity' => 4,
                 ],
                 [
                     'id' => 3,
-                    'quantity' => 17,
+                    'quantity' => 7,
                 ],
             ],
             'account_id' => 2,
-            'payment_method' => "cash",
-            'payment_note' => " ",
+            'payment_method' => 'cash',
+            'payment_note' => ' ',
 
         ],
 

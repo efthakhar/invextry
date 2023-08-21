@@ -9,6 +9,7 @@ use App\Models\Product\Product;
 class PurchaseService
 {
     protected $stockService;
+
     protected $paymentService;
 
     public function __construct(StockService $stockService, PaymentService $paymentService)
