@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Accounting\Account;
 use App\Models\Invoice\Invoice;
+use App\Models\Party;
 use App\Models\Payment;
 
 class PaymentService
@@ -16,6 +17,7 @@ class PaymentService
     public function createPayment(array $data)
     {
         $invoice = Invoice::find($data['invoice_id']);
+        $invoice_due_before_payment = $invoice->due_amount;
 
         $payment = new Payment();
         $payment->invoice_id = $invoice->id;
@@ -30,17 +32,16 @@ class PaymentService
 
         /*
             Ensure payment amount can not be greater than total amount
-            if payment amount is greater or equal to total amount, we will remove
-            the extra part from the payment amount
         */
         $payment->amount >= $invoice->total_amount ? $payment->amount = $invoice->total_amount : '';
 
-        if ($invoice) {
-            $invoice->paid_amount = $invoice->paid_amount + $payment->amount;
-            $invoice->payment_status = $this->getPaymentStatus($invoice->total_amount, $invoice->paid_amount);
-            $invoice->due_amount = $invoice->total_amount - $invoice->paid_amount;
-        }
 
+        
+        $invoice->paid_amount = $invoice->paid_amount + $payment->amount;
+        $invoice->payment_status = $this->getPaymentStatus($invoice->total_amount, $invoice->paid_amount);
+        $invoice->due_amount = $invoice->total_amount - $invoice->paid_amount;
+        
+        $invoice_due_after_payment = $invoice->due_amount;
         $invoice->save();
 
         /*
@@ -53,6 +54,17 @@ class PaymentService
         } elseif ($invoice->type == 'purchase' || $invoice->type == 'sale_return') {
             $account->decrement('balance', $data['amount']);
         }
+
+        /*
+            Adjust party's sale due, purchase due, sale return due, purchase return due
+        */
+        $party  = Party::find($invoice->party_id);
+        if ($invoice->type == 'sale') {
+            $party->sale_due =  $party->sale_due -  $invoice_due_before_payment +  $invoice_due_after_payment;
+        } elseif ($invoice->type == 'purchase' && $party->purchase_due>0) {
+            $party->purchase_due = $party->purchase_due -  $invoice_due_before_payment +  $invoice_due_after_payment;
+        }
+
 
         return $payment;
 

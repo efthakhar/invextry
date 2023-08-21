@@ -85,10 +85,10 @@ class PurchaseService
         $this->paymentService->createPayment([
             'invoice_id' => $purchase->id,
             'account_id' => $data['account_id'],
-            'payment_method' => $data['payment_method'],
-            'amount' => $data['paid_amount'],
+            'payment_method' => $data['payment_method'] ?? 'cash',
+            'amount' => $data['paid_amount'] ?? 0,
             'date' => $data['invoice_date'],
-            'note' => $data['payment_note'],
+            'note' => $data['payment_note'] ?? '',
         ]);
 
         return $purchase;
