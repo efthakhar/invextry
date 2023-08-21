@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Services\PaymentService;
 use App\Services\PurchaseService;
 use App\Services\StockService;
 use Illuminate\Database\Seeder;
@@ -12,7 +13,7 @@ class PurchaseSeeder extends Seeder
 
         [
             'invoice_status' => 'pending',
-            'paid_amount' => 0,
+            'paid_amount' => 30,
             'invoice_date' => '2023-08-09',
             'note' => 'New Purchase Order .',
             'party_id' => 20,
@@ -30,6 +31,9 @@ class PurchaseSeeder extends Seeder
                     'quantity' => 1,
                 ],
             ],
+            'account_id' => 1,
+            'payment_method' => "cash",
+            'payment_note' => " "
 
         ],
 
@@ -53,6 +57,9 @@ class PurchaseSeeder extends Seeder
                     'quantity' => 7,
                 ],
             ],
+            'account_id' => 1,
+            'payment_method' => "cash",
+            'payment_note' => " "
 
         ],
         [
@@ -75,6 +82,9 @@ class PurchaseSeeder extends Seeder
                     'quantity' => 17,
                 ],
             ],
+            'account_id' => 2,
+            'payment_method' => "cash",
+            'payment_note' => " ",
 
         ],
 
@@ -83,7 +93,7 @@ class PurchaseSeeder extends Seeder
     public function run(): void
     {
         foreach ($this->purchases as $purchase) {
-            (new PurchaseService(new StockService()))->create($purchase);
+            (new PurchaseService(new StockService(), new PaymentService))->create($purchase);
         }
     }
 }

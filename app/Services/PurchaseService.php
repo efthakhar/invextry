@@ -9,10 +9,12 @@ use App\Models\Product\Product;
 class PurchaseService
 {
     protected $stockService;
+    protected $paymentService;
 
-    public function __construct(StockService $stockService)
+    public function __construct(StockService $stockService, PaymentService $paymentService)
     {
         $this->stockService = $stockService;
+        $this->paymentService = $paymentService;
     }
 
     public function create($data)
@@ -76,12 +78,17 @@ class PurchaseService
         $purchase->itemsCostWithoutTax = $calculation['itemsCostWithoutTax'];
         $purchase->total_invoice_tax = $calculation['total_invoice_tax'];
         $purchase->total_amount = $calculation['grand_total'];
-        $purchase->paid_amount = $data['paid_amount'] ?? 0;
-        $purchase->paid_amount >= $purchase->total_amount ? $purchase->paid_amount = $purchase->total_amount : '';
-        $purchase->payment_status = $this->determinePaymentStatus($purchase->total_amount, $purchase->paid_amount);
-        $purchase->due_amount = $purchase->total_amount - $purchase->paid_amount;
 
         $purchase->save();
+
+        $this->paymentService->createPayment([
+            'invoice_id' => $purchase->id,
+            'account_id' => $data['account_id'],
+            'payment_method' => $data['payment_method'],
+            'amount' => $data['paid_amount'],
+            'date' => $data['invoice_date'],
+            'note' => $data['payment_note'],
+        ]);
 
         return $purchase;
     }
@@ -128,18 +135,5 @@ class PurchaseService
             'itemsCostWithTax' => $itemsCostWithTax,
             'itemsCostWithoutTax' => $itemsCostWithoutTax,
         ];
-    }
-
-    public function determinePaymentStatus($total, $paid)
-    {
-
-        if ($paid == 0) {
-            return 'unpaid';
-        } elseif ($paid >= $total) {
-            return 'paid';
-        } else {
-            return 'partial';
-        }
-
     }
 }

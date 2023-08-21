@@ -19,22 +19,21 @@ class Payment extends Model
         'payment_method',
         'amount',
         'date',
-        'note'
+        'note',
     ];
 
-    function invoice()
-    {             
-        return $this->belongsTo(Invoice::class,'invoice_id');
-    }
-
-    function party()
+    public function invoice()
     {
-        return $this->belongsTo(Party::class,'party_id');
+        return $this->belongsTo(Invoice::class, 'invoice_id');
     }
 
-    function account()
+    public function party()
     {
-        return $this->belongsTo(Account::class,'account_id');
+        return $this->belongsTo(Party::class, 'party_id');
     }
 
+    public function account()
+    {
+        return $this->belongsTo(Account::class, 'account_id');
+    }
 }
