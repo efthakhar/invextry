@@ -17,8 +17,8 @@ class AccountAdjustment extends Model
         'note',
     ];
 
-    function account()
-    {     
+    public function account()
+    {
         return $this->belongsTo(Account::class, 'account_id');
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Accounting\AccountAdjustmentController;
 use App\Http\Controllers\Api\Accounting\AccountController;
 use App\Http\Controllers\Api\Invoice\PurchaseInvoiceController;
 use App\Http\Controllers\Api\Party\CustomerController;
@@ -138,5 +139,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/api/accounts', [AccountController::class, 'store']);
     Route::put('/api/accounts/{id}', [AccountController::class, 'update']);
     Route::delete('/api/accounts/{id}', [AccountController::class, 'delete']);
+
+    // Account Balance Adjustment
+    Route::get('/api/account-adjustment', [AccountAdjustmentController::class, 'index']);
+    Route::get('/api/account-adjustment/{id}', [AccountAdjustmentController::class, 'show']);
+    Route::post('/api/account-adjustment', [AccountAdjustmentController::class, 'store']);
 
 });
