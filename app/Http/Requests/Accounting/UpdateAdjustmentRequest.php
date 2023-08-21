@@ -16,11 +16,18 @@ class UpdateAdjustmentRequest extends FormRequest
     {
 
         return [
-            'account_id' => ['required' => 'The account filed is required'],
+            'account_id' => ['required'],
             'amount' => ['numeric', 'required'],
             'type' => ['required', 'in:add,subtract'],
             'date' => ['required', 'date'],
             'note' => ['nullable', 'string'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'account_id.required' => 'The Account field is required',
         ];
     }
 }

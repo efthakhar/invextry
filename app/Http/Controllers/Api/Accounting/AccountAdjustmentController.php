@@ -26,18 +26,20 @@ class AccountAdjustmentController extends Controller
 
         $page = $request->query('page');
         $per_page = $request->query('per_page') && $request->query('per_page') < 100 ? $request->query('per_page') : 10;
-        $serach = $request->query('serach');
-
+        $search = $request->query('search');
+        
         $adjustments = AccountAdjustment::with('account');
-
-        $adjustments->when($serach, function ($query, $serach) {
-            $query->where('account.name', 'LIKE', '%'.$serach.'%')
-                ->orWhere('account.bank_name', 'LIKE', '%'.$serach.'%')
-                ->orWhere('account.branch_name', 'LIKE', '%'.$serach.'%');
+        
+        $adjustments->when($search, function ($query) use ($search) {
+            $query->whereHas('account', function ($subquery) use ($search) {
+                $subquery->where('name', 'LIKE', '%' . $search . '%')
+                    ->orWhere('bank_name', 'LIKE', '%' . $search . '%')
+                    ->orWhere('branch_name', 'LIKE', '%' . $search . '%');
+            });
         });
-
+        
         $adjustments = $adjustments->orderBy('id', 'desc')->paginate($per_page);
-
+        
         return AdjustmentResource::collection($adjustments);
     }
 

@@ -90,6 +90,13 @@ const router = createRouter({
                     component: () => import("../modules/account/Accounts.vue"),
                 },
 
+                // Account Adjustment Route
+                {
+                    name: "account_adjustment",
+                    path: "account-adjustment",
+                    component: () => import("../modules/account-adjustment/Adjustments.vue"),
+                },
+
                 // Sale Route
                 {
                     name: "sale",

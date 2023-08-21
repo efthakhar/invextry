@@ -103,6 +103,11 @@ const navlinks = [
                 link: "/admin/account",
                 permission: "view_account",
             },
+            {
+                label: "balance adjustment",
+                link: "/admin/account-adjustment",
+                permission: "view_account_adjustment",
+            },
         ],
     },
 

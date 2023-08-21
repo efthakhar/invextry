@@ -141,8 +141,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/api/accounts/{id}', [AccountController::class, 'delete']);
 
     // Account Balance Adjustment
-    Route::get('/api/account-adjustment', [AccountAdjustmentController::class, 'index']);
-    Route::get('/api/account-adjustment/{id}', [AccountAdjustmentController::class, 'show']);
-    Route::post('/api/account-adjustment', [AccountAdjustmentController::class, 'store']);
+    Route::get('/api/account-adjustments', [AccountAdjustmentController::class, 'index']);
+    Route::get('/api/account-adjustments/{id}', [AccountAdjustmentController::class, 'show']);
+    Route::post('/api/account-adjustments', [AccountAdjustmentController::class, 'store']);
 
 });
