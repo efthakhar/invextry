@@ -8,6 +8,7 @@ import { useConfirmStore } from "../../components/shared/confirm-alert/confirmSt
 import BinSvgIcon from "../../assets/icons/bin-svg-icon.vue";
 import EditSvgIcon from "../../assets/icons/edit-svg-icon.vue";
 import ViewSvgIcon from "../../assets/icons/view-svg-icon.vue";
+import WalletSvgIcon from "../../assets/icons/wallet-svg-icon.vue";
 import AddNewButton from "../../components/buttons/AddNewButton.vue";
 import FilterButton from "../../components/buttons/FilterButton.vue";
 import BulkDeleteButton from "../../components/buttons/BulkDeleteButton.vue";
@@ -81,6 +82,13 @@ async function fetchData(
     selected_purchases.value = [];
 }
 
+let showPaymentModal = ref(false)
+
+function openPaymentModal() {
+    showPaymentModal.value = true
+    
+}
+
 onMounted(() => {
     fetchData(1);
 });
@@ -126,14 +134,14 @@ onMounted(() => {
             <table class="table mb-0 table-hover">
                 <thead class="thead-dark">
                     <tr>
-                        <th>
+                        <!-- <th>
                             <input
                                 type="checkbox"
                                 class="form-check-input"
                                 @click="select_all"
                                 v-model="all_selectd"
                             />
-                        </th>
+                        </th> -->
                         <th class="min100">Date</th>
                         <th class="min100">Reference</th>
                         <th class="min100">Supplier</th>
@@ -147,14 +155,14 @@ onMounted(() => {
                 </thead>
                 <tbody>
                     <tr v-for="purchase in purchases" :key="purchase.id">
-                        <td>
+                        <!-- <td>
                             <input
                                 type="checkbox"
                                 class="form-check-input"
                                 @click="select_all"
                                 v-model="all_selectd"
                             />
-                        </td>
+                        </td> -->
                         <td>{{ purchase.invoice_date }}</td>
                         <td>{{ purchase.invoice_ref }}</td>
                         <td>{{ purchase.supplier }}</td>
@@ -197,8 +205,8 @@ onMounted(() => {
                                 {{ purchase.payment_status }}
                             </span>
                         </td>
-                        <td class="table-action-btns">
-                            <ViewSvgIcon
+                        <td class="table-action-btns sm">
+                            <!-- <ViewSvgIcon
                                 color="#00CFDD"
                                 @click="openViewTaxModal(purchase.id)"
                             />
@@ -210,6 +218,10 @@ onMounted(() => {
                             <BinSvgIcon
                                 v-if="authStore.userCan('delete_purchase')"
                                 color="#FF7474"
+                                @click="deleteData(purchase.id)"
+                            /> -->
+                            <WalletSvgIcon
+                                v-if="authStore.userCan('update_purchase')"
                                 @click="deleteData(purchase.id)"
                             />
                         </td>
