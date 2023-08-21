@@ -17,7 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('party_id');
             $table->unsignedBigInteger('account_id')->nullable();
             $table->unsignedBigInteger('invoice_id')->nullable();
-            $table->unsignedBigInteger('payment_method_id');
+            //$table->unsignedBigInteger('payment_method_id');
+            $table->string('payment_method', 50);
             $table->unsignedDouble('amount', 20, 4);
             $table->date('date');
             $table->text('note')->nullable();
@@ -29,8 +30,8 @@ return new class extends Migration
                 ->cascadeOnUpdate()->restrictOnDelete();
             $table->foreign('invoice_id')->references('id')->on('invoices')
                 ->cascadeOnUpdate()->restrictOnDelete();
-            $table->foreign('payment_method_id')->references('id')->on('payment_methods')
-                ->cascadeOnUpdate()->restrictOnDelete();
+            // $table->foreign('payment_method_id')->references('id')->on('payment_methods')
+            //     ->cascadeOnUpdate()->restrictOnDelete();
         });
     }
 
