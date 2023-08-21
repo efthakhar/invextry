@@ -61,9 +61,11 @@ class PaymentService
         $party  = Party::find($invoice->party_id);
         if ($invoice->type == 'sale') {
             $party->sale_due =  $party->sale_due -  $invoice_due_before_payment +  $invoice_due_after_payment;
-        } elseif ($invoice->type == 'purchase' && $party->purchase_due>0) {
+        } elseif ($invoice->type == 'purchase') {
             $party->purchase_due = $party->purchase_due -  $invoice_due_before_payment +  $invoice_due_after_payment;
         }
+
+        $party->save();
 
 
         return $payment;
