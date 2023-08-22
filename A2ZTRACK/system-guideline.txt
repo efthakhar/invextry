@@ -43,7 +43,10 @@
 => Products have unit, sell unit, purchase unit. Without choosing unit value user can not 
    choose purchase and sell unit. Only units which has no base  unit that means only base units
    will be shown in the unit choose list. Then in sell unit and perchase unit , units will be 
-   shown which base unit id is equal to the our choosen unit id
+   showed which base unit id is equal to the our choosen unit id
+
+=> Hide now sale unit and purchase unit for simpicity purpose. Now Products sale and purchase units will 
+   be equal to its unit
 
 => Place ConvertEmptyStringsToNull middleware after PreventXSS middleware.
    Otherwise It will fail to convert empty string to NULL   

@@ -129,8 +129,8 @@ class ProductController extends Controller
             $product->brand_id = $request->validated('brand_id');
             $product->category_id = $request->validated('category_id');
             $product->unit_id = $request->validated('unit_id');
-            $product->sale_unit_id = $request->validated('sale_unit_id');
-            $product->purchase_unit_id = $request->validated('purchase_unit_id');
+            $product->sale_unit_id = $request->validated('unit_id'); // $request->validated('sale_unit_id');
+            $product->purchase_unit_id = $request->validated('unit_id'); // $request->validated('purchase_unit_id');
             $product->tax_id = $request->validated('tax_id');
             $product->tax_type = $request->validated('tax_type');
             $product->description = $request->validated('description');
@@ -169,8 +169,8 @@ class ProductController extends Controller
             $product->brand_id = $request->validated('brand_id');
             $product->category_id = $request->validated('category_id');
             $product->unit_id = $request->validated('unit_id');
-            $product->sale_unit_id = $request->validated('sale_unit_id');
-            $product->purchase_unit_id = $request->validated('purchase_unit_id');
+            $product->sale_unit_id = $request->validated('unit_id'); // $request->validated('sale_unit_id');
+            $product->purchase_unit_id = $request->validated('unit_id'); // $request->validated('purchase_unit_id');
             $product->tax_id = $request->validated('tax_id');
             $product->tax_type = $request->validated('tax_type');
             $product->description = $request->validated('description');

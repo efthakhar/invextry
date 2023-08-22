@@ -129,7 +129,7 @@ onMounted(() => {
                                     /> 
                                 </div>
                                 <!-- product Sale unit -->
-                                <div class="form-item col-sm-6">
+                                <!-- <div class="form-item col-sm-6">
                                     <label class="my-2">Purchase Unit</label>
                                     <input
                                         disabled
@@ -137,9 +137,9 @@ onMounted(() => {
                                         class="form-control"
                                         :value="product_data.purchase_unit.name"
                                     />
-                                </div>
+                                </div> -->
                                 <!-- product Sale unit -->
-                                <div class="form-item col-sm-6">
+                                <!-- <div class="form-item col-sm-6">
                                     <label class="my-2">Sale Unit</label>
                                     <input
                                         disabled
@@ -147,7 +147,7 @@ onMounted(() => {
                                         class="form-control"
                                         :value="product_data.sale_unit.name"
                                     />
-                                </div>
+                                </div> -->
 
                                 <!-- purchase price -->
                                 <div class="form-item col-sm-6">

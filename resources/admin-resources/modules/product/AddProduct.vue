@@ -242,7 +242,7 @@ onMounted(() => {
                                 </select>
                             </div>
                             <!-- purchase unit -->
-                            <div
+                            <!-- <div
                                 class="form-item col-sm-6"
                                 :class="{ 'd-none': !product_data.unit_id }"
                             >
@@ -272,9 +272,9 @@ onMounted(() => {
                                         {{ unit.name }}
                                     </option>
                                 </select>
-                            </div>
+                            </div> -->
                             <!-- sale unit -->
-                            <div
+                            <!-- <div
                                 class="form-item col-sm-6"
                                 :class="{ 'd-none': !product_data.unit_id }"
                             >
@@ -304,7 +304,7 @@ onMounted(() => {
                                         {{ unit.name }}
                                     </option>
                                 </select>
-                            </div>
+                            </div> -->
                             <!-- purchase price -->
                             <div class="form-item col-sm-6">
                                 <label class="my-2">Purchase Price</label>

@@ -36,8 +36,8 @@ class CreateProductRequest extends FormRequest
             'category_id' => ['required', 'numeric'],
 
             'unit_id' => ['required', 'numeric'],
-            'purchase_unit_id' => ['required', 'numeric'],
-            'sale_unit_id' => ['required', 'numeric'],
+            // 'purchase_unit_id' => ['required', 'numeric'],
+            // 'sale_unit_id' => ['required', 'numeric'],
 
             'tax_id' => ['nullable', 'numeric'],
             'tax_type' => ['required', 'string', Rule::in(['inclusive', 'exclusive'])],
