@@ -36,6 +36,7 @@ class Product extends Model
         'product_type' => 'single', // variable/digital/single
         'barcode_symbology' => 'CODE128', // CODE128,CODE39,EAN8,EAN13,UPC
         'tax_type' => 'exclusive',
+        'stock_quantity' => 0,
     ];
 
     public function category()

@@ -50,7 +50,7 @@ class PurchaseSeeder extends Seeder
             'items' => [
                 [
                     'id' => 1,
-                    'quantity' => 5,
+                    'quantity' => 15,
                 ],
                 [
                     'id' => 2,
@@ -79,7 +79,7 @@ class PurchaseSeeder extends Seeder
                 ],
                 [
                     'id' => 3,
-                    'quantity' => 7,
+                    'quantity' => 4,
                 ],
             ],
             'account_id' => 2,

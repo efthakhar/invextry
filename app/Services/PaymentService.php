@@ -37,9 +37,9 @@ class PaymentService
         */
         $payment->amount >= $invoice->due_amount ? $payment->amount = $invoice->due_amount : '';
 
-         /*
-            Determine paid amount, payment status and due amount of invoice 
-            depending on the payment amount
+        /*
+           Determine paid amount, payment status and due amount of invoice
+           depending on the payment amount
         */
         $invoice->paid_amount = $invoice->paid_amount + $payment->amount;
         $invoice->payment_status = $this->getPaymentStatus($invoice->total_amount, $invoice->paid_amount);
