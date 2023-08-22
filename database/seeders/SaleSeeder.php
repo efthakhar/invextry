@@ -3,12 +3,12 @@
 namespace Database\Seeders;
 
 use App\Services\PaymentService;
-use App\Services\PurchaseService;
+use App\Services\SaleService;
 use App\Services\StockService;
 use Illuminate\Database\Seeder;
 use Carbon\Carbon;
 
-class PurchaseSeeder extends Seeder
+class SaleSeeder extends Seeder
 {
     public $currentDate;
 
@@ -17,14 +17,14 @@ class PurchaseSeeder extends Seeder
         $this->currentDate = Carbon::now();
     }
 
-    public $purchases = [
+    public $sales = [
 
         [
             'invoice_status' => 'pending',
             'paid_amount' => 8691.25,
             'invoice_date' => '2023-08-09',
-            'note' => 'New Purchase Order .',
-            'party_id' => 20,
+            'note' => 'New Sale Order .',
+            'party_id' => 1,
             'warehouse_id' => 1,
             'discount' => 0,
             'shipping_cost' => 0,
@@ -47,10 +47,10 @@ class PurchaseSeeder extends Seeder
 
         [
             'invoice_status' => 'ordered',
-            'paid_amount' => 2094.25,
+            'paid_amount' => 6184.5,
             'invoice_date' => '2023-08-09',
-            'note' => 'New Purchase Order .',
-            'party_id' => 7,
+            'note' => 'New Sale Order .',
+            'party_id' => 2,
             'warehouse_id' => 1,
             'discount' => 100,
             'shipping_cost' => 130,
@@ -74,8 +74,8 @@ class PurchaseSeeder extends Seeder
             'invoice_status' => 'received',
             'paid_amount' => 0,
             'invoice_date' => '2023-08-19',
-            'note' => 'New Purchase Order .',
-            'party_id' => 7,
+            'note' => 'New Sale Order .',
+            'party_id' => 3,
             'warehouse_id' => 2,
             'discount' => 100,
             'shipping_cost' => 130,
@@ -100,8 +100,8 @@ class PurchaseSeeder extends Seeder
             'invoice_status' => 'received',
             'paid_amount' => 0,
             'invoice_date' => '2023-08-19',
-            'note' => 'New Purchase Order .',
-            'party_id' => 11,
+            'note' => 'New Sale Order .',
+            'party_id' => 6,
             'warehouse_id' => 2,
             'discount' => 0,
             'shipping_cost' => 100,
@@ -124,10 +124,10 @@ class PurchaseSeeder extends Seeder
 
         [
             'invoice_status' => 'pending',
-            'paid_amount' => 1350,
+            'paid_amount' => 19480,
             'invoice_date' => '2023-08-19',
-            'note' => 'New Purchase Order .',
-            'party_id' => 14,
+            'note' => 'New Sale Order .',
+            'party_id' => 13,
             'warehouse_id' => 2,
             'discount' => 0,
             'shipping_cost' => 100,
@@ -152,8 +152,8 @@ class PurchaseSeeder extends Seeder
             'invoice_status' => 'ordered',
             'paid_amount' => 4350,
             'invoice_date' => '2023-08-19',
-            'note' => 'New Purchase Order .',
-            'party_id' => 20,
+            'note' => 'New Sale Order .',
+            'party_id' => 15,
             'warehouse_id' => 1,
             'discount' => 1570,
             'shipping_cost' => 4630,
@@ -178,8 +178,8 @@ class PurchaseSeeder extends Seeder
             'invoice_status' => 'received',
             'paid_amount' => 0,
             'invoice_date' => '2023-08-19',
-            'note' => 'New Purchase Order .',
-            'party_id' => 20,
+            'note' => 'New Sale Order .',
+            'party_id' => 19,
             'warehouse_id' => 2,
             'discount' => 170,
             'shipping_cost' => 4630,
@@ -205,9 +205,9 @@ class PurchaseSeeder extends Seeder
     public function run(): void
     {
         $iterator       = 0;
-        foreach ($this->purchases as $purchase) {
-            $purchase['invoice_date'] = $this->currentDate->startOfWeek()->copy()->addDays($iterator++);;
-            (new PurchaseService(new StockService(), new PaymentService))->create($purchase);
+        foreach ($this->sales as $sale) {
+            $sale['invoice_date'] = $this->currentDate->startOfWeek()->copy()->addDays($iterator++);;
+            (new SaleService(new StockService(), new PaymentService))->create($sale);
         }
     }
 }

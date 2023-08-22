@@ -68,6 +68,7 @@ class DevDemo extends Seeder
             AccountAdjustmentSeeder::class,
 
             PurchaseSeeder::class,
+            SaleSeeder::class,
         ]);
 
         Schema::enableForeignKeyConstraints();

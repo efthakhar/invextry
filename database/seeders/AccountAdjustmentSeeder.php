@@ -53,6 +53,34 @@ class AccountAdjustmentSeeder extends Seeder
             'date' => '2023-10-25',
             'note' => '',
         ],
+
+        [
+            'id' => 5,
+            'account_id' => 1,
+            'amount' => 3000000,
+            'type' => 'add',
+            'date' => '2023-10-25',
+            'note' => '',
+        ],
+
+        [
+            'id' => 5,
+            'account_id' => 2,
+            'amount' => 1300000,
+            'type' => 'add',
+            'date' => '2023-10-25',
+            'note' => '',
+        ],
+
+        [
+            'id' => 5,
+            'account_id' => 3,
+            'amount' => 1300000,
+            'type' => 'add',
+            'date' => '2023-10-25',
+            'note' => '',
+        ],
+
     ];
 
     public function run(): void
