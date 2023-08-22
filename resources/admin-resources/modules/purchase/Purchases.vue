@@ -252,7 +252,7 @@ onMounted(() => {
                 :invoice_id="paymentInfo.invoice_id"
                 :due_amount="paymentInfo.due_amount"
                 @close="showPaymentModal = false"
-                @refreshData="fetchData(currentPage, per_page)"
+                @refreshData="fetchData(current_page, per_page)"
             />
         </div>
     </div>

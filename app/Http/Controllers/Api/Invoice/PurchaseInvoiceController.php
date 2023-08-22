@@ -47,7 +47,7 @@ class PurchaseInvoiceController extends Controller
         $per_page = $request->query('per_page') && $request->query('per_page') < 100 ? $request->query('per_page') : 10;
         $search = $request->query('search');
 
-        $purchases = Invoice::query();
+        $purchases = Invoice::where('type','purchase');;
 
         $purchases->when($search, function ($query, $search) {
             $query->where('invoice_ref', 'LIKE', '%'.$search.'%');
