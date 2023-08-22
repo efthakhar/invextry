@@ -56,15 +56,15 @@ class ProductController extends Controller
                 'products.name',
                 'products.sale_price',
                 'product_stocks.stock_quantity',
-                'taxes.rate',
+                'taxes.rate as tax_rate',
                 'products.tax_id',
                 'products.tax_type',
                 'products.sale_unit_id',
                 'units.short_name',
             ])
             ->where('products.name', 'LIKE', '%'.$name.'%')
-            //->where('product_stocks.warehouse_id', $warehouse_id)
-            //->where('product_stocks.stock_quantity', '>', 0)
+            ->where('product_stocks.warehouse_id', $warehouse_id)
+            ->where('product_stocks.stock_quantity', '>', 0)
             ->limit(20)
             ->get();
 
