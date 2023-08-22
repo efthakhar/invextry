@@ -134,6 +134,8 @@ function calculateGrandTotal() {
     invoice_grand_total.value = 0;
 
     selected_items.value.forEach((p) => {
+        p.quantity > p.stock_quantity ? (p.quantity = p.stock_quantity) : "";
+
         if (p.tax_type == "exclusive") {
             let item_total_with_tax =
                 p.quantity * (p.sale_price * (p.tax_rate / 100) + p.sale_price);
@@ -271,7 +273,7 @@ onMounted(async () => {
                         class="form-select form-select-sm"
                         v-model="selected_warehouse"
                         @input="onSelectWarehouse()"
-                        :disabled="selected_items.length>0"
+                        :disabled="selected_items.length > 0"
                     >
                         <option value="">none</option>
                         <option :value="w.id" v-for="w in warehouses">
@@ -316,6 +318,7 @@ onMounted(async () => {
                         <tr class="bg-ass text-secondary">
                             <th class="min150">Product</th>
                             <th class="min100">Unit Price</th>
+                            <th class="">Stock</th>
                             <th class="min100">Quantity</th>
                             <th class="min100">Tax</th>
                             <th class="min100">Subtotal</th>
@@ -326,6 +329,14 @@ onMounted(async () => {
                         <tr v-for="p in selected_items">
                             <td>{{ p.name }}</td>
                             <td>{{ p.sale_price }}</td>
+                            <td>
+                                <input
+                                    type="number"
+                                    class="max100 form-control"
+                                    :value="p.stock_quantity"
+                                    disabled
+                                />
+                            </td>
                             <td>
                                 <input
                                     type="number"
