@@ -59,7 +59,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/api/users/authenticated-user', [UserController::class, 'getAuthenticatedUser']);
 
     // Dashboard Overview
-    Route::get('/api/dashboard-overview', [DashboardController::class, 'getDashboardOverview']);
+    Route::get('/api/dashboard-report', [DashboardController::class, 'getDashboardOverview']);
 
     // Route to handle media upload
     Route::post('/api/upload', [UploadController::class, 'upload']);

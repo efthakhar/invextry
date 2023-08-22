@@ -1,21 +1,42 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, provide } from "vue";
 import Loader from "../../components/shared/loader/Loader.vue";
 import axios from "axios";
+import CartSvgIcon from "../../assets/icons/cart-svg-icon.vue";
+import BegSvgIcon from "../../assets/icons/beg-svg-icon.vue";
 import WalletSvgIcon from "../../assets/icons/wallet-svg-icon.vue";
 import CoinSvgIcon from "../../assets/icons/coin-1-svg-icon.vue";
 import twentyfourSVGICon from "../../assets/icons/twentyfour-svg-icon.vue";
 import HandLoveSVGICon from "../../assets/icons/hand-love-svg-icon.vue";
 
+import { use } from "echarts/core";
+import { CanvasRenderer } from "echarts/renderers";
+import { PieChart } from "echarts/charts";
+import {
+    TitleComponent,
+    TooltipComponent,
+    LegendComponent,
+} from "echarts/components";
+import VChart, { THEME_KEY } from "vue-echarts";
+
+use([
+    CanvasRenderer,
+    PieChart,
+    TitleComponent,
+    TooltipComponent,
+    LegendComponent,
+]);
+provide(THEME_KEY, "dark");
+
 const loading = ref(false);
-const report_data = ref({});
+const data = ref({});
 
 async function fetchData() {
     loading.value = true;
     await axios
-        .get(`/api/dashboard-reports`)
+        .get(`/api/dashboard-report`)
         .then((response) => {
-            report_data.value = response.data;
+            data.value = response.data;
 
             // incomes_chart_data.value.chartOptions.xaxis.categories =
             //     response.data.current_month_incomes.map(
@@ -31,36 +52,61 @@ async function fetchData() {
             console.log(errors);
             loading.value = false;
         });
-   
 }
 
-onMounted(()=>{
+onMounted(() => {
     fetchData();
-})
- 
+});
 </script>
 
 <template>
     <div class="dashboard-page">
         <Loader v-if="loading" />
-        <div class="dashboard-page-contents mx-2" v-if="loading==false">
+        <div class="dashboard-page-contents mx-2" v-if="loading == false">
             <div class="dashboard-top-stats row flex-wrap">
                 <div class="col-md-3 col-sm-6 my-1 p-1 min150">
                     <div
                         class="bg-white shadow-sm d-flex flex-wrap rounded-3 p-3 align-items-center"
                     >
                         <div class="bg-info p-3 rounded-3 me-4">
-                            <twentyfourSVGICon
-                                color="white"
-                                width="28"
-                                height="28"
-                            />
+                            <CartSvgIcon color="white" width="28" height="28" />
                         </div>
                         <div class="my-2">
-                            <span class="h3">7351</span><br /><span
-                                class="text-muted fs-6"
-                                >Today Incomes</span
-                            >
+                            <span class="h3">{{
+                                data.total_sale_amount
+                                    ? data.total_sale_amount.toLocaleString(
+                                          "en-US",
+                                          {
+                                              style: "currency",
+                                              currency: "USD",
+                                          }
+                                      )
+                                    : 0
+                            }}</span
+                            ><br /><span>Total Sale</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 my-1 p-1 min150">
+                    <div
+                        class="bg-white shadow-sm d-flex flex-wrap rounded-3 p-3 align-items-center"
+                    >
+                        <div class="bg-info p-3 rounded-3 me-4">
+                            <BegSvgIcon color="white" width="28" height="28" />
+                        </div>
+                        <div class="my-2">
+                            <span class="h3">{{
+                                data.total_purchase_amount
+                                    ? data.total_purchase_amount.toLocaleString(
+                                          "en-US",
+                                          {
+                                              style: "currency",
+                                              currency: "USD",
+                                          }
+                                      )
+                                    : 0
+                            }}</span
+                            ><br /><span>Total Purchase</span>
                         </div>
                     </div>
                 </div>
@@ -76,9 +122,18 @@ onMounted(()=>{
                             />
                         </div>
                         <div class="my-2">
-                            <span class="h3">42341</span><br /><span
-                                >Total Incomes</span
-                            >
+                            <span class="h3">{{
+                                data.total_sale_due
+                                    ? data.total_sale_due.toLocaleString(
+                                          "en-US",
+                                          {
+                                              style: "currency",
+                                              currency: "USD",
+                                          }
+                                      )
+                                    : 0
+                            }}</span
+                            ><br /><span>Total Sale Due</span>
                         </div>
                     </div>
                 </div>
@@ -87,41 +142,28 @@ onMounted(()=>{
                         class="bg-white shadow-sm d-flex flex-wrap rounded-3 p-3 align-items-center"
                     >
                         <div class="bg-info p-3 rounded-3 me-4">
-                            <HandLoveSVGICon
-                                color="white"
-                                width="28"
-                                height="28"
-                            />
+                            <CoinSvgIcon color="white" width="28" height="28" />
                         </div>
                         <div class="my-2">
-                            <span class="h3">23190</span><br /><span
-                                >Total Expenses</span
-                            >
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 my-1 p-1 min150">
-                    <div
-                        class="bg-white shadow-sm d-flex flex-wrap rounded-3 p-3 align-items-center"
-                    >
-                        <div class="bg-info p-3 rounded-3 me-4">
-                            <HandLoveSVGICon
-                                color="white"
-                                width="28"
-                                height="28"
-                            />
-                        </div>
-                        <div class="my-2">
-                            <span class="h3">19151</span><br /><span
-                                >Net Incomes</span
-                            >
+                            <span class="h3">{{
+                                data.total_purchase_due
+                                    ? data.total_purchase_due.toLocaleString(
+                                          "en-US",
+                                          {
+                                              style: "currency",
+                                              currency: "USD",
+                                          }
+                                      )
+                                    : 0
+                            }}</span
+                            ><br /><span>Total Purchase Due</span>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="dashboard-charts my-3 row">
+                
             </div>
-       
         </div>
     </div>
 </template>
