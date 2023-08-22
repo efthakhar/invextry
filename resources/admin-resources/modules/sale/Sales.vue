@@ -41,6 +41,10 @@ async function fetchData(
         .then((response) => {
             sales.value = response.data.data;
             loading.value = false;
+            total_pages.value = response.data.meta.last_page;
+            per_page.value = perPage;
+            current_page.value = page;
+            //search.value = search_string;
         })
         .catch((errors) => {
             loading.value = false;
@@ -91,7 +95,7 @@ onMounted(() => {
                         <input
                             type="text"
                             class="form-control"
-                            placeholder="type name.."
+                            placeholder="search by reference no.."
                             v-model="search"
                             @keyup="fetchData(1, per_page, search)"
                         />

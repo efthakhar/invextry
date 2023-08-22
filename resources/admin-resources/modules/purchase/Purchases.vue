@@ -27,39 +27,6 @@ const current_page = ref(1);
 const selected_purchases = ref([]);
 const all_selectd = ref(false);
 
-function select_all() {
-    if (all_selectd.value == false) {
-        selected_purchases.value = [];
-        purchaseStore.purchases.forEach((element) => {
-            selected_purchases.value.push(element.id);
-        });
-        all_selectd.value = true;
-    } else {
-        all_selectd.value = false;
-        selected_purchases.value = [];
-    }
-}
-
-async function deleteData(id) {
-    confirmStore
-        .show_box({ message: "Do you want to delete selected purchase?" })
-        .then(async () => {
-            if (confirmStore.do_action == true) {
-                purchaseStore.deleteTax(id).then(() => {
-                    purchaseStore.fetchPurchases(
-                        purchaseStore.current_page,
-                        purchaseStore.per_page,
-                        purchaseStore.search
-                    );
-
-                    if (Array.isArray(id)) {
-                        all_selectd.value = false;
-                        selected_purchases.value = [];
-                    }
-                });
-            }
-        });
-}
 
 async function fetchData(
     page = current_page.value,
@@ -74,6 +41,10 @@ async function fetchData(
         .then((response) => {
             purchases.value = response.data.data;
             loading.value = false;
+            total_pages.value = response.data.meta.last_page;
+            per_page.value = perPage;
+            current_page.value = page;
+            //search.value = search_string;
         })
         .catch((errors) => {
             loading.value = false;
@@ -124,7 +95,7 @@ onMounted(() => {
                         <input
                             type="text"
                             class="form-control"
-                            placeholder="type name.."
+                            placeholder="search by reference no.."
                             v-model="search"
                             @keyup="fetchData(1, per_page, search)"
                         />
