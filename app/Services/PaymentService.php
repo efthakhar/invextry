@@ -60,18 +60,18 @@ class PaymentService
             } elseif ($invoice->type == 'purchase' || $invoice->type == 'sale_return') {
                 $account->decrement('balance', $data['amount']);
             }
-
-            /*
-                Adjust party's sale due, purchase due, sale return due, purchase return due
-            */
-            $party = Party::find($invoice->party_id);
-            if ($invoice->type == 'sale') {
-                $party->sale_due = Invoice::where('party_id', $party->id)->where('type', 'sale')->sum('due_amount');
-            } elseif ($invoice->type == 'purchase') {
-                $party->purchase_due = Invoice::where('party_id', $party->id)->where('type', 'purchase')->sum('due_amount');
-            }
-            $party->save();
         }
+
+        /*
+            Adjust party's sale due, purchase due, sale return due, purchase return due
+        */
+        $party = Party::find($invoice->party_id);
+        if ($invoice->type == 'sale') {
+            $party->sale_due = Invoice::where('party_id', $party->id)->where('type', 'sale')->sum('due_amount');
+        } elseif ($invoice->type == 'purchase') {
+            $party->purchase_due = Invoice::where('party_id', $party->id)->where('type', 'purchase')->sum('due_amount');
+        }
+        $party->save();
 
         if ($payment->amount > 0) {
             $payment->save();
