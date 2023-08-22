@@ -273,7 +273,7 @@ onMounted(async () => {
                         class="form-select form-select-sm"
                         v-model="selected_warehouse"
                         @input="onSelectWarehouse()"
-                        :disabled="selected_items.length > 0"
+                        :disabled="selected_items.length > 0 || items.length>0"
                     >
                         <option value="">none</option>
                         <option :value="w.id" v-for="w in warehouses">
