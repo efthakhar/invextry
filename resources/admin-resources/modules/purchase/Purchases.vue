@@ -155,6 +155,7 @@ onMounted(() => {
                         <th class="min100">Warehouse</th>
                         <th class="min100">Total</th>
                         <th class="min100">Paid</th>
+                        <th class="min100">Due</th>
                         <th class="">Purchase Status</th>
                         <th class="">Payment Status</th>
                         <th class="table-action-col">Action</th>
@@ -176,6 +177,7 @@ onMounted(() => {
                         <td>{{ purchase.warehouse }}</td>
                         <td>{{ purchase.total_amount }}</td>
                         <td>{{ purchase.paid_amount }}</td>
+                        <td>{{ purchase.due_amount }}</td>
                         <td>
                             <span
                                 class="badge-sqaure text-capitalize"
