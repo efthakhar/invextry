@@ -9,7 +9,7 @@ use Spatie\Permission\Models\Role;
 class RolePermissionSeeder extends Seeder
 {
     private $permissions = [
-        'manage_dashboard',
+        'manage_dashboard', 'view_dashboard_overview',
         'upload_file', 'delete_file',
         'create_user', 'view_user', 'update_user', 'delete_user',
         'create_currency', 'view_currency', 'update_currency', 'delete_currency',

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Accounting\AccountAdjustmentController;
 use App\Http\Controllers\Api\Accounting\AccountController;
+use App\Http\Controllers\Api\Dashboard\DashboardController;
 use App\Http\Controllers\Api\Invoice\PurchaseInvoiceController;
 use App\Http\Controllers\Api\Invoice\SaleInvoiceController;
 use App\Http\Controllers\Api\Party\CustomerController;
@@ -56,6 +57,9 @@ Route::group(['middleware' => ['auth']], function () {
 
     // User
     Route::get('/api/users/authenticated-user', [UserController::class, 'getAuthenticatedUser']);
+
+    // Dashboard Overview
+    Route::get('/api/dashboard-overview', [DashboardController::class, 'getDashboardOverview']);
 
     // Route to handle media upload
     Route::post('/api/upload', [UploadController::class, 'upload']);
