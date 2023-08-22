@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Accounting\AccountAdjustmentController;
 use App\Http\Controllers\Api\Accounting\AccountController;
 use App\Http\Controllers\Api\Invoice\PurchaseInvoiceController;
+use App\Http\Controllers\Api\Invoice\SaleInvoiceController;
 use App\Http\Controllers\Api\Party\CustomerController;
 use App\Http\Controllers\Api\Party\SupplierController;
 use App\Http\Controllers\Api\Payment\PaymentController;
@@ -132,6 +133,10 @@ Route::group(['middleware' => ['auth']], function () {
     // purchase
     Route::get('/api/purchases', [PurchaseInvoiceController::class, 'index']);
     Route::post('/api/purchases', [PurchaseInvoiceController::class, 'store']);
+
+    // sale
+    Route::get('/api/sales', [SaleInvoiceController::class, 'index']);
+    Route::post('/api/sales', [SaleInvoiceController::class, 'store']);
 
     // Account
     Route::get('/api/accounts', [AccountController::class, 'index']);
