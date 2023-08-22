@@ -10,9 +10,11 @@ class CreatePurchaseRequest extends FormRequest
 {
     protected $selected_account_balance;
 
-    public function __construct() {
+    public function __construct()
+    {
 
     }
+
     public function authorize(): bool
     {
         return Gate::allows('create_purchase');
@@ -20,7 +22,7 @@ class CreatePurchaseRequest extends FormRequest
 
     public function rules(): array
     {
-        
+
         return [
 
             'invoice_date' => ['required', 'date'],
@@ -47,22 +49,22 @@ class CreatePurchaseRequest extends FormRequest
             'account_id' => [
                 function ($attribute, $value, $fail) {
                     $account = Account::find($this->input('account_id'));
-                    if ($this->input('paid_amount')>0 && !$account) {
+                    if ($this->input('paid_amount') > 0 && ! $account) {
                         $fail('The Account field is required when paid amount greater than 0');
                     }
-                }, 
+                },
                 function ($attribute, $value, $fail) {
                     $account = Account::find($this->input('account_id'));
-                    if ($this->input('paid_amount')>0 && $account ) {
-                        if($this->input('paid_amount')>$account->balance){
+                    if ($this->input('paid_amount') > 0 && $account) {
+                        if ($this->input('paid_amount') > $account->balance) {
                             $fail('Selected Account has insufficient balance');
                         }
                     }
-                }, 
+                },
             ],
             'payment_method' => [
                 function ($attribute, $value, $fail) {
-                    if ($this->input('paid_amount')>0 && !$value ) {
+                    if ($this->input('paid_amount') > 0 && ! $value) {
                         $fail('The Payment Method field is required when paid amount greater than 0');
                     }
                 },

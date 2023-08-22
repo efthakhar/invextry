@@ -146,7 +146,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/api/account-adjustments/{id}', [AccountAdjustmentController::class, 'show']);
     Route::post('/api/account-adjustments', [AccountAdjustmentController::class, 'store']);
 
-    // Payment 
+    // Payment
     Route::post('/api/payments', [PaymentController::class, 'store']);
 
 });

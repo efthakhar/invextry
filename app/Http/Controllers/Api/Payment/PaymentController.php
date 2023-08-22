@@ -6,13 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Payment\CreatePaymentRequest;
 use App\Services\PaymentService;
 use Exception;
-use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
     protected $paymentService;
 
-    function __construct() {
+    public function __construct()
+    {
 
         $this->paymentService = new PaymentService();
     }
@@ -36,5 +36,4 @@ class PaymentController extends Controller
             'message' => 'payment created succesfully',
         ], 201);
     }
-
 }

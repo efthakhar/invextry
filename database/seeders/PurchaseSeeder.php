@@ -13,14 +13,14 @@ class PurchaseSeeder extends Seeder
 
         [
             'invoice_status' => 'pending',
-            'paid_amount' => 0,
+            'paid_amount' => 120,
             'invoice_date' => '2023-08-09',
             'note' => 'New Purchase Order .',
             'party_id' => 20,
             'warehouse_id' => 1,
-            'discount' => 100,
-            'shipping_cost' => 50,
-            'invoice_tax_rate' => 2,
+            'discount' => 0,
+            'shipping_cost' => 0,
+            'invoice_tax_rate' => 0,
             'items' => [
                 [
                     'id' => 1,
@@ -39,7 +39,7 @@ class PurchaseSeeder extends Seeder
 
         [
             'invoice_status' => 'ordered',
-            'paid_amount' => 12364,
+            'paid_amount' => 2094.25,
             'invoice_date' => '2023-08-09',
             'note' => 'New Purchase Order .',
             'party_id' => 7,
@@ -64,7 +64,7 @@ class PurchaseSeeder extends Seeder
         ],
         [
             'invoice_status' => 'received',
-            'paid_amount' => 100,
+            'paid_amount' => 0,
             'invoice_date' => '2023-08-19',
             'note' => 'New Purchase Order .',
             'party_id' => 7,

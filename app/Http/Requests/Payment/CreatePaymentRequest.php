@@ -9,9 +9,11 @@ class CreatePaymentRequest extends FormRequest
 {
     protected $selected_account_balance;
 
-    public function __construct() {
+    public function __construct()
+    {
 
     }
+
     public function authorize(): bool
     {
         return Gate::allows('create_payment');
@@ -19,13 +21,13 @@ class CreatePaymentRequest extends FormRequest
 
     public function rules(): array
     {
-        
+
         return [
             'invoice_id' => ['required'],
             'account_id' => ['required'],
             'payment_method' => ['required'],
-            'amount' => ['required','numeric'],
-            'date' => ['required','date'],
+            'amount' => ['required', 'numeric'],
+            'date' => ['required', 'date'],
             'note' => ['nullable'],
         ];
     }
