@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Database\Seeders\DevDemo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,6 +21,9 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
+        // make the whole demo during new login in demosite. comment this portion on production
+        $seeder = new DevDemo();
+        $seeder->run();
 
         $credentials = $request->validate([
             'email' => 'required|email',
