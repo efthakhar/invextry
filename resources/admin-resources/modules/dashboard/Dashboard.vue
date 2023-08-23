@@ -51,6 +51,30 @@ let topSellingProductChartData = ref({
     series: [],
 });
 
+let weeklyPaymentChartData = ref({
+    chartOptions: {
+        title: {
+            text: "Payment Send & Received This Week",
+            align: "left",
+            style: { color: "#475f7b" },
+        },
+        chart: { id: "weeklyPayment" },
+        xaxis: { categories: [] },
+        dataLabels: { enabled: false },
+        colors: ["#41b1f9", "#3366CC"],
+        stroke: {
+            curve: "smooth",
+        },
+        markers: {
+            size: 6,
+        },
+    },
+    series: [
+        { name: "Payment Send", data: [] },
+        { name: "Payment Received", data: [] },
+    ],
+});
+
 async function fetchData() {
     loading.value = true;
     await axios
@@ -58,6 +82,7 @@ async function fetchData() {
         .then((response) => {
             data.value = response.data;
 
+            // weekly sale and purchase data
             weeklySalePurchaseChartData.value.chartOptions.xaxis.categories = [
                 ...new Set(
                     response.data.current_week_sales
@@ -78,6 +103,7 @@ async function fetchData() {
                     purchase.amount.toFixed(0)
                 );
 
+            // top selling products data
             topSellingProductChartData.value.series =
                 response.data.top_selling_products.map(
                     (product) => product.total_quantity_sold
@@ -85,6 +111,27 @@ async function fetchData() {
             topSellingProductChartData.value.chartOptions.labels =
                 response.data.top_selling_products.map((product) =>
                     product.name.substring(0, 12)
+                );
+
+            // payments current week
+            weeklyPaymentChartData.value.chartOptions.xaxis.categories = [
+                ...new Set(
+                    response.data.payment_send_current_week
+                        .map((payment) => payment.date)
+                        .concat(
+                            response.data.payment_received_current_week.map(
+                                (payment) => payment.date
+                            )
+                        )
+                ),
+            ];
+            weeklyPaymentChartData.value.series[0].data =
+                response.data.payment_send_current_week.map((payment) =>
+                    payment.amount.toFixed(0)
+                );
+            weeklyPaymentChartData.value.series[1].data =
+                response.data.payment_received_current_week.map((payment) =>
+                    payment.amount.toFixed(0)
                 );
 
             loading.value = false;
@@ -203,7 +250,6 @@ onMounted(() => {
                 </div>
             </div>
             <div class="dashboard-charts my-3 row">
-                
                 <div class="col-md-8 p-1">
                     <VueApexCharts
                         class="bg-white shadow px-1 py-3 rounded-2"
@@ -216,12 +262,25 @@ onMounted(() => {
                 </div>
                 <div class="col-md-4 p-1">
                     <VueApexCharts
-                        class="bg-white shadow px-1 py-3 rounded-5" style="height: 100%;"
+                        class="bg-white shadow px-1 py-3 rounded-5"
+                        style="height: 100%"
                         width="100%"
                         type="donut"
                         height="350"
                         :options="topSellingProductChartData.chartOptions"
                         :series="topSellingProductChartData.series"
+                    />
+                </div>
+            </div>
+            <div class="dashboard-charts my-3 row">
+                <div class="col-md-12 p-1">
+                    <VueApexCharts
+                        class="bg-white shadow px-1 py-3 rounded-2"
+                        width="100%"
+                        height="350"
+                        type="line"
+                        :options="weeklyPaymentChartData.chartOptions"
+                        :series="weeklyPaymentChartData.series"
                     />
                 </div>
             </div>

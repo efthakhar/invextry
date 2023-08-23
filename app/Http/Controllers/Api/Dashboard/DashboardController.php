@@ -45,12 +45,31 @@ class DashboardController extends Controller
             ->limit(3)
             ->get();
 
+        $payment_received_current_week = DB::table('payments')->where('invoice_type','sale')
+            ->whereDate('date', '>=', Carbon::now()->startOfWeek())
+            ->whereDate('date', '<=', Carbon::now()->endOfWeek())
+            ->select([DB::raw('SUM(amount) as amount'), 'date'])
+            ->groupBy('date')->orderBy('date')
+            ->get();
+
+        $payment_send_current_week = DB::table('payments')->where('invoice_type','purchase')
+            ->whereDate('date', '>=', Carbon::now()->startOfWeek())
+            ->whereDate('date', '<=', Carbon::now()->endOfWeek())
+            ->select([DB::raw('SUM(amount) as amount'), 'date'])
+            ->groupBy('date')->orderBy('date')
+            ->get();   
+
         return response()->json([
             'total_sale_amount' => $total_sale_amount,
             'total_sale_due' => $total_sale_due,
             'total_purchase_amount' => $total_purchase_amount,
+
+            'payment_send_current_week' => $payment_send_current_week,
+            'payment_received_current_week' => $payment_received_current_week,
+
             'total_purchase_due' => $total_purchase_due,
             'top_selling_products' => $top_selling_products,
+            
             'current_week_sales' => $current_week_sales,
             'current_week_purchases' => $current_week_purchases,
         ]);

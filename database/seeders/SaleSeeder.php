@@ -73,7 +73,7 @@ class SaleSeeder extends Seeder
 
         [
             'invoice_status' => 'received',
-            'paid_amount' => 0,
+            'paid_amount' => 7000,
             'invoice_date' => '2023-08-19',
             'note' => 'New Sale Order .',
             'party_id' => 3,
@@ -177,7 +177,7 @@ class SaleSeeder extends Seeder
 
         [
             'invoice_status' => 'received',
-            'paid_amount' => 0,
+            'paid_amount' => 1600,
             'invoice_date' => '2023-08-19',
             'note' => 'New Sale Order .',
             'party_id' => 19,

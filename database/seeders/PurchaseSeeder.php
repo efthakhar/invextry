@@ -73,7 +73,7 @@ class PurchaseSeeder extends Seeder
 
         [
             'invoice_status' => 'received',
-            'paid_amount' => 0,
+            'paid_amount' => 6000,
             'invoice_date' => '2023-08-19',
             'note' => 'New Purchase Order .',
             'party_id' => 7,
@@ -177,7 +177,7 @@ class PurchaseSeeder extends Seeder
 
         [
             'invoice_status' => 'received',
-            'paid_amount' => 0,
+            'paid_amount' => 8000,
             'invoice_date' => '2023-08-19',
             'note' => 'New Purchase Order .',
             'party_id' => 20,
