@@ -58,7 +58,11 @@ let weeklyPaymentChartData = ref({
             align: "left",
             style: { color: "#475f7b" },
         },
-        chart: { id: "weeklyPayment" },
+        chart: {
+            id: "weeklyPayment",
+            zoom: { enabled: false },
+            selection: { enabled: false },
+        },
         xaxis: { categories: [] },
         dataLabels: { enabled: false },
         colors: ["#41b1f9", "#3366CC"],
