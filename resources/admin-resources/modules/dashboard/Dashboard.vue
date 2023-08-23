@@ -9,27 +9,10 @@ import CoinSvgIcon from "../../assets/icons/coin-1-svg-icon.vue";
 import twentyfourSVGICon from "../../assets/icons/twentyfour-svg-icon.vue";
 import HandLoveSVGICon from "../../assets/icons/hand-love-svg-icon.vue";
 
-import { use } from "echarts/core";
-import { CanvasRenderer } from "echarts/renderers";
-import { PieChart } from "echarts/charts";
-import {
-    TitleComponent,
-    TooltipComponent,
-    LegendComponent,
-} from "echarts/components";
-import VChart, { THEME_KEY } from "vue-echarts";
-
-use([
-    CanvasRenderer,
-    PieChart,
-    TitleComponent,
-    TooltipComponent,
-    LegendComponent,
-]);
-provide(THEME_KEY, "dark");
 
 const loading = ref(false);
 const data = ref({});
+
 
 async function fetchData() {
     loading.value = true;
@@ -162,7 +145,9 @@ onMounted(() => {
                 </div>
             </div>
             <div class="dashboard-charts my-3 row">
-                
+                <div class="col-md-6 p-1">
+                  
+                </div>
             </div>
         </div>
     </div>
