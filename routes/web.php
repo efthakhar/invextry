@@ -38,7 +38,7 @@ Route::get('/demo', function () {
 
 // All Auth Related Route
 Route::get('/register', [RegisterController::class, 'registrationForm'])->name('registrationForm');
-Route::post('/register', [RegisterController::class, 'register'])->name('registerUser');
+Route::post('/register', [RegisterController::class, 'register'])->name('registerUser')->middleware('viewonly');
 Route::get('/login', [LoginController::class, 'loginForm'])->name('loginForm');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
