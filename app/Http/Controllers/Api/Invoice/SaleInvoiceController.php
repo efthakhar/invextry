@@ -47,7 +47,7 @@ class SaleInvoiceController extends Controller
         $per_page = $request->query('per_page') && $request->query('per_page') < 100 ? $request->query('per_page') : 10;
         $search = $request->query('search');
 
-        $sales = Invoice::where('type','sale');
+        $sales = Invoice::where('type', 'sale');
 
         $sales->when($search, function ($query, $search) {
             $query->where('invoice_ref', 'LIKE', '%'.$search.'%');

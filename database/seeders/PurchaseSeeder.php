@@ -5,14 +5,14 @@ namespace Database\Seeders;
 use App\Services\PaymentService;
 use App\Services\PurchaseService;
 use App\Services\StockService;
-use Illuminate\Database\Seeder;
 use Carbon\Carbon;
+use Illuminate\Database\Seeder;
 
 class PurchaseSeeder extends Seeder
 {
     public $currentDate;
 
-    public function __construct() 
+    public function __construct()
     {
         $this->currentDate = Carbon::now();
     }
@@ -205,9 +205,9 @@ class PurchaseSeeder extends Seeder
 
     public function run(): void
     {
-        $iterator       = 0;
+        $iterator = 0;
         foreach ($this->purchases as $purchase) {
-            $purchase['invoice_date'] = $this->currentDate->startOfWeek()->copy()->addDays($iterator++);;
+            $purchase['invoice_date'] = $this->currentDate->startOfWeek()->copy()->addDays($iterator++);
             (new PurchaseService(new StockService(), new PaymentService))->create($purchase);
         }
     }

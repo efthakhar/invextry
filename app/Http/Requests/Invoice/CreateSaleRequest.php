@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Gate;
 
 class CreateSaleRequest extends FormRequest
 {
-
     public function __construct()
     {
 

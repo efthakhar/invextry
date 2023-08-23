@@ -23,13 +23,32 @@ let weeklySalePurchaseChartData = ref({
         chart: { id: "weeklySalePurchase" },
         xaxis: { categories: [] },
         dataLabels: { enabled: false },
-        colors: ['#41b1f9', '#3366CC'],
+        colors: ["#41b1f9", "#3366CC"],
     },
     series: [
         { name: "sale", data: [] },
         { name: "purchase", data: [] },
     ],
-    
+});
+
+let topSellingProductChartData = ref({
+    chartOptions: {
+        title: {
+            text: "Top Selling Products",
+            align: "left",
+            style: { color: "#475f7b" },
+        },
+        chart: { id: "topSellingProduct" },
+        labels: [],
+        dataLabels: { enabled: true },
+        colors: ["#41b1f9", "#8390FA", "#3366CC"],
+        legend: {
+            show: true,
+            position: "bottom",
+            horizontalAlign: "center",
+        },
+    },
+    series: [],
 });
 
 async function fetchData() {
@@ -50,15 +69,22 @@ async function fetchData() {
                         )
                 ),
             ];
-
             weeklySalePurchaseChartData.value.series[0].data =
                 response.data.current_week_sales.map((sale) =>
                     sale.amount.toFixed(0)
                 );
-
             weeklySalePurchaseChartData.value.series[1].data =
                 response.data.current_week_purchases.map((purchase) =>
                     purchase.amount.toFixed(0)
+                );
+
+            topSellingProductChartData.value.series =
+                response.data.top_selling_products.map(
+                    (product) => product.total_quantity_sold
+                );
+            topSellingProductChartData.value.chartOptions.labels =
+                response.data.top_selling_products.map((product) =>
+                    product.name.substring(0, 12)
                 );
 
             loading.value = false;
@@ -81,9 +107,9 @@ onMounted(() => {
             <div class="dashboard-top-stats row flex-wrap">
                 <div class="col-md-3 col-sm-6 my-1 p-1 min150">
                     <div
-                        class="bg-white shadow-sm d-flex flex-wrap rounded-3 p-3 align-items-center"
+                        class="bg-white shadow d-flex flex-wrap rounded-3 p-3 align-items-center"
                     >
-                        <div class="bg-info p-3 rounded-3 me-4">
+                        <div class="bg-info p-3 rounded-3 me-4 shadow">
                             <CartSvgIcon color="white" width="28" height="28" />
                         </div>
                         <div class="my-2">
@@ -104,7 +130,7 @@ onMounted(() => {
                 </div>
                 <div class="col-md-3 col-sm-6 my-1 p-1 min150">
                     <div
-                        class="bg-white shadow-sm d-flex flex-wrap rounded-3 p-3 align-items-center"
+                        class="bg-white shadow d-flex flex-wrap rounded-3 p-3 align-items-center shadow"
                     >
                         <div class="bg-info p-3 rounded-3 me-4">
                             <BegSvgIcon color="white" width="28" height="28" />
@@ -127,7 +153,7 @@ onMounted(() => {
                 </div>
                 <div class="col-md-3 col-sm-6 my-1 p-1 min150">
                     <div
-                        class="bg-white shadow-sm d-flex flex-wrap rounded-3 p-3 align-items-center"
+                        class="bg-white shadow d-flex flex-wrap rounded-3 p-3 align-items-center shadow"
                     >
                         <div class="bg-info p-3 rounded-3 me-4">
                             <WalletSvgIcon
@@ -154,7 +180,7 @@ onMounted(() => {
                 </div>
                 <div class="col-md-3 col-sm-6 my-1 p-1 min150">
                     <div
-                        class="bg-white shadow-sm d-flex flex-wrap rounded-3 p-3 align-items-center"
+                        class="bg-white shadow d-flex flex-wrap rounded-3 p-3 align-items-center shadow"
                     >
                         <div class="bg-info p-3 rounded-3 me-4">
                             <CoinSvgIcon color="white" width="28" height="28" />
@@ -177,8 +203,10 @@ onMounted(() => {
                 </div>
             </div>
             <div class="dashboard-charts my-3 row">
+                
                 <div class="col-md-8 p-1">
                     <VueApexCharts
+                        class="bg-white shadow px-1 py-3 rounded-2"
                         width="100%"
                         height="350"
                         type="bar"
@@ -186,7 +214,24 @@ onMounted(() => {
                         :series="weeklySalePurchaseChartData.series"
                     />
                 </div>
+                <div class="col-md-4 p-1">
+                    <VueApexCharts
+                        class="bg-white shadow px-1 py-3 rounded-5" style="height: 100%;"
+                        width="100%"
+                        type="donut"
+                        height="350"
+                        :options="topSellingProductChartData.chartOptions"
+                        :series="topSellingProductChartData.series"
+                    />
+                </div>
             </div>
         </div>
     </div>
 </template>
+
+<!-- <style>
+#topSellingProduct .apexcharts-legend.apx-legend-position-bottom .apexcharts-legend-series, .apexcharts-legend.apx-legend-position-top .apexcharts-legend-series {
+  display: block;
+  width: 100%;
+}
+</style> -->
