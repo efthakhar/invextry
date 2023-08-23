@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, provide } from "vue";
+import { ref, onMounted } from "vue";
 import Loader from "../../components/shared/loader/Loader.vue";
 import axios from "axios";
 import CartSvgIcon from "../../assets/icons/cart-svg-icon.vue";
@@ -8,11 +8,26 @@ import WalletSvgIcon from "../../assets/icons/wallet-svg-icon.vue";
 import CoinSvgIcon from "../../assets/icons/coin-1-svg-icon.vue";
 import twentyfourSVGICon from "../../assets/icons/twentyfour-svg-icon.vue";
 import HandLoveSVGICon from "../../assets/icons/hand-love-svg-icon.vue";
-
+import VueApexCharts from "vue3-apexcharts";
 
 const loading = ref(false);
 const data = ref({});
 
+let weeklySalePurchaseChartData = ref({
+    chartOptions: {
+        title: {
+            text: "Weekly Sale & Purchase",
+            align: "left",
+            style: { color: "#475f7b" },
+        },
+        chart: { id: "weeklySalePurchase" },
+        xaxis: { categories: [] },
+    },
+    series: [
+        { name: "sale", data: [] },
+        { name: "purchase", data: [] },
+    ],
+});
 
 async function fetchData() {
     loading.value = true;
@@ -21,14 +36,27 @@ async function fetchData() {
         .then((response) => {
             data.value = response.data;
 
-            // incomes_chart_data.value.chartOptions.xaxis.categories =
-            //     response.data.current_month_incomes.map(
-            //         (income) => income.date
-            //     );
-            // incomes_chart_data.value.series[0].data =
-            //     response.data.current_month_incomes.map(
-            //         (income) => income.amount
-            //     );
+            weeklySalePurchaseChartData.value.chartOptions.xaxis.categories = 
+            [
+                ...new Set(
+                    response.data.current_week_sales
+                        .map((sale) => sale.date)
+                        .concat(
+                            response.data.current_week_purchases.map(
+                                (purchase) => purchase.date
+                            )
+                        )
+                ),
+            ];
+
+            weeklySalePurchaseChartData.value.series[0].data =
+                response.data.current_week_sales.map((sale) => sale.amount);
+
+            weeklySalePurchaseChartData.value.series[1].data =
+                response.data.current_week_purchases.map(
+                    (purchase) => purchase.amount
+                );
+
             loading.value = false;
         })
         .catch((errors) => {
@@ -145,8 +173,15 @@ onMounted(() => {
                 </div>
             </div>
             <div class="dashboard-charts my-3 row">
-                <div class="col-md-6 p-1">
-                  
+                <div class="col-md-12 p-1">
+                    <VueApexCharts
+                        width="100%"
+                        height="350"
+                        type="bar"
+                        :options="weeklySalePurchaseChartData.chartOptions"
+                        :series="weeklySalePurchaseChartData.series"
+                    />
+                    {{ weeklySalePurchaseChartData }}
                 </div>
             </div>
         </div>
