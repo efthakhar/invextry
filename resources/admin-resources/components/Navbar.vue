@@ -26,14 +26,14 @@ const userDropDown = ref(false);
                         />
                         <span class="ms-2">Logout </span>
                     </a>
-                    <a class="top-nav-dropdown-item" href="/logout">
+                    <!-- <a class="top-nav-dropdown-item" href="/logout">
                         <settingSvgIcon
                             width="16px"
                             height="16px"
                             color="currentColor"
                         />
                         <span class="ms-2">Profile Setting</span>
-                    </a>
+                    </a> -->
                 </div>
             </div>
         </ul>
