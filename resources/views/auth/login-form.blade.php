@@ -36,8 +36,10 @@
                                             @if ($errors->has('email'))
                                                 <div class="text-danger my-1">{{ $errors->first('email') }}</div>
                                             @endif
-                                            <input type="email" id="email" class="form-control"
-                                                name="email" value="{{ @old('email')}}">
+                                            {{-- <input type="email" id="email" class="form-control"
+                                                name="email" value="{{ @old('email')}}"> --}}
+                                                <input type="email" id="email" class="form-control"
+                                                name="email" value="superadmin@invextry.com">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -46,8 +48,10 @@
                                             @if ($errors->has('password'))
                                                 <div class="text-danger my-1">{{ $errors->first('password') }}</div>
                                             @endif
+                                            {{-- <input type="password" id="email" class="form-control" name="password" 
+                                            value="{{ @old('password')}}"> --}}
                                             <input type="password" id="email" class="form-control" name="password" 
-                                            value="{{ @old('password')}}">
+                                            value="**invextry**">
                                         </div>
                                     </div>
                                 </diV>
