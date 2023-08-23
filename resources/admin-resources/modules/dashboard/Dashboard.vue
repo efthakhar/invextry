@@ -22,11 +22,14 @@ let weeklySalePurchaseChartData = ref({
         },
         chart: { id: "weeklySalePurchase" },
         xaxis: { categories: [] },
+        dataLabels: { enabled: false },
+        colors: ['#41b1f9', '#3366CC'],
     },
     series: [
         { name: "sale", data: [] },
         { name: "purchase", data: [] },
     ],
+    
 });
 
 async function fetchData() {
@@ -36,8 +39,7 @@ async function fetchData() {
         .then((response) => {
             data.value = response.data;
 
-            weeklySalePurchaseChartData.value.chartOptions.xaxis.categories = 
-            [
+            weeklySalePurchaseChartData.value.chartOptions.xaxis.categories = [
                 ...new Set(
                     response.data.current_week_sales
                         .map((sale) => sale.date)
@@ -50,11 +52,13 @@ async function fetchData() {
             ];
 
             weeklySalePurchaseChartData.value.series[0].data =
-                response.data.current_week_sales.map((sale) => sale.amount);
+                response.data.current_week_sales.map((sale) =>
+                    sale.amount.toFixed(0)
+                );
 
             weeklySalePurchaseChartData.value.series[1].data =
-                response.data.current_week_purchases.map(
-                    (purchase) => purchase.amount
+                response.data.current_week_purchases.map((purchase) =>
+                    purchase.amount.toFixed(0)
                 );
 
             loading.value = false;
@@ -173,7 +177,7 @@ onMounted(() => {
                 </div>
             </div>
             <div class="dashboard-charts my-3 row">
-                <div class="col-md-12 p-1">
+                <div class="col-md-8 p-1">
                     <VueApexCharts
                         width="100%"
                         height="350"
@@ -181,7 +185,6 @@ onMounted(() => {
                         :options="weeklySalePurchaseChartData.chartOptions"
                         :series="weeklySalePurchaseChartData.series"
                     />
-                    {{ weeklySalePurchaseChartData }}
                 </div>
             </div>
         </div>

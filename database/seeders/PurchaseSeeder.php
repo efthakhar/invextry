@@ -32,11 +32,11 @@ class PurchaseSeeder extends Seeder
             'items' => [
                 [
                     'id' => 1,
-                    'quantity' => 10,
+                    'quantity' => 13,
                 ],
                 [
                     'id' => 2,
-                    'quantity' => 15,
+                    'quantity' => 6,
                 ],
             ],
             'account_id' => 1,
@@ -58,11 +58,11 @@ class PurchaseSeeder extends Seeder
             'items' => [
                 [
                     'id' => 1,
-                    'quantity' => 15,
+                    'quantity' => 5,
                 ],
                 [
-                    'id' => 2,
-                    'quantity' => 3,
+                    'id' => 3,
+                    'quantity' => 1,
                 ],
             ],
             'account_id' => 1,
@@ -70,6 +70,7 @@ class PurchaseSeeder extends Seeder
             'payment_note' => ' ',
 
         ],
+
         [
             'invoice_status' => 'received',
             'paid_amount' => 0,
@@ -83,11 +84,11 @@ class PurchaseSeeder extends Seeder
             'items' => [
                 [
                     'id' => 2,
-                    'quantity' => 4,
+                    'quantity' => 2,
                 ],
                 [
                     'id' => 3,
-                    'quantity' => 4,
+                    'quantity' => 1,
                 ],
             ],
             'account_id' => 2,
@@ -109,11 +110,11 @@ class PurchaseSeeder extends Seeder
             'items' => [
                 [
                     'id' => 3,
-                    'quantity' => 14,
+                    'quantity' => 1,
                 ],
                 [
                     'id' => 2,
-                    'quantity' => 18,
+                    'quantity' => 2,
                 ],
             ],
             'account_id' => 1,
@@ -135,11 +136,11 @@ class PurchaseSeeder extends Seeder
             'items' => [
                 [
                     'id' => 1,
-                    'quantity' => 54,
+                    'quantity' => 4,
                 ],
                 [
                     'id' => 2,
-                    'quantity' => 8,
+                    'quantity' => 4,
                 ],
             ],
             'account_id' => 1,
@@ -161,11 +162,11 @@ class PurchaseSeeder extends Seeder
             'items' => [
                 [
                     'id' => 1,
-                    'quantity' => 14,
+                    'quantity' => 4,
                 ],
                 [
                     'id' => 2,
-                    'quantity' => 35,
+                    'quantity' => 5,
                 ],
             ],
             'account_id' => 1,
@@ -187,11 +188,11 @@ class PurchaseSeeder extends Seeder
             'items' => [
                 [
                     'id' => 1,
-                    'quantity' => 34,
+                    'quantity' => 4,
                 ],
                 [
                     'id' => 3,
-                    'quantity' => 25,
+                    'quantity' => 1,
                 ],
             ],
             'account_id' => 1,
