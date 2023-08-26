@@ -28,20 +28,28 @@ Make sure you have the following installed:
 1. **Clone the GitHub repository**
    ```sh
    git clone https://github.com/efthakhar/invextry.git
+   
 2. **Install Composer packages:**
    ```sh
    composer install
+   
 3. **Install npm packages**
    ```sh
    npm install
-4. **Create .env file:**
+   
+4. **Create .env file**
+
    Duplicate .env.example and rename it to .env.
    
 5. **Generate encryption key**
+
     Run the following command to generate a unique application key.
+    
       ```sh
-   php artisan key:generate
+    php artisan key:generate
+
 6. **Update APP_URL in .env**
+
     Open .env file and update the APP_URL value according to your application's domain path. For local development, it will typically be:
     
       ```sh
@@ -58,6 +66,7 @@ Make sure you have the following installed:
     php artisan serve
 
 9. **Enable development mode**
+
       ```sh
     npm run dev
 
