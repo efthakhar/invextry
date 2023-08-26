@@ -9,9 +9,9 @@ steps:
 
 > Create Requests file
 
-> Create Resouce and Collections file 
+> Create Resource and Collections file
 
-> Create necessary routes and controllers methods 
+> Create necessary routes and controllers methods
 
 > Create pinia store file
 
