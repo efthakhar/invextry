@@ -158,21 +158,15 @@ onMounted(() => {
             <div class="dashboard-top-stats row flex-wrap">
                 <div class="col-md-3 col-sm-6 my-1 p-1 min150">
                     <div
-                        class="bg-white shadow d-flex flex-wrap rounded-3 p-3 align-items-center"
+                        class="bg-white shadow d-flex flex-wrap rounded-3 p-3 align-items-start"
                     >
                         <div class="bg-info p-3 rounded-3 me-4 shadow">
                             <CartSvgIcon color="white" width="28" height="28" />
                         </div>
                         <div class="my-2">
-                            <span class="h3">{{
+                            <span class="top-stats-value">{{
                                 data.total_sale_amount
-                                    ? data.total_sale_amount.toLocaleString(
-                                          "en-US",
-                                          {
-                                              style: "currency",
-                                              currency: "USD",
-                                          }
-                                      )
+                                    ? data.total_sale_amount.toFixed(0)
                                     : 0
                             }}</span
                             ><br /><span>Total Sale</span>
@@ -181,21 +175,15 @@ onMounted(() => {
                 </div>
                 <div class="col-md-3 col-sm-6 my-1 p-1 min150">
                     <div
-                        class="bg-white shadow d-flex flex-wrap rounded-3 p-3 align-items-center shadow"
+                        class="bg-white shadow d-flex flex-wrap rounded-3 p-3 align-items-start shadow"
                     >
                         <div class="bg-info p-3 rounded-3 me-4">
                             <BegSvgIcon color="white" width="28" height="28" />
                         </div>
                         <div class="my-2">
-                            <span class="h3">{{
+                            <span class="top-stats-value">{{
                                 data.total_purchase_amount
-                                    ? data.total_purchase_amount.toLocaleString(
-                                          "en-US",
-                                          {
-                                              style: "currency",
-                                              currency: "USD",
-                                          }
-                                      )
+                                    ? data.total_purchase_amount.toFixed(0)
                                     : 0
                             }}</span
                             ><br /><span>Total Purchase</span>
@@ -204,7 +192,7 @@ onMounted(() => {
                 </div>
                 <div class="col-md-3 col-sm-6 my-1 p-1 min150">
                     <div
-                        class="bg-white shadow d-flex flex-wrap rounded-3 p-3 align-items-center shadow"
+                        class="bg-white shadow d-flex flex-wrap rounded-3 p-3 align-items-start shadow"
                     >
                         <div class="bg-info p-3 rounded-3 me-4">
                             <WalletSvgIcon
@@ -214,15 +202,9 @@ onMounted(() => {
                             />
                         </div>
                         <div class="my-2">
-                            <span class="h3">{{
+                            <span class="top-stats-value">{{
                                 data.total_sale_due
-                                    ? data.total_sale_due.toLocaleString(
-                                          "en-US",
-                                          {
-                                              style: "currency",
-                                              currency: "USD",
-                                          }
-                                      )
+                                    ? data.total_sale_due.toFixed(0)
                                     : 0
                             }}</span
                             ><br /><span>Total Sale Due</span>
@@ -231,21 +213,15 @@ onMounted(() => {
                 </div>
                 <div class="col-md-3 col-sm-6 my-1 p-1 min150">
                     <div
-                        class="bg-white shadow d-flex flex-wrap rounded-3 p-3 align-items-center shadow"
+                        class="bg-white shadow d-flex flex-wrap rounded-3 p-3 align-items-start shadow"
                     >
                         <div class="bg-info p-3 rounded-3 me-4">
                             <CoinSvgIcon color="white" width="28" height="28" />
                         </div>
                         <div class="my-2">
-                            <span class="h3">{{
+                            <span class="top-stats-value">{{
                                 data.total_purchase_due
-                                    ? data.total_purchase_due.toLocaleString(
-                                          "en-US",
-                                          {
-                                              style: "currency",
-                                              currency: "USD",
-                                          }
-                                      )
+                                    ? data.total_purchase_due.toFixed(0)
                                     : 0
                             }}</span
                             ><br /><span>Total Purchase Due</span>
@@ -292,9 +268,13 @@ onMounted(() => {
     </div>
 </template>
 
-<!-- <style>
-#topSellingProduct .apexcharts-legend.apx-legend-position-bottom .apexcharts-legend-series, .apexcharts-legend.apx-legend-position-top .apexcharts-legend-series {
-  display: block;
-  width: 100%;
+<style>
+.dashboard-top-stats > *>*{
+    height: 100%;
 }
-</style> -->
+.top-stats-value{
+    font-size: 20px;
+    font-weight: 600;
+    color:#475f7b;
+}
+</style>
