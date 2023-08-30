@@ -49,19 +49,32 @@ class ReportService
 
     public function getTopSellingProducts()
     {
+        // return DB::table('invoices')
+        //     ->leftJoin('invoice_items', 'invoices.id', '=', 'invoice_items.invoice_id')
+        //     ->leftJoin('products', 'invoice_items.product_id', '=', 'products.id')
+        //     ->select([
+        //         'invoice_items.product_id as product_id',
+        //         'products.name as name',
+        //         DB::raw('SUM(invoice_items.product_quantity) as total_quantity_sold'),
+        //     ])
+        //     ->where('invoices.type', 'sale')
+        //     ->groupBy('invoice_items.product_id')
+        //     ->orderByDesc('total_quantity_sold')
+        //     ->limit(3)
+        //     ->get();
         return DB::table('invoices')
-            ->leftJoin('invoice_items', 'invoices.id', '=', 'invoice_items.invoice_id')
-            ->leftJoin('products', 'invoice_items.product_id', '=', 'products.id')
-            ->select([
-                'invoice_items.product_id as product_id',
-                'products.name as name',
-                DB::raw('SUM(invoice_items.product_quantity) as total_quantity_sold'),
-            ])
-            ->where('invoices.type', 'sale')
-            ->groupBy('invoice_items.product_id')
-            ->orderByDesc('total_quantity_sold')
-            ->limit(3)
-            ->get();
+        ->leftJoin('invoice_items', 'invoices.id', '=', 'invoice_items.invoice_id')
+        ->leftJoin('products', 'invoice_items.product_id', '=', 'products.id')
+        ->select([
+            'invoice_items.product_id as product_id',
+            'products.name as name',
+            DB::raw('SUM(invoice_items.product_quantity) as total_quantity_sold'),
+        ])
+        ->where('invoices.type', 'sale')
+        ->groupBy('invoice_items.product_id', 'products.name') // Include products.name in the GROUP BY clause
+        ->orderByDesc('total_quantity_sold')
+        ->limit(3)
+        ->get();
     }
 
     public function getPaymentsReceivedCurrentWeek()
