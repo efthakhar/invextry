@@ -86,7 +86,7 @@ onMounted(() => {
             />
         </div>
         <div class="uploaded-images d-flex flex-wrap mt-2">
-            <div class="my-1 mx-1 uploaded_item" v-for="file in uploaded_files">
+            <div class="my-1 mx-1 uploaded_item" v-for="file in uploaded_files" :key="file.id">
                 <crossSvgIcon
                     width="18px"
                     height="18px"
